@@ -1,7 +1,7 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                         Interface 0                         
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Total atoms:                            418
+Total atoms:                            836
 Lower / Upper hkl:                      (001) / (001)
 Lower / Upper area (A^2):               262.54 / 261.77
 
@@ -22,7 +22,7 @@ Transformed matrix for upper slab:
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                         Interface 1                         
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Total atoms:                            196
+Total atoms:                            392
 Lower / Upper hkl:                      (010) / (111)
 Lower / Upper area (A^2):               285.93 / 284.67
 
@@ -38,26 +38,5 @@ Transformed matrix for lower slab:
 Transformed matrix for upper slab:
 1.000000  1.000000
 4.000000  0.000000
-
-
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                        Interface 2                         
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Total atoms:                            298
-Lower / Upper hkl:                      (201) / (001)
-Lower / Upper area (A^2):               262.04 / 261.77
-
-U misfit (%):                           0.788192
-V misfit (%):                           0.882101
-Angle misfit (°):                       0.038971
-Area misfit (%):                        0.100839
-
-Transformed matrix for lower slab:
-1.000000  0.000000
-0.000000  3.000000
-
-Transformed matrix for upper slab:
-1.000000  4.000000
--4.000000  1.000000
 
 

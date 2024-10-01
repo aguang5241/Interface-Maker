@@ -457,10 +457,10 @@ if __name__ == '__main__':
     UPPER_CONV = 'input/POSCAR_LNO_MP_I4mmm_Conv.vasp'
 
     # Maximum Miller indices for h, k, l
-    H_MAX, K_MAX, L_MAX = 2, 2, 2
+    H_MAX, K_MAX, L_MAX = 1, 1, 1
 
     # Number of lower and upper slabs
-    LOWER_SLAB_NUM, UPPER_SLAB_NUM = 1, 1
+    LOWER_SLAB_NUM, UPPER_SLAB_NUM = 2, 2
 
     # Slab vacuum and interface gap, in Angstrom
     SLAB_VACUUM, INTERFACE_GAP = 6, 3
