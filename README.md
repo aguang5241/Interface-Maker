@@ -7,7 +7,7 @@ This code is based on the A. Zur et al. paper: "Lattice match: An application to
 ⭐️ Star the repository if you find it useful :) ⭐️
 
 ## Workflow
-![Workflow](res/image.png)
+![Workflow](res/Interfaces.png)
 
 ## Usage
 1. Prepare the input POSCAR file and put it in the `input` folder. Note that the conventional cell should be used.
