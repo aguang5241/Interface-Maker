@@ -129,7 +129,7 @@ def gen_intf(i, profile):
     z_bottom_1 = min([atom.position[2] for atom in slab_1])
     slab_0_thickness = z_top_0 - z_bottom_0
     slab_1_thickness = z_top_1 - z_bottom_1
-    interface_thickness = slab_0_thickness + slab_1_thickness + SLAB_VACCUM * 2 + INTERFACE_GAP
+    interface_thickness = slab_0_thickness + slab_1_thickness + SLAB_VACUUM * 2 + INTERFACE_GAP
 
     # Create the interface 
     interface = slab_0.copy()
@@ -154,12 +154,12 @@ def gen_intf(i, profile):
 
     # Shift the interface lower
     z_bottom_interface = min([atom.position[2] for atom in interface])
-    z_disp_interface = z_bottom_interface - SLAB_VACCUM
+    z_disp_interface = z_bottom_interface - SLAB_VACUUM
     interface.translate([0, 0, -z_disp_interface])
 
     # Shift the slab_1 upper
     z_top_slab_1 = max([atom.position[2] for atom in slab_1])
-    z_disp_slab_1 = interface_thickness - SLAB_VACCUM - z_top_slab_1
+    z_disp_slab_1 = interface_thickness - SLAB_VACUUM - z_top_slab_1
     slab_1.translate([0, 0, z_disp_slab_1])
 
     # Create the interface
@@ -429,8 +429,8 @@ def main():
         os.makedirs('output/slabs')
 
     # Create slabs for lower and upper materials
-    data_ab_lower = slab_maker(cell_conv=LOWER_CONV, miller_indices=MILLER_INDICES, layers=LOWER_SLAB_NUM, vacuum=SLAB_VACCUM)
-    data_ab_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=MILLER_INDICES, layers=UPPER_SLAB_NUM, vacuum=SLAB_VACCUM)
+    data_ab_lower = slab_maker(cell_conv=LOWER_CONV, miller_indices=MILLER_INDICES, layers=LOWER_SLAB_NUM, vacuum=SLAB_VACUUM)
+    data_ab_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=MILLER_INDICES, layers=UPPER_SLAB_NUM, vacuum=SLAB_VACUUM)
 
     # Match the lattices of the lower and upper slabs
     data_pairs = pair_slabs(data_ab_lower, data_ab_upper)
@@ -463,7 +463,7 @@ if __name__ == '__main__':
     LOWER_SLAB_NUM, UPPER_SLAB_NUM = 1, 1
 
     # Slab vacuum and interface gap, in Angstrom
-    SLAB_VACCUM, INTERFACE_GAP = 6, 3
+    SLAB_VACUUM, INTERFACE_GAP = 6, 3
 
     # Maximum area of the interface, in A^2
     MAX_AREA = 300

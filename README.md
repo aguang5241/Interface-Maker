@@ -6,6 +6,9 @@ This code is based on the A. Zur et al. paper: "Lattice match: An application to
 
 ⭐️ Star the repository if you find it useful :) ⭐️
 
+## Workflow
+![Workflow](res/image.png)
+
 ## Usage
 1. Prepare the input POSCAR file and put it in the `input` folder. Note that the conventional cell should be used.
 2. Set the parameters in the `interface_maker.py` file:
@@ -21,7 +24,7 @@ This code is based on the A. Zur et al. paper: "Lattice match: An application to
     LOWER_SLAB_NUM, UPPER_SLAB_NUM = 1, 1
 
     # Slab vacuum and interface gap, in Angstrom
-    SLAB_VACCUM, INTERFACE_GAP = 6, 3
+    SLAB_VACUUM, INTERFACE_GAP = 6, 3
 
     # Maximum area of the interface, in A^2
     MAX_AREA = 300
