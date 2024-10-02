@@ -36,4 +36,4 @@ This code is based on the A. Zur et al. paper: "Lattice match: An application to
     ```bash
     python3 interface_maker.py
     ```
-4. Check the `intf_profiles.txt` file to see the summary of the generated interfaces. Modify the parameters if needed and rerun the code to get the desired interfaces.
+4. Check the `intf_profiles.txt` or `intf_profiles.csv` file to see the summary of the generated interfaces. Modify the parameters if needed and rerun the code to get the desired interfaces.
