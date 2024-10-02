@@ -200,6 +200,10 @@ def gen_intf(i, profile):
         f.write(f'{T_1[0][0]:.6f}  {T_1[0][1]:.6f}\n')
         f.write(f'{T_1[1][0]:.6f}  {T_1[1][1]:.6f}\n')
         f.write('\n\n')
+    
+    # Store the lattice matching data in a csv file
+    with open('output/interfaces/intf_profile.csv', 'a') as f:
+        f.write(f'{i},{len(interface)},{hkl_0},{hkl_1},{area_0:.6f},{area_1:.6f},{profile[2]*100:.6f},{profile[3]*100:.6f},{profile[4]:.6f},{np.abs(area_0-area_1)/area_0*100:.6f},{T_0[0][0]:.6f},{T_0[0][1]:.6f},{T_0[1][0]:.6f},{T_0[1][1]:.6f},{T_1[0][0]:.6f},{T_1[0][1]:.6f},{T_1[1][0]:.6f},{T_1[1][1]:.6f}\n')
 
 def trim(data):
     data = np.array(data)
