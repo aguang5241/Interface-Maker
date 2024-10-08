@@ -174,11 +174,7 @@ def gen_intf(i, profile):
 
     # Store the lattice matching data
     with open('output/interfaces/intf_profile.txt', 'a') as f:
-        f.write('+'.center(60, '+') + '\n')
-        # f.write(f'Interface {i} (Lower {hkl_0} / Uppper {hkl_1})'.center(60) + '\n')
-        f.write(f'Interface {i}'.center(60) + '\n')
-        f.write('+'.center(60, '+') + '\n')
-
+        f.write(f' Interface {i+1} '.center(60, '-') + '\n')
 
         f.write('Total atoms:'.ljust(40) + f'{len(interface)}\n')
         f.write('Lower / Upper hkl:'.ljust(40) + f'({hkl_0}) / ({hkl_1})\n')
@@ -223,7 +219,7 @@ def trim(data):
 
     return data
 
-def slab_maker(cell_conv, miller_indices, layers, vacuum):
+def slab_maker(cell_conv, miller_indices, vacuum):
     cell_name = f'{cell_conv.split("/")[-1].split(".")[0]}'
     print(f'\n'.ljust(4) + '---> Creating slabs for', cell_name + '...')
 
@@ -231,7 +227,20 @@ def slab_maker(cell_conv, miller_indices, layers, vacuum):
 
     for h, k, l in miller_indices:
         atom = read(cell_conv)
-        slab = surface(lattice=atom, indices=(h, k, l), layers=layers, vacuum=vacuum, tol=1e-10, periodic=True)
+        slab = surface(lattice=atom, indices=(h, k, l), layers=1, vacuum=vacuum, tol=1e-10, periodic=True)
+
+        # Increase the number of layers if the slab is too short
+        layers = 1
+        while True:
+            z_top = max([atom.position[2] for atom in slab])
+            z_bottom = min([atom.position[2] for atom in slab])
+            slab_length = z_top - z_bottom
+            if slab_length < MIN_SLAB_LENGTH:
+                layers += 1
+                slab = surface(lattice=atom, indices=(h, k, l), layers=layers, vacuum=vacuum, tol=1e-10, periodic=True)
+            else:
+                break
+        print(f'\n'.ljust(8) + f'---> Slab {h}{k}{l} has {layers} layers')
         
         # Get cell parameters
         cell = slab.cell
@@ -433,8 +442,8 @@ def main():
         os.makedirs('output/slabs')
 
     # Create slabs for lower and upper materials
-    data_ab_lower = slab_maker(cell_conv=LOWER_CONV, miller_indices=MILLER_INDICES, layers=LOWER_SLAB_NUM, vacuum=SLAB_VACUUM)
-    data_ab_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=MILLER_INDICES, layers=UPPER_SLAB_NUM, vacuum=SLAB_VACUUM)
+    data_ab_lower = slab_maker(cell_conv=LOWER_CONV, miller_indices=MILLER_INDICES, vacuum=SLAB_VACUUM)
+    data_ab_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=MILLER_INDICES, vacuum=SLAB_VACUUM)
 
     # Match the lattices of the lower and upper slabs
     data_pairs = pair_slabs(data_ab_lower, data_ab_upper)
@@ -447,6 +456,21 @@ def main():
     else:
         shutil.rmtree(f'output/interfaces')
         os.makedirs(f'output/interfaces')
+    
+    with open('output/interfaces/intf_profile.txt', 'a') as f:
+        f.write('+'.center(60, '+') + '\n\n')
+        f.write('Interface Maker v1.0'.center(60) + '\n')
+        f.write('By Guangchen Liu, gliu4@wpi.edu'.center(60) + '\n\n')
+        f.write('+'.center(60, '+') + '\n\n')
+
+        f.write(f'Miller indices considered: {len(MILLER_INDICES)}'.center(60) + '\n\n')
+        for i in range(0, len(MILLER_INDICES), 3):
+            f.write(' '.join([str(i) for i in MILLER_INDICES[i:i+3]]).center(60) + '\n')
+        f.write('\n')
+        f.write(f'Total number of interfaces found: {len(data_matched)}'.center(60) + '\n\n')
+
+    with open('output/interfaces/intf_profile.csv', 'a') as f:
+        f.write('Interface ID,Total atoms,Lower hkl,Upper hkl,Lower area,Upper area,U misfit (%),V misfit (%),Angle misfit (°),Area misfit (%),T_0_1,T_0_2,T_0_3,T_0_4,T_1_1,T_1_2,T_1_3,T_1_4\n')
 
     # Write the matched interfaces
     if not len(data_matched) == 0:
@@ -463,8 +487,8 @@ if __name__ == '__main__':
     # Maximum Miller indices for h, k, l
     H_MAX, K_MAX, L_MAX = 1, 1, 1
 
-    # Number of lower and upper slabs
-    LOWER_SLAB_NUM, UPPER_SLAB_NUM = 2, 2
+    # Minimum length of the slab, without vacuum, in Angstrom
+    MIN_SLAB_LENGTH = 10
 
     # Slab vacuum and interface gap, in Angstrom
     SLAB_VACUUM, INTERFACE_GAP = 6, 3

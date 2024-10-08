@@ -1,7 +1,20 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                        Interface 0                         
+
+                    Interface Maker v1.0                    
+              By Guangchen Liu, gliu4@wpi.edu               
+
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Total atoms:                            836
+
+                Miller indices considered: 7                
+
+               (0, 0, 1) (0, 1, 0) (0, 1, 1)                
+               (1, 0, 0) (1, 0, 1) (1, 1, 0)                
+                         (1, 1, 1)                          
+
+            Total number of interfaces found: 2             
+
+----------------------- Interface 1 ------------------------
+Total atoms:                            598
 Lower / Upper hkl:                      (001) / (001)
 Lower / Upper area (A^2):               262.54 / 261.77
 
@@ -19,10 +32,8 @@ Transformed matrix for upper slab:
 -4.000000  1.000000
 
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                        Interface 1                         
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Total atoms:                            392
+----------------------- Interface 2 ------------------------
+Total atoms:                            504
 Lower / Upper hkl:                      (010) / (111)
 Lower / Upper area (A^2):               285.93 / 284.67
 
