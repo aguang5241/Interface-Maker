@@ -17,8 +17,9 @@ This code is based on the A. Zur et al. paper: "Lattice match: An application to
     LOWER_CONV = 'input/POSCAR_LCO_MP_R_3c_Conv.vasp'
     UPPER_CONV = 'input/POSCAR_LNO_MP_I4mmm_Conv.vasp'
 
-    # Maximum Miller indices for h, k, l
-    H_MAX, K_MAX, L_MAX = 2, 2, 2
+    # Maximum Miller indices for h, k, l or assign the specific Miller indices for lower and upper slabs
+    # H_MAX, K_MAX, L_MAX = 1, 1, 1
+    LOWER_HKL, UPPER_HKL = (0, 1, 1), (0, 1, 1)
 
     # Minimum length of the slab, without vacuum, in Angstrom
     MIN_SLAB_LENGTH = 10
@@ -27,10 +28,10 @@ This code is based on the A. Zur et al. paper: "Lattice match: An application to
     SLAB_VACUUM, INTERFACE_GAP = 6, 3
 
     # Maximum area of the interface, in A^2
-    MAX_AREA = 300
+    MAX_AREA = 1100
 
     # Tolerance for the misfit of lattice vectors and angles
-    UV_TOL, ANGLE_TOL = 0.01, 1
+    UV_TOL, ANGLE_TOL = 0.05, 1
     ```
 3. Run the following command, and the output files will be saved in the `output` folder:
     ```bash

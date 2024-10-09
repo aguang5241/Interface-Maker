@@ -430,10 +430,16 @@ def find_hkl(h_max, k_max, l_max):
     return hkl_list
 
 def main():
-    # Find all the Miller indices
-    MILLER_INDICES = find_hkl(H_MAX, K_MAX, L_MAX)
-    print(f'\nTotal number of Miller indices: {len(MILLER_INDICES)}')
-
+    global LOWER_HKL, UPPER_HKL
+    if 'H_MAX' in globals() and 'K_MAX' in globals() and 'L_MAX' in globals():
+        # Find all the Miller indices
+        LOWER_HKL, UPPER_HKL = find_hkl(H_MAX, K_MAX, L_MAX), find_hkl(H_MAX, K_MAX, L_MAX)
+        # print(f'\nTotal number of Miller indices: {len(LOWER_HKL)}')
+        print(f'No assigned Miller indices, all possible Miller indices are considered. Total number of Miller indices: {len(LOWER_HKL)}')
+    else:
+        print(f'\nAssigned Miller indices for lower slab: {LOWER_HKL}; upper slab: {UPPER_HKL}')
+        LOWER_HKL, UPPER_HKL = [LOWER_HKL], [UPPER_HKL]
+    
     # Create slabs folder
     if not os.path.exists('output/slabs'):
         os.makedirs('output/slabs')
@@ -442,8 +448,8 @@ def main():
         os.makedirs('output/slabs')
 
     # Create slabs for lower and upper materials
-    data_ab_lower = slab_maker(cell_conv=LOWER_CONV, miller_indices=MILLER_INDICES, vacuum=SLAB_VACUUM)
-    data_ab_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=MILLER_INDICES, vacuum=SLAB_VACUUM)
+    data_ab_lower = slab_maker(cell_conv=LOWER_CONV, miller_indices=LOWER_HKL, vacuum=SLAB_VACUUM)
+    data_ab_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=UPPER_HKL, vacuum=SLAB_VACUUM)
 
     # Match the lattices of the lower and upper slabs
     data_pairs = pair_slabs(data_ab_lower, data_ab_upper)
@@ -463,9 +469,9 @@ def main():
         f.write('By Guangchen Liu, gliu4@wpi.edu'.center(60) + '\n\n')
         f.write('+'.center(60, '+') + '\n\n')
 
-        f.write(f'Miller indices considered: {len(MILLER_INDICES)}'.center(60) + '\n\n')
-        for i in range(0, len(MILLER_INDICES), 3):
-            f.write(' '.join([str(i) for i in MILLER_INDICES[i:i+3]]).center(60) + '\n')
+        f.write(f'Miller indices considered: {len(LOWER_HKL)}'.center(60) + '\n\n')
+        for i in range(0, len(LOWER_HKL), 3):
+            f.write(' '.join([str(i) for i in LOWER_HKL[i:i+3]]).center(60) + '\n')
         f.write('\n')
         f.write(f'Total number of interfaces found: {len(data_matched)}'.center(60) + '\n\n')
 
@@ -484,8 +490,9 @@ if __name__ == '__main__':
     LOWER_CONV = 'input/POSCAR_LCO_MP_R_3c_Conv.vasp'
     UPPER_CONV = 'input/POSCAR_LNO_MP_I4mmm_Conv.vasp'
 
-    # Maximum Miller indices for h, k, l
-    H_MAX, K_MAX, L_MAX = 1, 1, 1
+    # Maximum Miller indices for h, k, l or assign the specific Miller indices for lower and upper slabs
+    # H_MAX, K_MAX, L_MAX = 1, 1, 1
+    LOWER_HKL, UPPER_HKL = (0, 1, 1), (0, 1, 1)
 
     # Minimum length of the slab, without vacuum, in Angstrom
     MIN_SLAB_LENGTH = 10
@@ -494,10 +501,10 @@ if __name__ == '__main__':
     SLAB_VACUUM, INTERFACE_GAP = 6, 3
 
     # Maximum area of the interface, in A^2
-    MAX_AREA = 300
+    MAX_AREA = 1100
 
     # Tolerance for the misfit of lattice vectors and angles
-    UV_TOL, ANGLE_TOL = 0.01, 1
+    UV_TOL, ANGLE_TOL = 0.05, 1
 
     main()
 
