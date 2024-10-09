@@ -498,7 +498,7 @@ if __name__ == '__main__':
     MIN_SLAB_LENGTH = 10
 
     # Slab vacuum and interface gap, in Angstrom
-    SLAB_VACUUM, INTERFACE_GAP = 6, 3
+    SLAB_VACUUM, INTERFACE_GAP = 10, 2
 
     # Maximum area of the interface, in A^2
     MAX_AREA = 1100
