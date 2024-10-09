@@ -491,8 +491,8 @@ if __name__ == '__main__':
     UPPER_CONV = 'input/POSCAR_LNO_MP_I4mmm_Conv.vasp'
 
     # Maximum Miller indices for h, k, l or assign the specific Miller indices for lower and upper slabs
-    # H_MAX, K_MAX, L_MAX = 1, 1, 1
-    LOWER_HKL, UPPER_HKL = (0, 1, 1), (0, 1, 1)
+    H_MAX, K_MAX, L_MAX = 1, 1, 1
+    # LOWER_HKL, UPPER_HKL = (0, 1, 1), (0, 1, 1)
 
     # Minimum length of the slab, without vacuum, in Angstrom
     MIN_SLAB_LENGTH = 10
