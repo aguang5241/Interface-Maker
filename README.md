@@ -28,10 +28,10 @@ This code is based on the A. Zur et al. paper: "Lattice match: An application to
     SLAB_VACUUM, INTERFACE_GAP = 6, 3
 
     # Maximum area of the interface, in A^2
-    MAX_AREA = 1100
+    MAX_AREA = 300
 
     # Tolerance for the misfit of lattice vectors and angles
-    UV_TOL, ANGLE_TOL = 0.05, 1
+    UV_TOL, ANGLE_TOL = 0.01, 1
     ```
 3. Run the following command, and the output files will be saved in the `output` folder:
     ```bash
