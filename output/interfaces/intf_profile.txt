@@ -5,9 +5,9 @@
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                Miller indices considered: 1                
-
-                         (0, 1, 1)                          
+                 Aassigned Miller indices:                  
+                   Lower slab: (0, 1, 1)                    
+                   Upper slab: (0, 1, 1)                    
 
             Total number of interfaces found: 9             
 

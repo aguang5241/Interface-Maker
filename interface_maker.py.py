@@ -431,12 +431,14 @@ def find_hkl(h_max, k_max, l_max):
 
 def main():
     global LOWER_HKL, UPPER_HKL
+    assigned = False
     if 'H_MAX' in globals() and 'K_MAX' in globals() and 'L_MAX' in globals():
         # Find all the Miller indices
         LOWER_HKL, UPPER_HKL = find_hkl(H_MAX, K_MAX, L_MAX), find_hkl(H_MAX, K_MAX, L_MAX)
         # print(f'\nTotal number of Miller indices: {len(LOWER_HKL)}')
         print(f'No assigned Miller indices, all possible Miller indices are considered. Total number of Miller indices: {len(LOWER_HKL)}')
     else:
+        assigned = True
         print(f'\nAssigned Miller indices for lower slab: {LOWER_HKL}; upper slab: {UPPER_HKL}')
         LOWER_HKL, UPPER_HKL = [LOWER_HKL], [UPPER_HKL]
     
@@ -469,9 +471,14 @@ def main():
         f.write('By Guangchen Liu, gliu4@wpi.edu'.center(60) + '\n\n')
         f.write('+'.center(60, '+') + '\n\n')
 
-        f.write(f'Miller indices considered: {len(LOWER_HKL)}'.center(60) + '\n\n')
-        for i in range(0, len(LOWER_HKL), 3):
-            f.write(' '.join([str(i) for i in LOWER_HKL[i:i+3]]).center(60) + '\n')
+        if not assigned:
+            f.write(f'Miller indices considered: {len(LOWER_HKL)}'.center(60) + '\n\n')
+            for i in range(0, len(LOWER_HKL), 3):
+                f.write(' '.join([str(i) for i in LOWER_HKL[i:i+3]]).center(60) + '\n')
+        else:
+            f.write(f'Aassigned Miller indices:'.center(60) + '\n')
+            f.write(f'Lower slab: {LOWER_HKL[0]}'.center(60) + '\n')
+            f.write(f'Upper slab: {UPPER_HKL[0]}'.center(60) + '\n')
         f.write('\n')
         f.write(f'Total number of interfaces found: {len(data_matched)}'.center(60) + '\n\n')
 
