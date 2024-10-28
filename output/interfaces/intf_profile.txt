@@ -5,180 +5,64 @@
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                 Aassigned Miller indices:                  
-                   Lower slab: (0, 1, 1)                    
-                   Upper slab: (0, 1, 1)                    
+                Miller indices considered: 7                
 
-            Total number of interfaces found: 9             
+               (0, 0, 1) (0, 1, 0) (0, 1, 1)                
+               (1, 0, 0) (1, 0, 1) (1, 1, 0)                
+                         (1, 1, 1)                          
 
------------------------ Interface 1 ------------------------
-Total atoms:                            1998
-Lower / Upper hkl:                      (011) / (011)
-Lower / Upper area (A^2):               1003.64 / 978.26
+Search results for matched interfaces with area within 100 - 2000 A^2: 
 
-U misfit (%):                           4.600283
-V misfit (%):                           2.050768
-Angle misfit (°):                       0.727212
-Area misfit (%):                        2.528114
-
-Transformed matrix for lower slab:
-4.000000  0.000000
-1.000000  5.000000
-
-Transformed matrix for upper slab:
-4.000000  1.000000
--7.000000  3.000000
-
-
------------------------ Interface 2 ------------------------
-Total atoms:                            1998
-Lower / Upper hkl:                      (011) / (011)
-Lower / Upper area (A^2):               1003.64 / 978.26
-
-U misfit (%):                           0.551981
-V misfit (%):                           2.840399
-Angle misfit (°):                       0.431214
-Area misfit (%):                        2.528114
-
-Transformed matrix for lower slab:
--5.000000  0.000000
--2.000000  4.000000
-
-Transformed matrix for upper slab:
--6.000000  1.000000
--7.000000  -2.000000
-
-
------------------------ Interface 3 ------------------------
-Total atoms:                            1998
-Lower / Upper hkl:                      (011) / (011)
-Lower / Upper area (A^2):               1003.64 / 978.26
-
-U misfit (%):                           4.578967
-V misfit (%):                           2.025902
-Angle misfit (°):                       0.738823
-Area misfit (%):                        2.528114
-
-Transformed matrix for lower slab:
-2.000000  2.000000
-8.000000  -2.000000
-
-Transformed matrix for upper slab:
-4.000000  1.000000
--7.000000  3.000000
-
-
------------------------ Interface 4 ------------------------
-Total atoms:                            1998
-Lower / Upper hkl:                      (011) / (011)
-Lower / Upper area (A^2):               1003.64 / 978.26
-
-U misfit (%):                           4.469844
-V misfit (%):                           2.155078
-Angle misfit (°):                       0.898823
-Area misfit (%):                        2.528114
-
-Transformed matrix for lower slab:
--2.000000  1.000000
-8.000000  6.000000
-
-Transformed matrix for upper slab:
-1.000000  1.000000
--17.000000  2.000000
-
-
------------------------ Interface 5 ------------------------
-Total atoms:                            2100
-Lower / Upper hkl:                      (011) / (011)
-Lower / Upper area (A^2):               1053.82 / 1029.75
-
-U misfit (%):                           2.406819
-V misfit (%):                           0.078681
-Angle misfit (°):                       0.426445
-Area misfit (%):                        2.283823
-
-Transformed matrix for lower slab:
-3.000000  0.000000
-1.000000  7.000000
-
-Transformed matrix for upper slab:
-4.000000  0.000000
-1.000000  5.000000
-
-
------------------------ Interface 6 ------------------------
-Total atoms:                            2100
-Lower / Upper hkl:                      (011) / (011)
-Lower / Upper area (A^2):               1053.82 / 1029.75
-
-U misfit (%):                           4.939901
-V misfit (%):                           2.913601
-Angle misfit (°):                       0.886773
-Area misfit (%):                        2.283823
-
-Transformed matrix for lower slab:
-3.000000  0.000000
-1.000000  7.000000
-
-Transformed matrix for upper slab:
-2.000000  1.000000
--14.000000  3.000000
-
-
------------------------ Interface 7 ------------------------
-Total atoms:                            2100
-Lower / Upper hkl:                      (011) / (011)
-Lower / Upper area (A^2):               1053.82 / 1029.75
-
-U misfit (%):                           3.856632
-V misfit (%):                           1.228013
-Angle misfit (°):                       0.638238
-Area misfit (%):                        2.283823
-
-Transformed matrix for lower slab:
-2.000000  3.000000
-7.000000  0.000000
-
-Transformed matrix for upper slab:
--3.000000  2.000000
-7.000000  2.000000
-
-
------------------------ Interface 8 ------------------------
-Total atoms:                            2100
-Lower / Upper hkl:                      (011) / (011)
-Lower / Upper area (A^2):               1053.82 / 1029.75
-
-U misfit (%):                           4.939901
-V misfit (%):                           2.670779
-Angle misfit (°):                       0.767623
-Area misfit (%):                        2.283823
-
-Transformed matrix for lower slab:
--3.000000  0.000000
--1.000000  7.000000
-
-Transformed matrix for upper slab:
-2.000000  1.000000
--14.000000  3.000000
-
-
------------------------ Interface 9 ------------------------
-Total atoms:                            2100
-Lower / Upper hkl:                      (011) / (011)
-Lower / Upper area (A^2):               1053.82 / 1029.75
-
-U misfit (%):                           2.406819
-V misfit (%):                           0.115454
-Angle misfit (°):                       0.832734
-Area misfit (%):                        2.283823
-
-Transformed matrix for lower slab:
-3.000000  0.000000
-0.000000  -7.000000
-
-Transformed matrix for upper slab:
-4.000000  0.000000
-0.000000  -5.000000
-
+Lower hkl           Upper hkl           Area (A^2)          Found Number        
+(0, 0, 1)           (0, 0, 1)           270                 1                   
+(0, 0, 1)           (0, 1, 0)           940                 2                   
+(0, 0, 1)           (0, 1, 1)           470                 1                   
+(0, 0, 1)           (1, 0, 0)           940                 2                   
+(0, 0, 1)           (1, 0, 1)           470                 1                   
+(0, 0, 1)           (1, 1, 0)           210                 1                   
+(0, 0, 1)           (1, 1, 1)           360                 2                   
+(0, 1, 0)           (0, 0, 1)           580                 1                   
+(0, 1, 0)           (0, 1, 0)           1920                5                   
+(0, 1, 0)           (0, 1, 1)           780                 1                   
+(0, 1, 0)           (1, 0, 0)           1920                5                   
+(0, 1, 0)           (1, 0, 1)           780                 1                   
+(0, 1, 0)           (1, 1, 0)           -                   0                   
+(0, 1, 0)           (1, 1, 1)           290                 1                   
+(0, 1, 1)           (0, 0, 1)           960                 4                   
+(0, 1, 1)           (0, 1, 0)           1230                2                   
+(0, 1, 1)           (0, 1, 1)           1160                1                   
+(0, 1, 1)           (1, 0, 0)           1230                2                   
+(0, 1, 1)           (1, 0, 1)           1160                1                   
+(0, 1, 1)           (1, 1, 0)           -                   0                   
+(0, 1, 1)           (1, 1, 1)           510                 2                   
+(1, 0, 0)           (0, 0, 1)           540                 2                   
+(1, 0, 0)           (0, 1, 0)           790                 2                   
+(1, 0, 0)           (0, 1, 1)           880                 4                   
+(1, 0, 0)           (1, 0, 0)           790                 2                   
+(1, 0, 0)           (1, 0, 1)           880                 4                   
+(1, 0, 0)           (1, 1, 0)           210                 1                   
+(1, 0, 0)           (1, 1, 1)           300                 2                   
+(1, 0, 1)           (0, 0, 1)           160                 1                   
+(1, 0, 1)           (0, 1, 0)           1180                4                   
+(1, 0, 1)           (0, 1, 1)           1260                3                   
+(1, 0, 1)           (1, 0, 0)           1180                4                   
+(1, 0, 1)           (1, 0, 1)           1260                3                   
+(1, 0, 1)           (1, 1, 0)           210                 1                   
+(1, 0, 1)           (1, 1, 1)           510                 1                   
+(1, 1, 0)           (0, 0, 1)           530                 1                   
+(1, 1, 0)           (0, 1, 0)           -                   0                   
+(1, 1, 0)           (0, 1, 1)           1340                1                   
+(1, 1, 0)           (1, 0, 0)           -                   0                   
+(1, 1, 0)           (1, 0, 1)           1340                1                   
+(1, 1, 0)           (1, 1, 0)           1810                6                   
+(1, 1, 0)           (1, 1, 1)           1570                3                   
+(1, 1, 1)           (0, 0, 1)           -                   0                   
+(1, 1, 1)           (0, 1, 0)           1040                2                   
+(1, 1, 1)           (0, 1, 1)           1760                3                   
+(1, 1, 1)           (1, 0, 0)           1040                2                   
+(1, 1, 1)           (1, 0, 1)           1760                3                   
+(1, 1, 1)           (1, 1, 0)           650                 1                   
+(1, 1, 1)           (1, 1, 1)           590                 1                   
+           
+Total number of interfaces found: 94            
 
