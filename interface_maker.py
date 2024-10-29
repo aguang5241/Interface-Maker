@@ -50,10 +50,10 @@ def reduce(a, b):
     return a_list, b_list, T_list
 
 
-def find_int(area_0, area_1, max_area):
+def find_int(area_0, area_1, area):
     ratio = area_0 / area_1
-    N_0 = int(max_area / area_1) + 1
-    N_1 = int(max_area / area_0) + 1
+    N_0 = int(area / area_1) + 1
+    N_1 = int(area / area_0) + 1
 
     # Initialize the variables
     n_0 = 1
@@ -219,7 +219,7 @@ def trim(data):
 
     return data
 
-def slab_maker(cell_conv, miller_indices, vacuum):
+def slab_maker(cell_conv, miller_indices, vacuum, save=False):
     cell_name = f'{cell_conv.split("/")[-1].split(".")[0]}'
 
     data = []
@@ -234,7 +234,7 @@ def slab_maker(cell_conv, miller_indices, vacuum):
             z_top = max([atom.position[2] for atom in slab])
             z_bottom = min([atom.position[2] for atom in slab])
             slab_length = z_top - z_bottom
-            if slab_length < MIN_SLAB_LENGTH:
+            if slab_length < MIN_SLAB_THICKNESS:
                 layers += 1
                 slab = surface(lattice=atom, indices=(h, k, l), layers=layers, vacuum=vacuum, tol=1e-10, periodic=True)
             else:
@@ -253,7 +253,8 @@ def slab_maker(cell_conv, miller_indices, vacuum):
         
         # Store the slab data for each Miller index
         data.append([h, k, l, S, *a, *b, a_length_r, b_length_r, ab_angle_r])
-        write(f'output/slabs/slab_{h}{k}{l}_{cell_name}.vasp', slab, format='vasp', direct=False)
+        if save:
+            write(f'output/slabs/slab_{h}{k}{l}_{cell_name}.vasp', slab, format='vasp', direct=False)
 
     # Compare lattice parameters and delete the same ones
     data = trim(data)
@@ -273,7 +274,7 @@ def slab_maker(cell_conv, miller_indices, vacuum):
 
     return data
 
-def pair_slabs(data_lower, data_upper, max_area):
+def pair_slabs(data_lower, data_upper, area):
     # Get miller indices and areas
     hkl_0 = [i[0] for i in data_lower]
     areas_0 = [i[1] for i in data_lower]
@@ -286,7 +287,7 @@ def pair_slabs(data_lower, data_upper, max_area):
 
     pairs = []
     for i, j in product(hkl_0, hkl_1):
-        int_list, ratio = find_int(target_0[i], target_1[j], max_area)
+        int_list, ratio = find_int(target_0[i], target_1[j], area)
 
         ''' Data format:
         0 - Miller index hkl of lower slab
@@ -426,8 +427,16 @@ def find_hkl(h_max, k_max, l_max):
     return hkl_list
 
 def main():
-    LOWER_HKL, UPPER_HKL = find_hkl(H_MAX, K_MAX, L_MAX), find_hkl(H_MAX, K_MAX, L_MAX)
-    print(f'\nTotal number of Miller indices: {len(LOWER_HKL)}')
+    global LOWER_HKL, UPPER_HKL
+    assigned = False
+    if 'MAX_H' in globals() and 'MAX_K' in globals() and 'MAX_L' in globals():
+        # Find all the Miller indices
+        LOWER_HKL, UPPER_HKL = find_hkl(MAX_H, MAX_K, MAX_L), find_hkl(MAX_H, MAX_K, MAX_L)
+        print(f'No assigned Miller indices, all possible Miller indices are considered. Total number of Miller indices: {len(LOWER_HKL)}')
+    else:
+        assigned = True
+        print(f'\nAssigned Miller indices for lower slab: {LOWER_HKL}; upper slab: {UPPER_HKL}')
+        LOWER_HKL, UPPER_HKL = [LOWER_HKL], [UPPER_HKL]
 
     # Create slabs folder
     if not os.path.exists('output/slabs'):
@@ -435,6 +444,12 @@ def main():
     else:
         shutil.rmtree('output/slabs')
         os.makedirs('output/slabs')
+    
+    # Create slabs for lower and upper materials
+    data_ab_lower = slab_maker(cell_conv=LOWER_CONV, miller_indices=LOWER_HKL, vacuum=SLAB_VACUUM, save=True)
+    data_ab_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=UPPER_HKL, vacuum=SLAB_VACUUM, save=True)
+    area_lower, area_upper = [i[1] for i in data_ab_lower], [i[1] for i in data_ab_upper]
+    min_area = int(min(area_lower + area_upper)) + 1
 
     # Create interfaces folder
     if not os.path.exists(f'output/interfaces'):
@@ -448,11 +463,16 @@ def main():
         f.write('Interface Maker v1.0'.center(60) + '\n')
         f.write('By Guangchen Liu, gliu4@wpi.edu'.center(60) + '\n\n')
         f.write('+'.center(60, '+') + '\n\n')
-        f.write(f'Miller indices considered: {len(LOWER_HKL)}'.center(60) + '\n\n')
-        for i in range(0, len(LOWER_HKL), 3):
-            f.write(' '.join([str(i) for i in LOWER_HKL[i:i+3]]).center(60) + '\n')
+        if not assigned:
+            f.write(f'Miller indices considered: {len(LOWER_HKL)}'.center(60) + '\n\n')
+            for i in range(0, len(LOWER_HKL), 3):
+                f.write(' '.join([str(i) for i in LOWER_HKL[i:i+3]]).center(60) + '\n')
+        else:
+            f.write(f'Aassigned Miller indices:'.center(60) + '\n')
+            f.write(f'Lower slab: {LOWER_HKL[0]}'.center(60) + '\n')
+            f.write(f'Upper slab: {UPPER_HKL[0]}'.center(60) + '\n')
         f.write('\n')
-        f.write(f'Search results for matched interfaces with area within {SEARCH_AREA[0]} - {SEARCH_AREA[1]} A^2: \n\n')
+        f.write(f'Search results for matched interfaces with area within {MAX_AREA} A^2: \n\n')
         f.write(f'{"Lower hkl":<20}{"Upper hkl":<20}{"Area (A^2)":<20}{"Found Number":<20}\n')
     
     with open('output/interfaces/intf_profile.csv', 'a') as f:
@@ -465,56 +485,59 @@ def main():
         LOWER_HKL = [i]
         UPPER_HKL = [j]
 
-        # Create slabs for lower and upper materials
-        data_ab_lower = slab_maker(cell_conv=LOWER_CONV, miller_indices=LOWER_HKL, vacuum=SLAB_VACUUM)
-        data_ab_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=UPPER_HKL, vacuum=SLAB_VACUUM)
+        # Get the slab data for lower and upper materials
+        data_ab_lower = slab_maker(cell_conv=LOWER_CONV, miller_indices=LOWER_HKL, vacuum=SLAB_VACUUM, save=False)
+        data_ab_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=UPPER_HKL, vacuum=SLAB_VACUUM, save=False)
 
         # Match the lattices of the lower and upper slabs
-        max_area, upper_limit = SEARCH_AREA
+        lower_limit, upper_limit = min_area, MAX_AREA
         while True:
-            # print(f'\nTrying to find matched interfaces for {LOWER_HKL[0]} and {UPPER_HKL[0]} with area within {max_area} A^2...')
-            data_pairs = pair_slabs(data_ab_lower, data_ab_upper, max_area)
+            data_pairs = pair_slabs(data_ab_lower, data_ab_upper, lower_limit)
             data_matched = lattice_match(data_pairs, data_ab_lower, data_ab_upper)
             if len(data_matched) == 0:
-                max_area += 10
-                if max_area > upper_limit:
+                lower_limit += 10
+                if lower_limit > upper_limit:
                     with open('output/interfaces/intf_profile.txt', 'a') as f:
                         f.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{"-":<20}{"0":<20}\n')
-                        print(f'\nNo matched interfaces found for {LOWER_HKL[0]} and {UPPER_HKL[0]} with area within {upper_limit} A^2')
+                        print('\n'.ljust(4) + f'---> No matched interfaces found for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {upper_limit} A^2')
                     break
             else:
                 data_matched_all.extend(data_matched)
                 with open('output/interfaces/intf_profile.txt', 'a') as f:
-                    f.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{max_area:<20}{len(data_matched):<20}\n')
-                    print(f'\nFound {len(data_matched)} matched interfaces for {LOWER_HKL[0]} and {UPPER_HKL[0]} with area within {max_area} A^2')
+                    f.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{lower_limit:<20}{len(data_matched):<20}\n')
+                    print('\n'.ljust(4) + f'---> Found {len(data_matched)} matched interfaces for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {lower_limit} A^2')
                 break
 
     with open('output/interfaces/intf_profile.txt', 'a') as f:
         f.write(f'\nTotal number of interfaces found: {len(data_matched_all)}'.center(60) + '\n\n')
+        print(f'\nTotal number of interfaces found: {len(data_matched_all)}')
 
-    # # Write the matched interfaces
-    # if not len(data_matched) == 0:
-    #     print('\n'.ljust(4) + '---> Creating interfaces...')
-    #     for i, profile in enumerate(data_matched):
-    #         gen_intf(i, profile)
-    #     print('\n'.ljust(4) + '---> All interfaces are created successfully!\n')
+    # Write the matched interfaces
+    if not len(data_matched_all) == 0:
+        print('\n'.ljust(4) + '---> Creating interfaces...')
+        for i, profile in enumerate(data_matched_all):
+            gen_intf(i, profile)
+        print('\n'.ljust(4) + '---> All interfaces are created successfully!\n')
 
 if __name__ == '__main__':
     # Input bulk structures, need the conventional cell
     LOWER_CONV = 'input/POSCAR_LCO_MP_R_3c_Conv.vasp'
     UPPER_CONV = 'input/POSCAR_LNO_MP_I4mmm_Conv.vasp'
 
-    # Maximum Miller indices for h, k, l or assign the specific Miller indices for lower and upper slabs
-    H_MAX, K_MAX, L_MAX = 1, 1, 1
+    # Option 1: Set maximum Miller indices of h, k, l for lower and upper slabs
+    MAX_H, MAX_K, MAX_L = 1, 1, 1
 
-    # Minimum length of the slab, without vacuum, in Angstrom
-    MIN_SLAB_LENGTH = 10
+    # # Option 2: Assign the specific Miller indices for lower and upper slabs
+    # LOWER_HKL, UPPER_HKL = (1, 0, 0), (1, 0, 0)
+
+    # Minimum thickness of the slab, without vacuum, in Angstrom
+    MIN_SLAB_THICKNESS = 10
 
     # Slab vacuum and interface gap, in Angstrom
     SLAB_VACUUM, INTERFACE_GAP = 10, 2
 
-    # Search area of the interface, in A^2
-    SEARCH_AREA = [100, 2000]
+    # Maximum area of the interface, in A^2
+    MAX_AREA = 2000
 
     # Tolerance for the misfit of lattice vectors and angles
     UV_TOL, ANGLE_TOL = 0.02, 1
