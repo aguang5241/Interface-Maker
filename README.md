@@ -13,6 +13,7 @@ By setting the tolerance for the misfit of lattice vectors and angles, the code 
 ## Usage
 1. Prepare the input POSCAR file and put it in the `input` folder. Note that the conventional cell should be used.
 2. Set the parameters in the `interface_maker.py` file:
+
     ```python
     # Input bulk structures, need the conventional cell
     LOWER_CONV = 'input/POSCAR_LCO_MP_R_3c_Conv.vasp'
