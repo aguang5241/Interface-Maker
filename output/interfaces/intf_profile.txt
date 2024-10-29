@@ -11,58 +11,1844 @@
                (1, 0, 0) (1, 0, 1) (1, 1, 0)                
                          (1, 1, 1)                          
 
-Search results for matched interfaces with area within 100 - 2000 A^2: 
+Search results for matched interfaces with area within 2000 A^2: 
 
 Lower hkl           Upper hkl           Area (A^2)          Found Number        
-(0, 0, 1)           (0, 0, 1)           270                 1                   
-(0, 0, 1)           (0, 1, 0)           940                 2                   
-(0, 0, 1)           (0, 1, 1)           470                 1                   
-(0, 0, 1)           (1, 0, 0)           940                 2                   
-(0, 0, 1)           (1, 0, 1)           470                 1                   
-(0, 0, 1)           (1, 1, 0)           210                 1                   
-(0, 0, 1)           (1, 1, 1)           360                 2                   
-(0, 1, 0)           (0, 0, 1)           580                 1                   
-(0, 1, 0)           (0, 1, 0)           1920                5                   
-(0, 1, 0)           (0, 1, 1)           780                 1                   
-(0, 1, 0)           (1, 0, 0)           1920                5                   
-(0, 1, 0)           (1, 0, 1)           780                 1                   
+(0, 0, 1)           (0, 0, 1)           266                 1                   
+(0, 0, 1)           (0, 1, 0)           936                 2                   
+(0, 0, 1)           (0, 1, 1)           476                 1                   
+(0, 0, 1)           (1, 0, 0)           936                 2                   
+(0, 0, 1)           (1, 0, 1)           476                 1                   
+(0, 0, 1)           (1, 1, 0)           216                 1                   
+(0, 0, 1)           (1, 1, 1)           356                 2                   
+(0, 1, 0)           (0, 0, 1)           576                 1                   
+(0, 1, 0)           (0, 1, 0)           1926                5                   
+(0, 1, 0)           (0, 1, 1)           786                 1                   
+(0, 1, 0)           (1, 0, 0)           1926                5                   
+(0, 1, 0)           (1, 0, 1)           786                 1                   
 (0, 1, 0)           (1, 1, 0)           -                   0                   
-(0, 1, 0)           (1, 1, 1)           290                 1                   
-(0, 1, 1)           (0, 0, 1)           960                 4                   
-(0, 1, 1)           (0, 1, 0)           1230                2                   
-(0, 1, 1)           (0, 1, 1)           1160                1                   
-(0, 1, 1)           (1, 0, 0)           1230                2                   
-(0, 1, 1)           (1, 0, 1)           1160                1                   
+(0, 1, 0)           (1, 1, 1)           286                 1                   
+(0, 1, 1)           (0, 0, 1)           956                 4                   
+(0, 1, 1)           (0, 1, 0)           1236                2                   
+(0, 1, 1)           (0, 1, 1)           1156                1                   
+(0, 1, 1)           (1, 0, 0)           1236                2                   
+(0, 1, 1)           (1, 0, 1)           1156                1                   
 (0, 1, 1)           (1, 1, 0)           -                   0                   
-(0, 1, 1)           (1, 1, 1)           510                 2                   
-(1, 0, 0)           (0, 0, 1)           540                 2                   
-(1, 0, 0)           (0, 1, 0)           790                 2                   
-(1, 0, 0)           (0, 1, 1)           880                 4                   
-(1, 0, 0)           (1, 0, 0)           790                 2                   
-(1, 0, 0)           (1, 0, 1)           880                 4                   
-(1, 0, 0)           (1, 1, 0)           210                 1                   
-(1, 0, 0)           (1, 1, 1)           300                 2                   
-(1, 0, 1)           (0, 0, 1)           160                 1                   
-(1, 0, 1)           (0, 1, 0)           1180                4                   
-(1, 0, 1)           (0, 1, 1)           1260                3                   
-(1, 0, 1)           (1, 0, 0)           1180                4                   
-(1, 0, 1)           (1, 0, 1)           1260                3                   
-(1, 0, 1)           (1, 1, 0)           210                 1                   
-(1, 0, 1)           (1, 1, 1)           510                 1                   
-(1, 1, 0)           (0, 0, 1)           530                 1                   
+(0, 1, 1)           (1, 1, 1)           506                 2                   
+(1, 0, 0)           (0, 0, 1)           546                 2                   
+(1, 0, 0)           (0, 1, 0)           796                 2                   
+(1, 0, 0)           (0, 1, 1)           876                 4                   
+(1, 0, 0)           (1, 0, 0)           796                 2                   
+(1, 0, 0)           (1, 0, 1)           876                 4                   
+(1, 0, 0)           (1, 1, 0)           216                 1                   
+(1, 0, 0)           (1, 1, 1)           296                 2                   
+(1, 0, 1)           (0, 0, 1)           156                 1                   
+(1, 0, 1)           (0, 1, 0)           1186                4                   
+(1, 0, 1)           (0, 1, 1)           1256                3                   
+(1, 0, 1)           (1, 0, 0)           1186                4                   
+(1, 0, 1)           (1, 0, 1)           1256                3                   
+(1, 0, 1)           (1, 1, 0)           216                 1                   
+(1, 0, 1)           (1, 1, 1)           506                 1                   
+(1, 1, 0)           (0, 0, 1)           526                 1                   
 (1, 1, 0)           (0, 1, 0)           -                   0                   
-(1, 1, 0)           (0, 1, 1)           1340                1                   
+(1, 1, 0)           (0, 1, 1)           1346                1                   
 (1, 1, 0)           (1, 0, 0)           -                   0                   
-(1, 1, 0)           (1, 0, 1)           1340                1                   
-(1, 1, 0)           (1, 1, 0)           1810                6                   
-(1, 1, 0)           (1, 1, 1)           1570                3                   
+(1, 1, 0)           (1, 0, 1)           1346                1                   
+(1, 1, 0)           (1, 1, 0)           1816                6                   
+(1, 1, 0)           (1, 1, 1)           1576                3                   
 (1, 1, 1)           (0, 0, 1)           -                   0                   
-(1, 1, 1)           (0, 1, 0)           1040                2                   
-(1, 1, 1)           (0, 1, 1)           1760                3                   
-(1, 1, 1)           (1, 0, 0)           1040                2                   
-(1, 1, 1)           (1, 0, 1)           1760                3                   
-(1, 1, 1)           (1, 1, 0)           650                 1                   
-(1, 1, 1)           (1, 1, 1)           590                 1                   
+(1, 1, 1)           (0, 1, 0)           1036                2                   
+(1, 1, 1)           (0, 1, 1)           1756                3                   
+(1, 1, 1)           (1, 0, 0)           1036                2                   
+(1, 1, 1)           (1, 0, 1)           1756                3                   
+(1, 1, 1)           (1, 1, 0)           656                 1                   
+(1, 1, 1)           (1, 1, 1)           586                 1                   
            
 Total number of interfaces found: 94            
+
+----------------------- Interface 1 ------------------------
+Total atoms:                            598
+Lower / Upper hkl:                      (001) / (001)
+Lower / Upper area (A^2):               262.54 / 261.77
+
+U misfit (%):                           0.596748
+V misfit (%):                           0.882101
+Angle misfit (°):                       0.210358
+Area misfit (%):                        0.289945
+
+Transformed matrix for lower slab:
+3.000000  0.000000
+0.000000  3.000000
+
+Transformed matrix for upper slab:
+1.000000  4.000000
+-4.000000  1.000000
+
+
+----------------------- Interface 2 ------------------------
+Total atoms:                            2344
+Lower / Upper hkl:                      (001) / (010)
+Lower / Upper area (A^2):               933.46 / 933.49
+
+U misfit (%):                           1.018769
+V misfit (%):                           1.196245
+Angle misfit (°):                       0.389795
+Area misfit (%):                        0.003309
+
+Transformed matrix for lower slab:
+-4.000000  4.000000
+-5.000000  -3.000000
+
+Transformed matrix for upper slab:
+1.000000  7.000000
+-2.000000  5.000000
+
+
+----------------------- Interface 3 ------------------------
+Total atoms:                            2344
+Lower / Upper hkl:                      (001) / (010)
+Lower / Upper area (A^2):               933.46 / 933.49
+
+U misfit (%):                           1.381468
+V misfit (%):                           1.526875
+Angle misfit (°):                       0.290130
+Area misfit (%):                        0.003309
+
+Transformed matrix for lower slab:
+4.000000  4.000000
+5.000000  -3.000000
+
+Transformed matrix for upper slab:
+1.000000  7.000000
+-2.000000  5.000000
+
+
+----------------------- Interface 4 ------------------------
+Total atoms:                            1018
+Lower / Upper hkl:                      (001) / (011)
+Lower / Upper area (A^2):               466.73 / 463.39
+
+U misfit (%):                           1.947272
+V misfit (%):                           1.104172
+Angle misfit (°):                       0.804443
+Area misfit (%):                        0.715855
+
+Transformed matrix for lower slab:
+-2.000000  1.000000
+-4.000000  -6.000000
+
+Transformed matrix for upper slab:
+3.000000  0.000000
+1.000000  3.000000
+
+
+----------------------- Interface 5 ------------------------
+Total atoms:                            2344
+Lower / Upper hkl:                      (001) / (100)
+Lower / Upper area (A^2):               933.46 / 933.49
+
+U misfit (%):                           1.018769
+V misfit (%):                           1.196245
+Angle misfit (°):                       0.389795
+Area misfit (%):                        0.003309
+
+Transformed matrix for lower slab:
+-4.000000  4.000000
+-5.000000  -3.000000
+
+Transformed matrix for upper slab:
+7.000000  -1.000000
+5.000000  2.000000
+
+
+----------------------- Interface 6 ------------------------
+Total atoms:                            2344
+Lower / Upper hkl:                      (001) / (100)
+Lower / Upper area (A^2):               933.46 / 933.49
+
+U misfit (%):                           1.381468
+V misfit (%):                           1.526875
+Angle misfit (°):                       0.290130
+Area misfit (%):                        0.003309
+
+Transformed matrix for lower slab:
+4.000000  4.000000
+5.000000  -3.000000
+
+Transformed matrix for upper slab:
+7.000000  -1.000000
+5.000000  2.000000
+
+
+----------------------- Interface 7 ------------------------
+Total atoms:                            1018
+Lower / Upper hkl:                      (001) / (101)
+Lower / Upper area (A^2):               466.73 / 463.39
+
+U misfit (%):                           1.947272
+V misfit (%):                           1.104172
+Angle misfit (°):                       0.804443
+Area misfit (%):                        0.715855
+
+Transformed matrix for lower slab:
+-2.000000  1.000000
+-4.000000  -6.000000
+
+Transformed matrix for upper slab:
+0.000000  3.000000
+3.000000  1.000000
+
+
+----------------------- Interface 8 ------------------------
+Total atoms:                            490
+Lower / Upper hkl:                      (001) / (110)
+Lower / Upper area (A^2):               204.19 / 208.45
+
+U misfit (%):                           1.991476
+V misfit (%):                           0.088033
+Angle misfit (°):                       0.210358
+Area misfit (%):                        2.081951
+
+Transformed matrix for lower slab:
+0.000000  1.000000
+7.000000  0.000000
+
+Transformed matrix for upper slab:
+1.000000  0.000000
+0.000000  3.000000
+
+
+----------------------- Interface 9 ------------------------
+Total atoms:                            760
+Lower / Upper hkl:                      (001) / (111)
+Lower / Upper area (A^2):               350.05 / 355.84
+
+U misfit (%):                           0.261316
+V misfit (%):                           1.381384
+Angle misfit (°):                       0.401733
+Area misfit (%):                        1.654367
+
+Transformed matrix for lower slab:
+-2.000000  2.000000
+3.000000  3.000000
+
+Transformed matrix for upper slab:
+2.000000  1.000000
+-3.000000  1.000000
+
+
+----------------------- Interface 10 -----------------------
+Total atoms:                            760
+Lower / Upper hkl:                      (001) / (111)
+Lower / Upper area (A^2):               350.05 / 355.84
+
+U misfit (%):                           0.106073
+V misfit (%):                           1.754244
+Angle misfit (°):                       0.401733
+Area misfit (%):                        1.654367
+
+Transformed matrix for lower slab:
+2.000000  2.000000
+-3.000000  3.000000
+
+Transformed matrix for upper slab:
+2.000000  1.000000
+-3.000000  1.000000
+
+
+----------------------- Interface 11 -----------------------
+Total atoms:                            1078
+Lower / Upper hkl:                      (010) / (001)
+Lower / Upper area (A^2):               571.86 / 569.74
+
+U misfit (%):                           0.788192
+V misfit (%):                           0.952839
+Angle misfit (°):                       0.893794
+Area misfit (%):                        0.370053
+
+Transformed matrix for lower slab:
+2.000000  -1.000000
+2.000000  6.000000
+
+Transformed matrix for upper slab:
+1.000000  4.000000
+9.000000  -1.000000
+
+
+----------------------- Interface 12 -----------------------
+Total atoms:                            4064
+Lower / Upper hkl:                      (010) / (010)
+Lower / Upper area (A^2):               1919.82 / 1916.11
+
+U misfit (%):                           1.206519
+V misfit (%):                           1.032876
+Angle misfit (°):                       0.091388
+Area misfit (%):                        0.192962
+
+Transformed matrix for lower slab:
+1.000000  2.000000
+16.000000  -15.000000
+
+Transformed matrix for upper slab:
+1.000000  1.000000
+-3.000000  36.000000
+
+
+----------------------- Interface 13 -----------------------
+Total atoms:                            4064
+Lower / Upper hkl:                      (010) / (010)
+Lower / Upper area (A^2):               1919.82 / 1916.11
+
+U misfit (%):                           1.241094
+V misfit (%):                           0.899787
+Angle misfit (°):                       0.677577
+Area misfit (%):                        0.192962
+
+Transformed matrix for lower slab:
+1.000000  5.000000
+9.000000  -2.000000
+
+Transformed matrix for upper slab:
+-2.000000  3.000000
+-3.000000  -15.000000
+
+
+----------------------- Interface 14 -----------------------
+Total atoms:                            4064
+Lower / Upper hkl:                      (010) / (010)
+Lower / Upper area (A^2):               1919.82 / 1916.11
+
+U misfit (%):                           1.174764
+V misfit (%):                           1.353957
+Angle misfit (°):                       0.103589
+Area misfit (%):                        0.192962
+
+Transformed matrix for lower slab:
+-3.000000  2.000000
+4.000000  13.000000
+
+Transformed matrix for upper slab:
+2.000000  -1.000000
+1.000000  19.000000
+
+
+----------------------- Interface 15 -----------------------
+Total atoms:                            4064
+Lower / Upper hkl:                      (010) / (010)
+Lower / Upper area (A^2):               1919.82 / 1916.11
+
+U misfit (%):                           0.105752
+V misfit (%):                           0.024959
+Angle misfit (°):                       0.704350
+Area misfit (%):                        0.192962
+
+Transformed matrix for lower slab:
+5.000000  -4.000000
+3.000000  7.000000
+
+Transformed matrix for upper slab:
+-2.000000  9.000000
+-3.000000  -6.000000
+
+
+----------------------- Interface 16 -----------------------
+Total atoms:                            4064
+Lower / Upper hkl:                      (010) / (010)
+Lower / Upper area (A^2):               1919.82 / 1916.11
+
+U misfit (%):                           0.722587
+V misfit (%):                           0.851036
+Angle misfit (°):                       0.939137
+Area misfit (%):                        0.192962
+
+Transformed matrix for lower slab:
+-1.000000  2.000000
+-16.000000  -15.000000
+
+Transformed matrix for upper slab:
+1.000000  1.000000
+-3.000000  36.000000
+
+
+----------------------- Interface 17 -----------------------
+Total atoms:                            1390
+Lower / Upper hkl:                      (010) / (011)
+Lower / Upper area (A^2):               776.10 / 772.31
+
+U misfit (%):                           0.158791
+V misfit (%):                           0.239229
+Angle misfit (°):                       0.590709
+Area misfit (%):                        0.487256
+
+Transformed matrix for lower slab:
+-1.000000  3.000000
+5.000000  4.000000
+
+Transformed matrix for upper slab:
+3.000000  1.000000
+9.000000  -2.000000
+
+
+----------------------- Interface 18 -----------------------
+Total atoms:                            4064
+Lower / Upper hkl:                      (010) / (100)
+Lower / Upper area (A^2):               1919.82 / 1916.11
+
+U misfit (%):                           1.206519
+V misfit (%):                           1.032876
+Angle misfit (°):                       0.091388
+Area misfit (%):                        0.192962
+
+Transformed matrix for lower slab:
+1.000000  2.000000
+16.000000  -15.000000
+
+Transformed matrix for upper slab:
+1.000000  1.000000
+36.000000  -3.000000
+
+
+----------------------- Interface 19 -----------------------
+Total atoms:                            4064
+Lower / Upper hkl:                      (010) / (100)
+Lower / Upper area (A^2):               1919.82 / 1916.11
+
+U misfit (%):                           1.241094
+V misfit (%):                           0.899787
+Angle misfit (°):                       0.677577
+Area misfit (%):                        0.192962
+
+Transformed matrix for lower slab:
+1.000000  5.000000
+9.000000  -2.000000
+
+Transformed matrix for upper slab:
+3.000000  2.000000
+-15.000000  3.000000
+
+
+----------------------- Interface 20 -----------------------
+Total atoms:                            4064
+Lower / Upper hkl:                      (010) / (100)
+Lower / Upper area (A^2):               1919.82 / 1916.11
+
+U misfit (%):                           1.174764
+V misfit (%):                           1.353957
+Angle misfit (°):                       0.103589
+Area misfit (%):                        0.192962
+
+Transformed matrix for lower slab:
+-3.000000  2.000000
+4.000000  13.000000
+
+Transformed matrix for upper slab:
+1.000000  2.000000
+-19.000000  1.000000
+
+
+----------------------- Interface 21 -----------------------
+Total atoms:                            4064
+Lower / Upper hkl:                      (010) / (100)
+Lower / Upper area (A^2):               1919.82 / 1916.11
+
+U misfit (%):                           0.105752
+V misfit (%):                           0.024959
+Angle misfit (°):                       0.704350
+Area misfit (%):                        0.192962
+
+Transformed matrix for lower slab:
+5.000000  -4.000000
+3.000000  7.000000
+
+Transformed matrix for upper slab:
+9.000000  2.000000
+-6.000000  3.000000
+
+
+----------------------- Interface 22 -----------------------
+Total atoms:                            4064
+Lower / Upper hkl:                      (010) / (100)
+Lower / Upper area (A^2):               1919.82 / 1916.11
+
+U misfit (%):                           0.722587
+V misfit (%):                           0.851036
+Angle misfit (°):                       0.939137
+Area misfit (%):                        0.192962
+
+Transformed matrix for lower slab:
+-1.000000  2.000000
+-16.000000  -15.000000
+
+Transformed matrix for upper slab:
+1.000000  1.000000
+36.000000  -3.000000
+
+
+----------------------- Interface 23 -----------------------
+Total atoms:                            1390
+Lower / Upper hkl:                      (010) / (101)
+Lower / Upper area (A^2):               776.10 / 772.31
+
+U misfit (%):                           0.158791
+V misfit (%):                           0.239229
+Angle misfit (°):                       0.590709
+Area misfit (%):                        0.487256
+
+Transformed matrix for lower slab:
+-1.000000  3.000000
+5.000000  4.000000
+
+Transformed matrix for upper slab:
+1.000000  3.000000
+-2.000000  9.000000
+
+
+----------------------- Interface 24 -----------------------
+Total atoms:                            504
+Lower / Upper hkl:                      (010) / (111)
+Lower / Upper area (A^2):               285.93 / 284.67
+
+U misfit (%):                           0.722587
+V misfit (%):                           0.828159
+Angle misfit (°):                       0.908093
+Area misfit (%):                        0.440456
+
+Transformed matrix for lower slab:
+-1.000000  2.000000
+2.000000  3.000000
+
+Transformed matrix for upper slab:
+1.000000  1.000000
+4.000000  0.000000
+
+
+----------------------- Interface 25 -----------------------
+Total atoms:                            2008
+Lower / Upper hkl:                      (011) / (001)
+Lower / Upper area (A^2):               953.46 / 954.71
+
+U misfit (%):                           1.280899
+V misfit (%):                           1.166878
+Angle misfit (°):                       0.186281
+Area misfit (%):                        0.131108
+
+Transformed matrix for lower slab:
+3.000000  2.000000
+-5.000000  3.000000
+
+Transformed matrix for upper slab:
+-2.000000  6.000000
+9.000000  4.000000
+
+
+----------------------- Interface 26 -----------------------
+Total atoms:                            2008
+Lower / Upper hkl:                      (011) / (001)
+Lower / Upper area (A^2):               953.46 / 954.71
+
+U misfit (%):                           0.163928
+V misfit (%):                           0.278519
+Angle misfit (°):                       0.099475
+Area misfit (%):                        0.131108
+
+Transformed matrix for lower slab:
+-3.000000  2.000000
+5.000000  3.000000
+
+Transformed matrix for upper slab:
+-2.000000  6.000000
+9.000000  4.000000
+
+
+----------------------- Interface 27 -----------------------
+Total atoms:                            2008
+Lower / Upper hkl:                      (011) / (001)
+Lower / Upper area (A^2):               953.46 / 954.71
+
+U misfit (%):                           1.471442
+V misfit (%):                           1.281968
+Angle misfit (°):                       0.939576
+Area misfit (%):                        0.131108
+
+Transformed matrix for lower slab:
+-4.000000  1.000000
+3.000000  4.000000
+
+Transformed matrix for upper slab:
+1.000000  6.000000
+-10.000000  2.000000
+
+
+----------------------- Interface 28 -----------------------
+Total atoms:                            2008
+Lower / Upper hkl:                      (011) / (001)
+Lower / Upper area (A^2):               953.46 / 954.71
+
+U misfit (%):                           0.347312
+V misfit (%):                           0.470247
+Angle misfit (°):                       0.069066
+Area misfit (%):                        0.131108
+
+Transformed matrix for lower slab:
+-1.000000  3.000000
+6.000000  1.000000
+
+Transformed matrix for upper slab:
+-7.000000  -2.000000
+-3.000000  8.000000
+
+
+----------------------- Interface 29 -----------------------
+Total atoms:                            2840
+Lower / Upper hkl:                      (011) / (010)
+Lower / Upper area (A^2):               1204.37 / 1228.28
+
+U misfit (%):                           0.361630
+V misfit (%):                           1.604189
+Angle misfit (°):                       0.941100
+Area misfit (%):                        1.985377
+
+Transformed matrix for lower slab:
+-1.000000  2.000000
+11.000000  2.000000
+
+Transformed matrix for upper slab:
+0.000000  5.000000
+5.000000  0.000000
+
+
+----------------------- Interface 30 -----------------------
+Total atoms:                            2840
+Lower / Upper hkl:                      (011) / (010)
+Lower / Upper area (A^2):               1204.37 / 1228.28
+
+U misfit (%):                           1.279150
+V misfit (%):                           0.855826
+Angle misfit (°):                       0.322393
+Area misfit (%):                        1.985377
+
+Transformed matrix for lower slab:
+6.000000  1.000000
+0.000000  4.000000
+
+Transformed matrix for upper slab:
+1.000000  8.000000
+3.000000  -1.000000
+
+
+----------------------- Interface 31 -----------------------
+Total atoms:                            2304
+Lower / Upper hkl:                      (011) / (011)
+Lower / Upper area (A^2):               1154.18 / 1132.73
+
+U misfit (%):                           0.328046
+V misfit (%):                           1.867666
+Angle misfit (°):                       0.662809
+Area misfit (%):                        1.858970
+
+Transformed matrix for lower slab:
+-1.000000  3.000000
+7.000000  2.000000
+
+Transformed matrix for upper slab:
+3.000000  2.000000
+-8.000000  2.000000
+
+
+----------------------- Interface 32 -----------------------
+Total atoms:                            2840
+Lower / Upper hkl:                      (011) / (100)
+Lower / Upper area (A^2):               1204.37 / 1228.28
+
+U misfit (%):                           0.361630
+V misfit (%):                           1.604189
+Angle misfit (°):                       0.941100
+Area misfit (%):                        1.985377
+
+Transformed matrix for lower slab:
+-1.000000  2.000000
+11.000000  2.000000
+
+Transformed matrix for upper slab:
+5.000000  0.000000
+0.000000  5.000000
+
+
+----------------------- Interface 33 -----------------------
+Total atoms:                            2840
+Lower / Upper hkl:                      (011) / (100)
+Lower / Upper area (A^2):               1204.37 / 1228.28
+
+U misfit (%):                           1.279150
+V misfit (%):                           0.855826
+Angle misfit (°):                       0.322393
+Area misfit (%):                        1.985377
+
+Transformed matrix for lower slab:
+6.000000  1.000000
+0.000000  4.000000
+
+Transformed matrix for upper slab:
+-8.000000  1.000000
+1.000000  3.000000
+
+
+----------------------- Interface 34 -----------------------
+Total atoms:                            2304
+Lower / Upper hkl:                      (011) / (101)
+Lower / Upper area (A^2):               1154.18 / 1132.73
+
+U misfit (%):                           0.328046
+V misfit (%):                           1.867666
+Angle misfit (°):                       0.662809
+Area misfit (%):                        1.858970
+
+Transformed matrix for lower slab:
+-1.000000  3.000000
+7.000000  2.000000
+
+Transformed matrix for upper slab:
+2.000000  3.000000
+2.000000  -8.000000
+
+
+----------------------- Interface 35 -----------------------
+Total atoms:                            992
+Lower / Upper hkl:                      (011) / (111)
+Lower / Upper area (A^2):               501.82 / 498.17
+
+U misfit (%):                           0.887537
+V misfit (%):                           1.114903
+Angle misfit (°):                       0.820742
+Area misfit (%):                        0.726414
+
+Transformed matrix for lower slab:
+-3.000000  1.000000
+-4.000000  -2.000000
+
+Transformed matrix for upper slab:
+-2.000000  1.000000
+3.000000  2.000000
+
+
+----------------------- Interface 36 -----------------------
+Total atoms:                            992
+Lower / Upper hkl:                      (011) / (111)
+Lower / Upper area (A^2):               501.82 / 498.17
+
+U misfit (%):                           0.909706
+V misfit (%):                           1.124439
+Angle misfit (°):                       0.841831
+Area misfit (%):                        0.726414
+
+Transformed matrix for lower slab:
+0.000000  2.000000
+5.000000  1.000000
+
+Transformed matrix for upper slab:
+-2.000000  1.000000
+3.000000  2.000000
+
+
+----------------------- Interface 37 -----------------------
+Total atoms:                            1010
+Lower / Upper hkl:                      (100) / (001)
+Lower / Upper area (A^2):               539.05 / 538.95
+
+U misfit (%):                           0.043353
+V misfit (%):                           0.021505
+Angle misfit (°):                       0.014998
+Area misfit (%):                        0.018862
+
+Transformed matrix for lower slab:
+1.000000  2.000000
+6.000000  -1.000000
+
+Transformed matrix for upper slab:
+1.000000  4.000000
+-8.000000  3.000000
+
+
+----------------------- Interface 38 -----------------------
+Total atoms:                            1010
+Lower / Upper hkl:                      (100) / (001)
+Lower / Upper area (A^2):               539.05 / 538.95
+
+U misfit (%):                           0.006946
+V misfit (%):                           0.003955
+Angle misfit (°):                       0.040043
+Area misfit (%):                        0.018862
+
+Transformed matrix for lower slab:
+-1.000000  2.000000
+-6.000000  -1.000000
+
+Transformed matrix for upper slab:
+1.000000  4.000000
+-8.000000  3.000000
+
+
+----------------------- Interface 39 -----------------------
+Total atoms:                            1656
+Lower / Upper hkl:                      (100) / (010)
+Lower / Upper area (A^2):               787.84 / 786.10
+
+U misfit (%):                           1.210697
+V misfit (%):                           1.094936
+Angle misfit (°):                       0.593684
+Area misfit (%):                        0.221271
+
+Transformed matrix for lower slab:
+-2.000000  1.000000
+-7.000000  -6.000000
+
+Transformed matrix for upper slab:
+1.000000  1.000000
+-1.000000  15.000000
+
+
+----------------------- Interface 40 -----------------------
+Total atoms:                            1656
+Lower / Upper hkl:                      (100) / (010)
+Lower / Upper area (A^2):               787.84 / 786.10
+
+U misfit (%):                           1.264065
+V misfit (%):                           1.152127
+Angle misfit (°):                       0.610903
+Area misfit (%):                        0.221271
+
+Transformed matrix for lower slab:
+2.000000  1.000000
+7.000000  -6.000000
+
+Transformed matrix for upper slab:
+1.000000  1.000000
+-1.000000  15.000000
+
+
+----------------------- Interface 41 -----------------------
+Total atoms:                            1554
+Lower / Upper hkl:                      (100) / (011)
+Lower / Upper area (A^2):               870.77 / 875.29
+
+U misfit (%):                           0.424164
+V misfit (%):                           0.260117
+Angle misfit (°):                       0.882026
+Area misfit (%):                        0.518926
+
+Transformed matrix for lower slab:
+1.000000  3.000000
+7.000000  0.000000
+
+Transformed matrix for upper slab:
+5.000000  1.000000
+7.000000  -2.000000
+
+
+----------------------- Interface 42 -----------------------
+Total atoms:                            1554
+Lower / Upper hkl:                      (100) / (011)
+Lower / Upper area (A^2):               870.77 / 875.29
+
+U misfit (%):                           1.210697
+V misfit (%):                           1.746389
+Angle misfit (°):                       0.534697
+Area misfit (%):                        0.518926
+
+Transformed matrix for lower slab:
+-2.000000  1.000000
+-7.000000  -7.000000
+
+Transformed matrix for upper slab:
+0.000000  -1.000000
+17.000000  0.000000
+
+
+----------------------- Interface 43 -----------------------
+Total atoms:                            1554
+Lower / Upper hkl:                      (100) / (011)
+Lower / Upper area (A^2):               870.77 / 875.29
+
+U misfit (%):                           1.264065
+V misfit (%):                           1.801742
+Angle misfit (°):                       0.512734
+Area misfit (%):                        0.518926
+
+Transformed matrix for lower slab:
+2.000000  1.000000
+7.000000  -7.000000
+
+Transformed matrix for upper slab:
+0.000000  -1.000000
+17.000000  0.000000
+
+
+----------------------- Interface 44 -----------------------
+Total atoms:                            1554
+Lower / Upper hkl:                      (100) / (011)
+Lower / Upper area (A^2):               870.77 / 875.29
+
+U misfit (%):                           0.450181
+V misfit (%):                           0.260117
+Angle misfit (°):                       0.819665
+Area misfit (%):                        0.518926
+
+Transformed matrix for lower slab:
+-1.000000  3.000000
+-7.000000  0.000000
+
+Transformed matrix for upper slab:
+5.000000  1.000000
+7.000000  -2.000000
+
+
+----------------------- Interface 45 -----------------------
+Total atoms:                            1656
+Lower / Upper hkl:                      (100) / (100)
+Lower / Upper area (A^2):               787.84 / 786.10
+
+U misfit (%):                           1.210697
+V misfit (%):                           1.094936
+Angle misfit (°):                       0.593684
+Area misfit (%):                        0.221271
+
+Transformed matrix for lower slab:
+-2.000000  1.000000
+-7.000000  -6.000000
+
+Transformed matrix for upper slab:
+1.000000  1.000000
+15.000000  -1.000000
+
+
+----------------------- Interface 46 -----------------------
+Total atoms:                            1656
+Lower / Upper hkl:                      (100) / (100)
+Lower / Upper area (A^2):               787.84 / 786.10
+
+U misfit (%):                           1.264065
+V misfit (%):                           1.152127
+Angle misfit (°):                       0.610903
+Area misfit (%):                        0.221271
+
+Transformed matrix for lower slab:
+2.000000  1.000000
+7.000000  -6.000000
+
+Transformed matrix for upper slab:
+1.000000  1.000000
+15.000000  -1.000000
+
+
+----------------------- Interface 47 -----------------------
+Total atoms:                            1554
+Lower / Upper hkl:                      (100) / (101)
+Lower / Upper area (A^2):               870.77 / 875.29
+
+U misfit (%):                           0.424164
+V misfit (%):                           0.260117
+Angle misfit (°):                       0.882026
+Area misfit (%):                        0.518926
+
+Transformed matrix for lower slab:
+1.000000  3.000000
+7.000000  0.000000
+
+Transformed matrix for upper slab:
+1.000000  5.000000
+-2.000000  7.000000
+
+
+----------------------- Interface 48 -----------------------
+Total atoms:                            1554
+Lower / Upper hkl:                      (100) / (101)
+Lower / Upper area (A^2):               870.77 / 875.29
+
+U misfit (%):                           1.210697
+V misfit (%):                           1.746389
+Angle misfit (°):                       0.534697
+Area misfit (%):                        0.518926
+
+Transformed matrix for lower slab:
+-2.000000  1.000000
+-7.000000  -7.000000
+
+Transformed matrix for upper slab:
+1.000000  0.000000
+0.000000  -17.000000
+
+
+----------------------- Interface 49 -----------------------
+Total atoms:                            1554
+Lower / Upper hkl:                      (100) / (101)
+Lower / Upper area (A^2):               870.77 / 875.29
+
+U misfit (%):                           1.264065
+V misfit (%):                           1.801742
+Angle misfit (°):                       0.512734
+Area misfit (%):                        0.518926
+
+Transformed matrix for lower slab:
+2.000000  1.000000
+7.000000  -7.000000
+
+Transformed matrix for upper slab:
+1.000000  0.000000
+0.000000  -17.000000
+
+
+----------------------- Interface 50 -----------------------
+Total atoms:                            1554
+Lower / Upper hkl:                      (100) / (101)
+Lower / Upper area (A^2):               870.77 / 875.29
+
+U misfit (%):                           0.450181
+V misfit (%):                           0.260117
+Angle misfit (°):                       0.819665
+Area misfit (%):                        0.518926
+
+Transformed matrix for lower slab:
+-1.000000  3.000000
+-7.000000  0.000000
+
+Transformed matrix for upper slab:
+1.000000  5.000000
+-2.000000  7.000000
+
+
+----------------------- Interface 51 -----------------------
+Total atoms:                            410
+Lower / Upper hkl:                      (100) / (110)
+Lower / Upper area (A^2):               207.33 / 208.45
+
+U misfit (%):                           1.991476
+V misfit (%):                           1.423389
+Angle misfit (°):                       0.032947
+Area misfit (%):                        0.539758
+
+Transformed matrix for lower slab:
+1.000000  0.000000
+0.000000  5.000000
+
+Transformed matrix for upper slab:
+1.000000  0.000000
+0.000000  3.000000
+
+
+----------------------- Interface 52 -----------------------
+Total atoms:                            504
+Lower / Upper hkl:                      (100) / (111)
+Lower / Upper area (A^2):               290.26 / 284.67
+
+U misfit (%):                           1.210697
+V misfit (%):                           0.632094
+Angle misfit (°):                       0.243962
+Area misfit (%):                        1.924604
+
+Transformed matrix for lower slab:
+-2.000000  1.000000
+-3.000000  -2.000000
+
+Transformed matrix for upper slab:
+1.000000  1.000000
+4.000000  0.000000
+
+
+----------------------- Interface 53 -----------------------
+Total atoms:                            504
+Lower / Upper hkl:                      (100) / (111)
+Lower / Upper area (A^2):               290.26 / 284.67
+
+U misfit (%):                           1.264065
+V misfit (%):                           0.575072
+Angle misfit (°):                       0.252971
+Area misfit (%):                        1.924604
+
+Transformed matrix for lower slab:
+2.000000  1.000000
+3.000000  -2.000000
+
+Transformed matrix for upper slab:
+1.000000  1.000000
+4.000000  0.000000
+
+
+----------------------- Interface 54 -----------------------
+Total atoms:                            320
+Lower / Upper hkl:                      (101) / (001)
+Lower / Upper area (A^2):               150.62 / 153.98
+
+U misfit (%):                           1.991476
+V misfit (%):                           0.236474
+Angle misfit (°):                       0.095009
+Area misfit (%):                        2.232800
+
+Transformed matrix for lower slab:
+0.000000  1.000000
+3.000000  0.000000
+
+Transformed matrix for upper slab:
+1.000000  1.000000
+-5.000000  5.000000
+
+
+----------------------- Interface 55 -----------------------
+Total atoms:                            2724
+Lower / Upper hkl:                      (101) / (010)
+Lower / Upper area (A^2):               1154.77 / 1179.15
+
+U misfit (%):                           1.269074
+V misfit (%):                           0.410671
+Angle misfit (°):                       0.538603
+Area misfit (%):                        2.111139
+
+Transformed matrix for lower slab:
+1.000000  6.000000
+4.000000  1.000000
+
+Transformed matrix for upper slab:
+-2.000000  6.000000
+1.000000  9.000000
+
+
+----------------------- Interface 56 -----------------------
+Total atoms:                            2724
+Lower / Upper hkl:                      (101) / (010)
+Lower / Upper area (A^2):               1154.77 / 1179.15
+
+U misfit (%):                           1.547601
+V misfit (%):                           0.403167
+Angle misfit (°):                       0.663348
+Area misfit (%):                        2.111139
+
+Transformed matrix for lower slab:
+-3.000000  2.000000
+1.000000  7.000000
+
+Transformed matrix for upper slab:
+1.000000  7.000000
+3.000000  -3.000000
+
+
+----------------------- Interface 57 -----------------------
+Total atoms:                            2724
+Lower / Upper hkl:                      (101) / (010)
+Lower / Upper area (A^2):               1154.77 / 1179.15
+
+U misfit (%):                           1.432994
+V misfit (%):                           0.479393
+Angle misfit (°):                       0.817397
+Area misfit (%):                        2.111139
+
+Transformed matrix for lower slab:
+3.000000  2.000000
+-1.000000  7.000000
+
+Transformed matrix for upper slab:
+1.000000  7.000000
+3.000000  -3.000000
+
+
+----------------------- Interface 58 -----------------------
+Total atoms:                            2724
+Lower / Upper hkl:                      (101) / (010)
+Lower / Upper area (A^2):               1154.77 / 1179.15
+
+U misfit (%):                           1.357015
+V misfit (%):                           0.458729
+Angle misfit (°):                       0.366684
+Area misfit (%):                        2.111139
+
+Transformed matrix for lower slab:
+-1.000000  6.000000
+-4.000000  1.000000
+
+Transformed matrix for upper slab:
+-2.000000  6.000000
+1.000000  9.000000
+
+
+----------------------- Interface 59 -----------------------
+Total atoms:                            2508
+Lower / Upper hkl:                      (101) / (011)
+Lower / Upper area (A^2):               1255.18 / 1235.70
+
+U misfit (%):                           0.213474
+V misfit (%):                           1.192033
+Angle misfit (°):                       0.631143
+Area misfit (%):                        1.551846
+
+Transformed matrix for lower slab:
+1.000000  4.000000
+-5.000000  5.000000
+
+Transformed matrix for upper slab:
+5.000000  1.000000
+9.000000  -3.000000
+
+
+----------------------- Interface 60 -----------------------
+Total atoms:                            2508
+Lower / Upper hkl:                      (101) / (011)
+Lower / Upper area (A^2):               1255.18 / 1235.70
+
+U misfit (%):                           0.094476
+V misfit (%):                           1.335306
+Angle misfit (°):                       0.519101
+Area misfit (%):                        1.551846
+
+Transformed matrix for lower slab:
+-1.000000  4.000000
+5.000000  5.000000
+
+Transformed matrix for upper slab:
+5.000000  1.000000
+9.000000  -3.000000
+
+
+----------------------- Interface 61 -----------------------
+Total atoms:                            2508
+Lower / Upper hkl:                      (101) / (011)
+Lower / Upper area (A^2):               1255.18 / 1235.70
+
+U misfit (%):                           0.343585
+V misfit (%):                           0.993271
+Angle misfit (°):                       0.897009
+Area misfit (%):                        1.551846
+
+Transformed matrix for lower slab:
+-1.000000  4.000000
+5.000000  5.000000
+
+Transformed matrix for upper slab:
+6.000000  0.000000
+2.000000  4.000000
+
+
+----------------------- Interface 62 -----------------------
+Total atoms:                            2724
+Lower / Upper hkl:                      (101) / (100)
+Lower / Upper area (A^2):               1154.77 / 1179.15
+
+U misfit (%):                           1.269074
+V misfit (%):                           0.410671
+Angle misfit (°):                       0.538603
+Area misfit (%):                        2.111139
+
+Transformed matrix for lower slab:
+1.000000  6.000000
+4.000000  1.000000
+
+Transformed matrix for upper slab:
+-6.000000  2.000000
+-9.000000  -1.000000
+
+
+----------------------- Interface 63 -----------------------
+Total atoms:                            2724
+Lower / Upper hkl:                      (101) / (100)
+Lower / Upper area (A^2):               1154.77 / 1179.15
+
+U misfit (%):                           1.547601
+V misfit (%):                           0.403167
+Angle misfit (°):                       0.663348
+Area misfit (%):                        2.111139
+
+Transformed matrix for lower slab:
+-3.000000  2.000000
+1.000000  7.000000
+
+Transformed matrix for upper slab:
+7.000000  1.000000
+-3.000000  3.000000
+
+
+----------------------- Interface 64 -----------------------
+Total atoms:                            2724
+Lower / Upper hkl:                      (101) / (100)
+Lower / Upper area (A^2):               1154.77 / 1179.15
+
+U misfit (%):                           1.432994
+V misfit (%):                           0.479393
+Angle misfit (°):                       0.817397
+Area misfit (%):                        2.111139
+
+Transformed matrix for lower slab:
+3.000000  2.000000
+-1.000000  7.000000
+
+Transformed matrix for upper slab:
+7.000000  1.000000
+-3.000000  3.000000
+
+
+----------------------- Interface 65 -----------------------
+Total atoms:                            2724
+Lower / Upper hkl:                      (101) / (100)
+Lower / Upper area (A^2):               1154.77 / 1179.15
+
+U misfit (%):                           1.357015
+V misfit (%):                           0.458729
+Angle misfit (°):                       0.366684
+Area misfit (%):                        2.111139
+
+Transformed matrix for lower slab:
+-1.000000  6.000000
+-4.000000  1.000000
+
+Transformed matrix for upper slab:
+-6.000000  2.000000
+-9.000000  -1.000000
+
+
+----------------------- Interface 66 -----------------------
+Total atoms:                            2508
+Lower / Upper hkl:                      (101) / (101)
+Lower / Upper area (A^2):               1255.18 / 1235.70
+
+U misfit (%):                           0.213474
+V misfit (%):                           1.192033
+Angle misfit (°):                       0.631143
+Area misfit (%):                        1.551846
+
+Transformed matrix for lower slab:
+1.000000  4.000000
+-5.000000  5.000000
+
+Transformed matrix for upper slab:
+1.000000  5.000000
+-3.000000  9.000000
+
+
+----------------------- Interface 67 -----------------------
+Total atoms:                            2508
+Lower / Upper hkl:                      (101) / (101)
+Lower / Upper area (A^2):               1255.18 / 1235.70
+
+U misfit (%):                           0.094476
+V misfit (%):                           1.335306
+Angle misfit (°):                       0.519101
+Area misfit (%):                        1.551846
+
+Transformed matrix for lower slab:
+-1.000000  4.000000
+5.000000  5.000000
+
+Transformed matrix for upper slab:
+1.000000  5.000000
+-3.000000  9.000000
+
+
+----------------------- Interface 68 -----------------------
+Total atoms:                            2508
+Lower / Upper hkl:                      (101) / (101)
+Lower / Upper area (A^2):               1255.18 / 1235.70
+
+U misfit (%):                           0.343585
+V misfit (%):                           0.993271
+Angle misfit (°):                       0.897009
+Area misfit (%):                        1.551846
+
+Transformed matrix for lower slab:
+-1.000000  4.000000
+5.000000  5.000000
+
+Transformed matrix for upper slab:
+0.000000  6.000000
+4.000000  2.000000
+
+
+----------------------- Interface 69 -----------------------
+Total atoms:                            450
+Lower / Upper hkl:                      (101) / (110)
+Lower / Upper area (A^2):               200.83 / 208.45
+
+U misfit (%):                           1.991476
+V misfit (%):                           1.765718
+Angle misfit (°):                       0.095009
+Area misfit (%):                        3.792501
+
+Transformed matrix for lower slab:
+0.000000  1.000000
+4.000000  0.000000
+
+Transformed matrix for upper slab:
+1.000000  0.000000
+0.000000  3.000000
+
+
+----------------------- Interface 70 -----------------------
+Total atoms:                            992
+Lower / Upper hkl:                      (101) / (111)
+Lower / Upper area (A^2):               502.07 / 498.17
+
+U misfit (%):                           0.685272
+V misfit (%):                           0.907984
+Angle misfit (°):                       0.921684
+Area misfit (%):                        0.776558
+
+Transformed matrix for lower slab:
+1.000000  3.000000
+3.000000  -1.000000
+
+Transformed matrix for upper slab:
+-2.000000  1.000000
+3.000000  2.000000
+
+
+----------------------- Interface 71 -----------------------
+Total atoms:                            1016
+Lower / Upper hkl:                      (110) / (001)
+Lower / Upper area (A^2):               522.89 / 523.55
+
+U misfit (%):                           0.083534
+V misfit (%):                           0.032892
+Angle misfit (°):                       0.801364
+Area misfit (%):                        0.126247
+
+Transformed matrix for lower slab:
+0.000000  -3.000000
+3.000000  0.000000
+
+Transformed matrix for upper slab:
+5.000000  -3.000000
+3.000000  5.000000
+
+
+----------------------- Interface 72 -----------------------
+Total atoms:                            2472
+Lower / Upper hkl:                      (110) / (011)
+Lower / Upper area (A^2):               1336.27 / 1338.68
+
+U misfit (%):                           0.470963
+V misfit (%):                           1.478834
+Angle misfit (°):                       0.976282
+Area misfit (%):                        0.180195
+
+Transformed matrix for lower slab:
+3.000000  4.000000
+5.000000  -1.000000
+
+Transformed matrix for upper slab:
+9.000000  1.000000
+1.000000  3.000000
+
+
+----------------------- Interface 73 -----------------------
+Total atoms:                            2472
+Lower / Upper hkl:                      (110) / (101)
+Lower / Upper area (A^2):               1336.27 / 1338.68
+
+U misfit (%):                           0.470963
+V misfit (%):                           1.478834
+Angle misfit (°):                       0.976282
+Area misfit (%):                        0.180195
+
+Transformed matrix for lower slab:
+3.000000  4.000000
+5.000000  -1.000000
+
+Transformed matrix for upper slab:
+1.000000  9.000000
+3.000000  1.000000
+
+
+----------------------- Interface 74 -----------------------
+Total atoms:                            3680
+Lower / Upper hkl:                      (110) / (110)
+Lower / Upper area (A^2):               1801.06 / 1806.53
+
+U misfit (%):                           1.064427
+V misfit (%):                           0.763755
+Angle misfit (°):                       0.396174
+Area misfit (%):                        0.303568
+
+Transformed matrix for lower slab:
+1.000000  5.000000
+6.000000  -1.000000
+
+Transformed matrix for upper slab:
+2.000000  3.000000
+8.000000  -1.000000
+
+
+----------------------- Interface 75 -----------------------
+Total atoms:                            3680
+Lower / Upper hkl:                      (110) / (110)
+Lower / Upper area (A^2):               1801.06 / 1806.53
+
+U misfit (%):                           0.299531
+V misfit (%):                           0.027929
+Angle misfit (°):                       0.557846
+Area misfit (%):                        0.303568
+
+Transformed matrix for lower slab:
+3.000000  2.000000
+5.000000  -7.000000
+
+Transformed matrix for upper slab:
+-2.000000  2.000000
+-11.000000  -2.000000
+
+
+----------------------- Interface 76 -----------------------
+Total atoms:                            3680
+Lower / Upper hkl:                      (110) / (110)
+Lower / Upper area (A^2):               1801.06 / 1806.53
+
+U misfit (%):                           0.967819
+V misfit (%):                           1.286936
+Angle misfit (°):                       0.064509
+Area misfit (%):                        0.303568
+
+Transformed matrix for lower slab:
+-2.000000  3.000000
+7.000000  5.000000
+
+Transformed matrix for upper slab:
+-2.000000  2.000000
+-11.000000  -2.000000
+
+
+----------------------- Interface 77 -----------------------
+Total atoms:                            3680
+Lower / Upper hkl:                      (110) / (110)
+Lower / Upper area (A^2):               1801.06 / 1806.53
+
+U misfit (%):                           0.319313
+V misfit (%):                           0.044124
+Angle misfit (°):                       0.503660
+Area misfit (%):                        0.303568
+
+Transformed matrix for lower slab:
+2.000000  3.000000
+-7.000000  5.000000
+
+Transformed matrix for upper slab:
+-2.000000  2.000000
+-11.000000  -2.000000
+
+
+----------------------- Interface 78 -----------------------
+Total atoms:                            3680
+Lower / Upper hkl:                      (110) / (110)
+Lower / Upper area (A^2):               1801.06 / 1806.53
+
+U misfit (%):                           0.986850
+V misfit (%):                           1.303786
+Angle misfit (°):                       0.010287
+Area misfit (%):                        0.303568
+
+Transformed matrix for lower slab:
+-3.000000  2.000000
+-5.000000  -7.000000
+
+Transformed matrix for upper slab:
+-2.000000  2.000000
+-11.000000  -2.000000
+
+
+----------------------- Interface 79 -----------------------
+Total atoms:                            3680
+Lower / Upper hkl:                      (110) / (110)
+Lower / Upper area (A^2):               1801.06 / 1806.53
+
+U misfit (%):                           1.016966
+V misfit (%):                           0.716446
+Angle misfit (°):                       0.375599
+Area misfit (%):                        0.303568
+
+Transformed matrix for lower slab:
+5.000000  1.000000
+-1.000000  6.000000
+
+Transformed matrix for upper slab:
+2.000000  3.000000
+8.000000  -1.000000
+
+
+----------------------- Interface 80 -----------------------
+Total atoms:                            2852
+Lower / Upper hkl:                      (110) / (111)
+Lower / Upper area (A^2):               1568.66 / 1565.69
+
+U misfit (%):                           1.754244
+V misfit (%):                           1.843372
+Angle misfit (°):                       0.306375
+Area misfit (%):                        0.189741
+
+Transformed matrix for lower slab:
+-3.000000  0.000000
+-1.000000  9.000000
+
+Transformed matrix for upper slab:
+-3.000000  1.000000
+-10.000000  -4.000000
+
+
+----------------------- Interface 81 -----------------------
+Total atoms:                            2852
+Lower / Upper hkl:                      (110) / (111)
+Lower / Upper area (A^2):               1568.66 / 1565.69
+
+U misfit (%):                           0.539409
+V misfit (%):                           1.391521
+Angle misfit (°):                       0.967865
+Area misfit (%):                        0.189741
+
+Transformed matrix for lower slab:
+-3.000000  4.000000
+3.000000  5.000000
+
+Transformed matrix for upper slab:
+1.000000  3.000000
+-7.000000  1.000000
+
+
+----------------------- Interface 82 -----------------------
+Total atoms:                            2852
+Lower / Upper hkl:                      (110) / (111)
+Lower / Upper area (A^2):               1568.66 / 1565.69
+
+U misfit (%):                           1.805758
+V misfit (%):                           1.891680
+Angle misfit (°):                       0.312721
+Area misfit (%):                        0.189741
+
+Transformed matrix for lower slab:
+0.000000  3.000000
+-9.000000  1.000000
+
+Transformed matrix for upper slab:
+-3.000000  1.000000
+-10.000000  -4.000000
+
+
+----------------------- Interface 83 -----------------------
+Total atoms:                            2136
+Lower / Upper hkl:                      (111) / (010)
+Lower / Upper area (A^2):               1033.91 / 1031.75
+
+U misfit (%):                           1.723038
+V misfit (%):                           1.520166
+Angle misfit (°):                       0.116653
+Area misfit (%):                        0.208726
+
+Transformed matrix for lower slab:
+-3.000000  1.000000
+-4.000000  -4.000000
+
+Transformed matrix for upper slab:
+-2.000000  3.000000
+1.000000  9.000000
+
+
+----------------------- Interface 84 -----------------------
+Total atoms:                            2136
+Lower / Upper hkl:                      (111) / (010)
+Lower / Upper area (A^2):               1033.91 / 1031.75
+
+U misfit (%):                           1.018769
+V misfit (%):                           0.704443
+Angle misfit (°):                       0.151023
+Area misfit (%):                        0.208726
+
+Transformed matrix for lower slab:
+4.000000  0.000000
+4.000000  4.000000
+
+Transformed matrix for upper slab:
+1.000000  7.000000
+-2.000000  7.000000
+
+
+----------------------- Interface 85 -----------------------
+Total atoms:                            3048
+Lower / Upper hkl:                      (111) / (011)
+Lower / Upper area (A^2):               1744.72 / 1750.58
+
+U misfit (%):                           1.236467
+V misfit (%):                           1.281827
+Angle misfit (°):                       0.850124
+Area misfit (%):                        0.335596
+
+Transformed matrix for lower slab:
+-2.000000  3.000000
+-7.000000  -3.000000
+
+Transformed matrix for upper slab:
+9.000000  -1.000000
+7.000000  3.000000
+
+
+----------------------- Interface 86 -----------------------
+Total atoms:                            3048
+Lower / Upper hkl:                      (111) / (011)
+Lower / Upper area (A^2):               1744.72 / 1750.58
+
+U misfit (%):                           1.054049
+V misfit (%):                           1.294518
+Angle misfit (°):                       0.465113
+Area misfit (%):                        0.335596
+
+Transformed matrix for lower slab:
+3.000000  3.000000
+7.000000  -2.000000
+
+Transformed matrix for upper slab:
+-2.000000  2.000000
+15.000000  2.000000
+
+
+----------------------- Interface 87 -----------------------
+Total atoms:                            3048
+Lower / Upper hkl:                      (111) / (011)
+Lower / Upper area (A^2):               1744.72 / 1750.58
+
+U misfit (%):                           1.223680
+V misfit (%):                           1.563904
+Angle misfit (°):                       0.925766
+Area misfit (%):                        0.335596
+
+Transformed matrix for lower slab:
+3.000000  1.000000
+0.000000  -9.000000
+
+Transformed matrix for upper slab:
+-4.000000  1.000000
+-14.000000  -5.000000
+
+
+----------------------- Interface 88 -----------------------
+Total atoms:                            2136
+Lower / Upper hkl:                      (111) / (100)
+Lower / Upper area (A^2):               1033.91 / 1031.75
+
+U misfit (%):                           1.723038
+V misfit (%):                           1.520166
+Angle misfit (°):                       0.116653
+Area misfit (%):                        0.208726
+
+Transformed matrix for lower slab:
+-3.000000  1.000000
+-4.000000  -4.000000
+
+Transformed matrix for upper slab:
+3.000000  2.000000
+9.000000  -1.000000
+
+
+----------------------- Interface 89 -----------------------
+Total atoms:                            2136
+Lower / Upper hkl:                      (111) / (100)
+Lower / Upper area (A^2):               1033.91 / 1031.75
+
+U misfit (%):                           1.018769
+V misfit (%):                           0.704443
+Angle misfit (°):                       0.151023
+Area misfit (%):                        0.208726
+
+Transformed matrix for lower slab:
+4.000000  0.000000
+4.000000  4.000000
+
+Transformed matrix for upper slab:
+7.000000  1.000000
+7.000000  -2.000000
+
+
+----------------------- Interface 90 -----------------------
+Total atoms:                            3048
+Lower / Upper hkl:                      (111) / (101)
+Lower / Upper area (A^2):               1744.72 / 1750.58
+
+U misfit (%):                           1.236467
+V misfit (%):                           1.281827
+Angle misfit (°):                       0.850124
+Area misfit (%):                        0.335596
+
+Transformed matrix for lower slab:
+-2.000000  3.000000
+-7.000000  -3.000000
+
+Transformed matrix for upper slab:
+1.000000  9.000000
+-3.000000  7.000000
+
+
+----------------------- Interface 91 -----------------------
+Total atoms:                            3048
+Lower / Upper hkl:                      (111) / (101)
+Lower / Upper area (A^2):               1744.72 / 1750.58
+
+U misfit (%):                           1.054049
+V misfit (%):                           1.294518
+Angle misfit (°):                       0.465113
+Area misfit (%):                        0.335596
+
+Transformed matrix for lower slab:
+3.000000  3.000000
+7.000000  -2.000000
+
+Transformed matrix for upper slab:
+2.000000  2.000000
+2.000000  -15.000000
+
+
+----------------------- Interface 92 -----------------------
+Total atoms:                            3048
+Lower / Upper hkl:                      (111) / (101)
+Lower / Upper area (A^2):               1744.72 / 1750.58
+
+U misfit (%):                           1.223680
+V misfit (%):                           1.563904
+Angle misfit (°):                       0.925766
+Area misfit (%):                        0.335596
+
+Transformed matrix for lower slab:
+3.000000  1.000000
+0.000000  -9.000000
+
+Transformed matrix for upper slab:
+1.000000  4.000000
+-5.000000  14.000000
+
+
+----------------------- Interface 93 -----------------------
+Total atoms:                            1230
+Lower / Upper hkl:                      (111) / (110)
+Lower / Upper area (A^2):               646.19 / 625.34
+
+U misfit (%):                           1.308615
+V misfit (%):                           1.958923
+Angle misfit (°):                       0.595007
+Area misfit (%):                        3.227767
+
+Transformed matrix for lower slab:
+1.000000  2.000000
+-5.000000  0.000000
+
+Transformed matrix for upper slab:
+-2.000000  1.000000
+5.000000  2.000000
+
+
+----------------------- Interface 94 -----------------------
+Total atoms:                            988
+Lower / Upper hkl:                      (111) / (111)
+Lower / Upper area (A^2):               581.57 / 569.34
+
+U misfit (%):                           1.705438
+V misfit (%):                           0.487839
+Angle misfit (°):                       0.109955
+Area misfit (%):                        2.103477
+
+Transformed matrix for lower slab:
+3.000000  2.000000
+0.000000  3.000000
+
+Transformed matrix for upper slab:
+-4.000000  0.000000
+-1.000000  2.000000
+
 

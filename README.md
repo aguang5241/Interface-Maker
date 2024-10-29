@@ -1,7 +1,9 @@
 # Interface-Maker
 A python3 code to create slabs and interfaces for first-principles calculations. 
 
-This code is based on the A. Zur et al. paper: "Lattice match: An application to heteroepitaxy, Journal of applied physics 55(2) (1984) 378-386". By setting the tolerance for the misfit of lattice vectors and angles, the code can automatically find the interfaces with the desired lattice match, also ensuring the matching area / supercell size to be small enough. The code can also generate the slabs with the desired thickness and vacuum, and the interfaces with the desired gap.
+This code is based on the A. Zur et al. paper: "Lattice match: An application to heteroepitaxy, Journal of applied physics 55(2) (1984) 378-386". 
+
+By setting the tolerance for the misfit of lattice vectors and angles, the code can automatically find the interfaces with the desired lattice match, also ensuring the matching area / supercell size to be small enough. The code can also generate the slabs with the desired thickness and vacuum, and the interfaces with the desired gap.
 
 ⭐️ Star the repository if you find it useful :) ⭐️
 
