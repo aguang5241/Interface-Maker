@@ -217,12 +217,13 @@ def trim(data):
     data = np.delete(data, same_idx, axis=0)
     data = data.tolist()
 
-    return data
+    return data, same_idx
 
-def slab_maker(cell_conv, miller_indices, vacuum, save=False):
+def slab_maker(cell_conv, miller_indices, vacuum):
     cell_name = f'{cell_conv.split("/")[-1].split(".")[0]}'
 
     data = []
+    slabs = []
 
     for h, k, l in miller_indices:
         atom = read(cell_conv)
@@ -253,11 +254,16 @@ def slab_maker(cell_conv, miller_indices, vacuum, save=False):
         
         # Store the slab data for each Miller index
         data.append([h, k, l, S, *a, *b, a_length_r, b_length_r, ab_angle_r])
-        if save:
-            write(f'output/slabs/slab_{h}{k}{l}_{cell_name}.vasp', slab, format='vasp', direct=False)
+        slabs.append(slab)
 
     # Compare lattice parameters and delete the same ones
-    data = trim(data)
+    data, same_idx = trim(data)
+    
+    # Write the slabs
+    for i, slab in enumerate(slabs):
+        h, k, l = miller_indices[i]
+        if i not in same_idx:
+            write(f'output/slabs/slab_{h}{k}{l}_{cell_name}.vasp', slab, format='vasp', direct=False)
 
     ''' Data format:
     0 - Miller index: hkl
@@ -333,7 +339,7 @@ def cal_uv(data_slab, hkl, n):
         data.append([S, n, ijm[0], ijm[1], ijm[2], *T_r.flatten(), u_length_r, v_length_r, uv_angle_r])
     
     # Compare lattice parameters and delete the same ones
-    data = trim(data)
+    data, same_idx = trim(data)
 
     ''' Data format:
     0 - Miller index: hkl
@@ -446,8 +452,9 @@ def main():
         os.makedirs('output/slabs')
     
     # Create slabs for lower and upper materials
-    data_ab_lower = slab_maker(cell_conv=LOWER_CONV, miller_indices=LOWER_HKL, vacuum=SLAB_VACUUM, save=True)
-    data_ab_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=UPPER_HKL, vacuum=SLAB_VACUUM, save=True)
+    data_ab_lower = slab_maker(cell_conv=LOWER_CONV, miller_indices=LOWER_HKL, vacuum=SLAB_VACUUM)
+    data_ab_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=UPPER_HKL, vacuum=SLAB_VACUUM)
+    lower_khl, upper_khl = [i[0] for i in data_ab_lower], [i[0] for i in data_ab_upper]
     area_lower, area_upper = [i[1] for i in data_ab_lower], [i[1] for i in data_ab_upper]
     min_area = int(min(area_lower + area_upper)) + 1
 
@@ -464,14 +471,20 @@ def main():
         f.write('By Guangchen Liu, gliu4@wpi.edu'.center(60) + '\n\n')
         f.write('+'.center(60, '+') + '\n\n')
         if not assigned:
-            f.write(f'Miller indices considered: {len(LOWER_HKL)}'.center(60) + '\n\n')
-            for i in range(0, len(LOWER_HKL), 3):
-                f.write(' '.join([str(i) for i in LOWER_HKL[i:i+3]]).center(60) + '\n')
+            f.write('Miller indices considered for lower and upper slabs:'.center(60) + '\n\n')
+            f.write(f'{len(lower_khl)} non-equivalent planes for lower slab:'.center(60) + '\n\n')
+            for i in range(0, len(lower_khl), 5):
+                f.write(' '.join([f'{str(j)}' for j in lower_khl[i:i+5]]).center(60) + '\n')
+            f.write('\n')
+            f.write(f'{len(upper_khl)} non-equivalent planes for upper slab:'.center(60) + '\n\n')
+            for i in range(0, len(upper_khl), 5):
+                f.write(' '.join([f'{str(j)}' for j in upper_khl[i:i+5]]).center(60) + '\n')
         else:
             f.write(f'Aassigned Miller indices:'.center(60) + '\n')
             f.write(f'Lower slab: {LOWER_HKL[0]}'.center(60) + '\n')
             f.write(f'Upper slab: {UPPER_HKL[0]}'.center(60) + '\n')
         f.write('\n')
+        f.write('-'.center(60, '-') + '\n\n')
         f.write(f'Search results for matched interfaces with area within {MAX_AREA} A^2: \n\n')
         f.write(f'{"Lower hkl":<20}{"Upper hkl":<20}{"Area (A^2)":<20}{"Found Number":<20}\n')
     
@@ -485,28 +498,31 @@ def main():
         LOWER_HKL = [i]
         UPPER_HKL = [j]
 
-        # Get the slab data for lower and upper materials
-        data_ab_lower = slab_maker(cell_conv=LOWER_CONV, miller_indices=LOWER_HKL, vacuum=SLAB_VACUUM, save=False)
-        data_ab_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=UPPER_HKL, vacuum=SLAB_VACUUM, save=False)
+        # Get the slab data in data_ab_lower and data_ab_upper using the Miller indices
+        lower_hkl = f'{LOWER_HKL[0][0]}{LOWER_HKL[0][1]}{LOWER_HKL[0][2]}'
+        upper_hkl = f'{UPPER_HKL[0][0]}{UPPER_HKL[0][1]}{UPPER_HKL[0][2]}'
+        data_ab_lower_hkl = [i for i in data_ab_lower if i[0] == lower_hkl]
+        data_ab_upper_hkl = [i for i in data_ab_upper if i[0] == upper_hkl]
 
-        # Match the lattices of the lower and upper slabs
-        lower_limit, upper_limit = min_area, MAX_AREA
-        while True:
-            data_pairs = pair_slabs(data_ab_lower, data_ab_upper, lower_limit)
-            data_matched = lattice_match(data_pairs, data_ab_lower, data_ab_upper)
-            if len(data_matched) == 0:
-                lower_limit += 10
-                if lower_limit > upper_limit:
+        if len(data_ab_lower_hkl) == 1 and len(data_ab_upper_hkl) == 1:
+            # Match the lattices of the lower and upper slabs
+            lower_limit, upper_limit = min_area, MAX_AREA
+            while True:
+                data_pairs = pair_slabs(data_ab_lower_hkl, data_ab_upper_hkl, lower_limit)
+                data_matched = lattice_match(data_pairs, data_ab_lower_hkl, data_ab_upper_hkl)
+                if len(data_matched) == 0:
+                    lower_limit += 10
+                    if lower_limit > upper_limit:
+                        with open('output/interfaces/intf_profile.txt', 'a') as f:
+                            f.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{"-":<20}{"0":<20}\n')
+                            print('\n'.ljust(4) + f'---> No matched interfaces found for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {upper_limit} A^2')
+                        break
+                else:
+                    data_matched_all.extend(data_matched)
                     with open('output/interfaces/intf_profile.txt', 'a') as f:
-                        f.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{"-":<20}{"0":<20}\n')
-                        print('\n'.ljust(4) + f'---> No matched interfaces found for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {upper_limit} A^2')
+                        f.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{lower_limit:<20}{len(data_matched):<20}\n')
+                        print('\n'.ljust(4) + f'---> Found {len(data_matched)} matched interfaces for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {lower_limit} A^2')
                     break
-            else:
-                data_matched_all.extend(data_matched)
-                with open('output/interfaces/intf_profile.txt', 'a') as f:
-                    f.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{lower_limit:<20}{len(data_matched):<20}\n')
-                    print('\n'.ljust(4) + f'---> Found {len(data_matched)} matched interfaces for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {lower_limit} A^2')
-                break
 
     with open('output/interfaces/intf_profile.txt', 'a') as f:
         f.write(f'\nTotal number of interfaces found: {len(data_matched_all)}'.center(60) + '\n\n')
