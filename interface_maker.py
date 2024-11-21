@@ -390,7 +390,7 @@ def lattice_match(data_pairs, data_ab_lower, data_ab_upper):
                     data_mis.append([j, k, *mis])
 
             data_mis = np.array(data_mis)
-            data_mis = data_mis[(data_mis[:, 2] < UV_TOL) & (data_mis[:, 3] < UV_TOL) & (data_mis[:, 4] < ANGLE_TOL)]
+            data_mis = data_mis[(data_mis[:, 2] < (UV_TOL / 100)) & (data_mis[:, 3] < (UV_TOL / 100)) & (data_mis[:, 4] < ANGLE_TOL)]
 
             for mis in data_mis:
                 i, j = int(mis[0]), int(mis[1])
@@ -591,8 +591,8 @@ def main():
 
 if __name__ == '__main__':
     # Input bulk structures, need the conventional cell
-    LOWER_CONV = 'input/POSCAR_LCO_MP_R_3c_Conv.vasp'
-    UPPER_CONV = 'input/POSCAR_LNO_MP_I4mmm_Conv.vasp'
+    LOWER_CONV = 'Interfaces/res/LCO/POSCAR_LCO_MP_R_3c_Conv.vasp'
+    UPPER_CONV = 'Interfaces/res/LNO/POSCAR_LNO_MP_I4mmm_Conv.vasp'
 
     # Option 1: Set maximum Miller indices of h, k, l for lower and upper slabs
     MAX_H, MAX_K, MAX_L = 1, 1, 1
@@ -609,8 +609,8 @@ if __name__ == '__main__':
     # Area range for the matched interfaces, in A^2
     MIN_AREA, MAX_AREA = 250, 2500
 
-    # Tolerance for the misfit of lattice vectors and angles
-    UV_TOL, ANGLE_TOL = 0.05, 5
+    # Tolerance for the misfit of lattice vectors (in %) and angle (in degree)
+    UV_TOL, ANGLE_TOL = 5, 5
 
     # Run the shape filter or not, which will only keep the near-diamond shape interfaces
     SHAPE_FILTER = True
