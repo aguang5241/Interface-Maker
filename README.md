@@ -35,7 +35,7 @@ By setting the tolerance for the misfit of lattice vectors and angles, the code 
     MIN_AREA, MAX_AREA = 250, 2500
 
     # Tolerance for the misfit of lattice vectors (in %) and angle (in degree)
-    UV_TOL, ANGLE_TOL = 0.05, 5
+    UV_TOL, ANGLE_TOL = 5, 5
 
     # Run the shape filter or not, which will only keep the near-diamond shape interface
     SHAPE_FILTER = True
