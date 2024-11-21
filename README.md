@@ -34,10 +34,10 @@ By setting the tolerance for the misfit of lattice vectors and angles, the code 
     # Area range for the matched interfaces, in A^2
     MIN_AREA, MAX_AREA = 250, 2500
 
-    # Tolerance for the misfit of lattice vectors and angles
+    # Tolerance for the misfit of lattice vectors (in %) and angle (in degree)
     UV_TOL, ANGLE_TOL = 0.05, 5
 
-    # Run the shape filter or not, which will only keep the near-diamond shape interfaces
+    # Run the shape filter or not, which will only keep the near-diamond shape interface
     SHAPE_FILTER = True
     ```
 3. Run the following command, and the output files will be saved in the `output` folder:

@@ -612,7 +612,7 @@ if __name__ == '__main__':
     # Tolerance for the misfit of lattice vectors (in %) and angle (in degree)
     UV_TOL, ANGLE_TOL = 5, 5
 
-    # Run the shape filter or not, which will only keep the near-diamond shape interfaces
+    # Run the shape filter or not, which will only keep the near-diamond shape interface
     SHAPE_FILTER = True
 
     main()
