@@ -66,6 +66,11 @@ By setting the tolerance for the misfit of lattice vectors and angles, the code 
 
     ------------------------------------------------------------
 
+                Warning: Shape filter is ON!                 
+        Only the most diamond-like interface will be kept!     
+
+    ------------------------------------------------------------
+
     Search results for matched interfaces with area within 2500 A^2: 
 
     Lower hkl           Upper hkl           Area (A^2)          

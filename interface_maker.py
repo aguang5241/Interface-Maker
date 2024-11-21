@@ -541,6 +541,14 @@ def main():
             f.write(f'Upper slab: {UPPER_HKL[0]}'.center(60) + '\n')
         f.write('\n')
         f.write('-'.center(60, '-') + '\n\n')
+        if SHAPE_FILTER:
+            f.write('Warning: Shape filter is ON! '.center(60) + '\n')
+            f.write('Only the most diamond-like interface will be kept!'.center(60) + '\n')
+        else:
+            f.write('Warning: Shape filter is OFF! '.center(60) + '\n')
+            f.write('All matched interfaces will be kept!'.center(60) + '\n')
+        f.write('\n')
+        f.write('-'.center(60, '-') + '\n\n')
         f.write(f'Search results for matched interfaces with area within {MAX_AREA} A^2: \n\n')
         f.write(f'{"Lower hkl":<20}{"Upper hkl":<20}{"Area (A^2)":<20}\n')
     
@@ -591,8 +599,8 @@ def main():
 
 if __name__ == '__main__':
     # Input bulk structures, need the conventional cell
-    LOWER_CONV = 'Interfaces/res/LCO/POSCAR_LCO_MP_R_3c_Conv.vasp'
-    UPPER_CONV = 'Interfaces/res/LNO/POSCAR_LNO_MP_I4mmm_Conv.vasp'
+    LOWER_CONV = 'input/POSCAR_LCO_MP_R_3c_Conv.vasp'
+    UPPER_CONV = 'input/POSCAR_LNO_MP_I4mmm_Conv.vasp'
 
     # Option 1: Set maximum Miller indices of h, k, l for lower and upper slabs
     MAX_H, MAX_K, MAX_L = 1, 1, 1
