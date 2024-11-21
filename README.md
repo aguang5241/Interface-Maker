@@ -23,19 +23,22 @@ By setting the tolerance for the misfit of lattice vectors and angles, the code 
     MAX_H, MAX_K, MAX_L = 1, 1, 1
 
     # # Option 2: Assign the specific Miller indices for lower and upper slabs
-    # LOWER_HKL, UPPER_HKL = (1, 0, 0), (1, 0, 0)
+    # LOWER_HKL, UPPER_HKL = (0, 0, 1), (0, 0, 1)
 
     # Minimum thickness of the slab, without vacuum, in Angstrom
-    MIN_SLAB_THICKNESS = 10
+    MIN_SLAB_THICKNESS = 20
 
     # Slab vacuum and interface gap, in Angstrom
     SLAB_VACUUM, INTERFACE_GAP = 10, 2
 
     # Maximum area of the interface, in A^2
-    MAX_AREA = 2000
+    MIN_AREA, MAX_AREA = 250, 2500
 
     # Tolerance for the misfit of lattice vectors and angles
-    UV_TOL, ANGLE_TOL = 0.02, 1
+    UV_TOL, ANGLE_TOL = 0.05, 5
+
+    # Run the shape filter or not, which will only keep the near-diamond shape interfaces
+    SHAPE_FILTER = True
     ```
 3. Run the following command, and the output files will be saved in the `output` folder:
     ```bash
@@ -63,49 +66,49 @@ By setting the tolerance for the misfit of lattice vectors and angles, the code 
 
     ------------------------------------------------------------
 
-    Search results for matched interfaces with area within 2000 A^2: 
+    Search results for matched interfaces with area within 2500 A^2: 
 
-    Lower hkl           Upper hkl           Area (A^2)          Found Number        
-    (0, 0, 1)           (0, 0, 1)           266                 1                   
-    (0, 0, 1)           (0, 1, 0)           936                 2                   
-    (0, 0, 1)           (0, 1, 1)           476                 1                   
-    (0, 0, 1)           (1, 1, 0)           216                 1                   
-    (0, 0, 1)           (1, 1, 1)           356                 2                   
-    (0, 1, 0)           (0, 0, 1)           576                 1                   
-    (0, 1, 0)           (0, 1, 0)           1926                5                   
-    (0, 1, 0)           (0, 1, 1)           786                 1                   
-    (0, 1, 0)           (1, 1, 0)           -                   0                   
-    (0, 1, 0)           (1, 1, 1)           286                 1                   
-    (0, 1, 1)           (0, 0, 1)           956                 4                   
-    (0, 1, 1)           (0, 1, 0)           1236                2                   
-    (0, 1, 1)           (0, 1, 1)           1156                1                   
-    (0, 1, 1)           (1, 1, 0)           -                   0                   
-    (0, 1, 1)           (1, 1, 1)           506                 2                   
-    (1, 0, 0)           (0, 0, 1)           546                 2                   
-    (1, 0, 0)           (0, 1, 0)           796                 2                   
-    (1, 0, 0)           (0, 1, 1)           876                 4                   
-    (1, 0, 0)           (1, 1, 0)           216                 1                   
-    (1, 0, 0)           (1, 1, 1)           296                 2                   
-    (1, 0, 1)           (0, 0, 1)           156                 1                   
-    (1, 0, 1)           (0, 1, 0)           1186                4                   
-    (1, 0, 1)           (0, 1, 1)           1256                3                   
-    (1, 0, 1)           (1, 1, 0)           216                 1                   
-    (1, 0, 1)           (1, 1, 1)           506                 1                   
-    (1, 1, 0)           (0, 0, 1)           526                 1                   
-    (1, 1, 0)           (0, 1, 0)           -                   0                   
-    (1, 1, 0)           (0, 1, 1)           1346                1                   
-    (1, 1, 0)           (1, 1, 0)           1816                6                   
-    (1, 1, 0)           (1, 1, 1)           1576                3                   
-    (1, 1, 1)           (0, 0, 1)           -                   0                   
-    (1, 1, 1)           (0, 1, 0)           1036                2                   
-    (1, 1, 1)           (0, 1, 1)           1756                3                   
-    (1, 1, 1)           (1, 1, 0)           656                 1                   
-    (1, 1, 1)           (1, 1, 1)           586                 1                   
+    Lower hkl           Upper hkl           Area (A^2)          
+    (0, 0, 1)           (0, 0, 1)           262.5354            
+    (0, 0, 1)           (0, 1, 0)           495.9002            
+    (0, 0, 1)           (0, 1, 1)           466.7296            
+    (0, 0, 1)           (1, 1, 0)           350.0472            
+    (0, 0, 1)           (1, 1, 1)           350.0472            
+    (0, 1, 0)           (0, 0, 1)           571.8600            
+    (0, 1, 0)           (0, 1, 0)           1919.8158           
+    (0, 1, 0)           (0, 1, 1)           776.0958            
+    (0, 1, 0)           (1, 1, 0)           490.1657            
+    (0, 1, 0)           (1, 1, 1)           285.9300            
+    (0, 1, 1)           (0, 0, 1)           752.7283            
+    (0, 1, 1)           (0, 1, 0)           1204.3653           
+    (0, 1, 1)           (0, 1, 1)           1003.6377           
+    (0, 1, 1)           (1, 1, 0)           351.2732            
+    (0, 1, 1)           (1, 1, 1)           351.2732            
+    (1, 0, 0)           (0, 0, 1)           290.2569            
+    (1, 0, 0)           (0, 1, 0)           787.8402            
+    (1, 0, 0)           (0, 1, 1)           870.7707            
+    (1, 0, 0)           (1, 1, 0)           1326.8888           
+    (1, 0, 0)           (1, 1, 1)           290.2569            
+    (1, 0, 1)           (0, 0, 1)           753.1087            
+    (1, 0, 1)           (0, 1, 0)           1154.7667           
+    (1, 0, 1)           (0, 1, 1)           1054.3522           
+    (1, 0, 1)           (1, 1, 0)           351.4507            
+    (1, 0, 1)           (1, 1, 1)           351.4507            
+    (1, 1, 0)           (0, 0, 1)           522.8883            
+    (1, 1, 0)           (0, 1, 0)           290.4935            
+    (1, 1, 0)           (0, 1, 1)           290.4935            
+    (1, 1, 0)           (1, 1, 0)           1801.0596           
+    (1, 1, 0)           (1, 1, 1)           290.4935            
+    (1, 1, 1)           (0, 0, 1)           323.0970            
+    (1, 1, 1)           (0, 1, 0)           646.1939            
+    (1, 1, 1)           (0, 1, 1)           258.4776            
+    (1, 1, 1)           (1, 1, 0)           581.5745            
+    (1, 1, 1)           (1, 1, 1)           516.9551            
             
-    Total number of interfaces found: 63            
+    Total number of interfaces found: 35            
 
-    ----------------------- Interface 1 ------------------------
-    Total atoms:                            598
+    ---------------------- Interface 1-1 -----------------------
+    Total atoms:                            1016
     Lower / Upper hkl:                      (001) / (001)
     Lower / Upper area (A^2):               262.54 / 261.77
 
@@ -123,45 +126,83 @@ By setting the tolerance for the misfit of lattice vectors and angles, the code 
     -4.000000  1.000000
 
 
-    ----------------------- Interface 2 ------------------------
-    Total atoms:                            2344
-    Lower / Upper hkl:                      (001) / (010)
-    Lower / Upper area (A^2):               933.46 / 933.49
+    ---------------------- Interface 1-2 -----------------------
+    Total atoms:                            1016
+    Lower / Upper hkl:                      (001) / (001)
+    Lower / Upper area (A^2):               262.54 / 261.77
 
-    U misfit (%):                           1.018769
-    V misfit (%):                           1.196245
-    Angle misfit (°):                       0.389795
-    Area misfit (%):                        0.003309
-
-    Transformed matrix for lower slab:
-    -4.000000  4.000000
-    -5.000000  -3.000000
-
-    Transformed matrix for upper slab:
-    1.000000  7.000000
-    -2.000000  5.000000
-
-
-    ----------------------- Interface 3 ------------------------
-    Total atoms:                            2344
-    Lower / Upper hkl:                      (001) / (010)
-    Lower / Upper area (A^2):               933.46 / 933.49
-
-    U misfit (%):                           1.381468
-    V misfit (%):                           1.526875
-    Angle misfit (°):                       0.290130
-    Area misfit (%):                        0.003309
+    U misfit (%):                           0.596748
+    V misfit (%):                           0.882101
+    Angle misfit (°):                       0.210358
+    Area misfit (%):                        0.289945
 
     Transformed matrix for lower slab:
-    4.000000  4.000000
-    5.000000  -3.000000
+    3.000000  0.000000
+    0.000000  3.000000
 
     Transformed matrix for upper slab:
-    1.000000  7.000000
-    -2.000000  5.000000
+    1.000000  4.000000
+    -4.000000  1.000000
 
 
-    ----------------------- Interface 4 ------------------------
+    ---------------------- Interface 1-3 -----------------------
+    Total atoms:                            1016
+    Lower / Upper hkl:                      (001) / (001)
+    Lower / Upper area (A^2):               262.54 / 261.77
+
+    U misfit (%):                           0.596748
+    V misfit (%):                           0.882101
+    Angle misfit (°):                       0.210358
+    Area misfit (%):                        0.289945
+
+    Transformed matrix for lower slab:
+    3.000000  0.000000
+    0.000000  3.000000
+
+    Transformed matrix for upper slab:
+    1.000000  4.000000
+    -4.000000  1.000000
+
+
+    ---------------------- Interface 1-4 -----------------------
+    Total atoms:                            1016
+    Lower / Upper hkl:                      (001) / (001)
+    Lower / Upper area (A^2):               262.54 / 261.77
+
+    U misfit (%):                           0.596748
+    V misfit (%):                           0.882101
+    Angle misfit (°):                       0.210358
+    Area misfit (%):                        0.289945
+
+    Transformed matrix for lower slab:
+    3.000000  0.000000
+    0.000000  3.000000
+
+    Transformed matrix for upper slab:
+    1.000000  4.000000
+    -4.000000  1.000000
+
+
+    ---------------------- Interface 2-1 -----------------------
+    Total atoms:                            1860
+    Lower / Upper hkl:                      (001) / (010)
+    Lower / Upper area (A^2):               495.90 / 491.31
+
+    U misfit (%):                           3.570834
+    V misfit (%):                           2.801181
+    Angle misfit (°):                       2.525753
+    Area misfit (%):                        0.925514
+
+    Transformed matrix for lower slab:
+    -3.000000  2.000000
+    -4.000000  -3.000000
+
+    Transformed matrix for upper slab:
+    1.000000  4.000000
+    2.000000  -2.000000
+
+
+    ---------------------- Interface 2-2 -----------------------
     ...
     
     ```

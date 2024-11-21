@@ -109,97 +109,106 @@ def gen_intf(i, profile):
     slab_0 = make_supercell(slab_0, T_0, order='atom-major')
     slab_1 = make_supercell(slab_1, T_1, order='atom-major')
 
+    # Create slab_0_reverse and slab_1_reverse for the reversed z-axis
+    slab_0_reverse = slab_0.copy()
+    slab_1_reverse = slab_1.copy()
+    slab_0_reverse.positions[:, 2] = slab_0.cell[2, 2] - slab_0.positions[:, 2]
+    slab_1_reverse.positions[:, 2] = slab_1.cell[2, 2] - slab_1.positions[:, 2]
+
     # Write the transformed slab data
     save_path = f'output/interfaces/intf_{i+1}_{hkl_0}_{hkl_1}'
     os.makedirs(save_path)
     write(f'{save_path}/intf_{i+1}_slab_0_{hkl_0}.vasp', slab_0, format='vasp', direct=False)
     write(f'{save_path}/intf_{i+1}_slab_1_{hkl_1}.vasp', slab_1, format='vasp', direct=False)
 
-    # Compare the areas of slab_0 and slab_1, let slab_0 be the lower slab with the larger area
-    area_0, area_1 = profile[5], profile[6]
-    reversed = False
-    if area_0 < area_1:
-        slab_0, slab_1 = slab_1, slab_0
-        reversed = True
+    comb = [(slab_0, slab_1), (slab_0_reverse, slab_1), (slab_0, slab_1_reverse), (slab_0_reverse, slab_1_reverse)]
+    for j, (slab_0, slab_1) in enumerate(comb):
 
-    # Get the thickness of slab_0, slab_1, and interface
-    z_top_0 = max([atom.position[2] for atom in slab_0])
-    z_bottom_0 = min([atom.position[2] for atom in slab_0])
-    z_top_1 = max([atom.position[2] for atom in slab_1])
-    z_bottom_1 = min([atom.position[2] for atom in slab_1])
-    slab_0_thickness = z_top_0 - z_bottom_0
-    slab_1_thickness = z_top_1 - z_bottom_1
-    interface_thickness = slab_0_thickness + slab_1_thickness + SLAB_VACUUM * 2 + INTERFACE_GAP
+        # Compare the areas of slab_0 and slab_1, let slab_0 be the lower slab with the larger area
+        area_0, area_1 = profile[5], profile[6]
+        reversed = False
+        if area_0 < area_1:
+            slab_0, slab_1 = slab_1, slab_0
+            reversed = True
 
-    # Create the interface 
-    interface = slab_0.copy()
-    interface.set_cell([slab_0.cell[0], slab_0.cell[1], [0, 0, interface_thickness]])
+        # Get the thickness of slab_0, slab_1, and interface
+        z_top_0 = max([atom.position[2] for atom in slab_0])
+        z_bottom_0 = min([atom.position[2] for atom in slab_0])
+        z_top_1 = max([atom.position[2] for atom in slab_1])
+        z_bottom_1 = min([atom.position[2] for atom in slab_1])
+        slab_0_thickness = z_top_0 - z_bottom_0
+        slab_1_thickness = z_top_1 - z_bottom_1
+        interface_thickness = slab_0_thickness + slab_1_thickness + SLAB_VACUUM * 2 + INTERFACE_GAP
 
-    # Reverse the z-axis
-    interface.positions[:, 2] = interface_thickness-interface.positions[:, 2]
+        # Create the interface 
+        interface = slab_0.copy()
+        interface.set_cell([slab_0.cell[0], slab_0.cell[1], [0, 0, interface_thickness]])
 
-    # Get the global coordinates of the atoms in interface and slab_1
-    cell = interface.cell
-    slab_1_cell = slab_1.cell
-    
-    cell_ = cell.copy()
-    cell_[2] = slab_1_cell[2]
-    slab_1_positions = slab_1.positions
-
-    # Transform the slab_1 to the global coordinates of interface
-    slab_1_positions_frac = np.dot(np.linalg.inv(slab_1_cell.T), slab_1_positions.T).T
-    slab_1_positions_global = np.dot(cell_.T, slab_1_positions_frac.T).T
-    slab_1.cell = cell
-    slab_1.positions = slab_1_positions_global
-
-    # Shift the interface lower
-    z_bottom_interface = min([atom.position[2] for atom in interface])
-    z_disp_interface = z_bottom_interface - SLAB_VACUUM
-    interface.translate([0, 0, -z_disp_interface])
-
-    # Shift the slab_1 upper
-    z_top_slab_1 = max([atom.position[2] for atom in slab_1])
-    z_disp_slab_1 = interface_thickness - SLAB_VACUUM - z_top_slab_1
-    slab_1.translate([0, 0, z_disp_slab_1])
-
-    # Create the interface
-    interface.extend(slab_1)
-
-    # Reverse the z-axis if needed
-    if reversed:
+        # Reverse the z-axis
         interface.positions[:, 2] = interface_thickness-interface.positions[:, 2]
-    
-    # Write the interface
-    write(f'output/interfaces/intf_{i+1}_{hkl_0}_{hkl_1}.vasp', interface, format='vasp', direct=False)
 
-    # Store the lattice matching data
-    with open('output/interfaces/intf_profile.txt', 'a') as f:
-        f.write(f' Interface {i+1} '.center(60, '-') + '\n')
+        # Get the global coordinates of the atoms in interface and slab_1
+        cell = interface.cell
+        slab_1_cell = slab_1.cell
+        
+        cell_ = cell.copy()
+        cell_[2] = slab_1_cell[2]
+        slab_1_positions = slab_1.positions
 
-        f.write('Total atoms:'.ljust(40) + f'{len(interface)}\n')
-        f.write('Lower / Upper hkl:'.ljust(40) + f'({hkl_0}) / ({hkl_1})\n')
-        f.write('Lower / Upper area (A^2):'.ljust(40) + f'{area_0:.2f} / {area_1:.2f}\n')
-        f.write('\n')
+        # Transform the slab_1 to the global coordinates of interface
+        slab_1_positions_frac = np.dot(np.linalg.inv(slab_1_cell.T), slab_1_positions.T).T
+        slab_1_positions_global = np.dot(cell_.T, slab_1_positions_frac.T).T
+        slab_1.cell = cell
+        slab_1.positions = slab_1_positions_global
 
-        f.write('U misfit (%):'.ljust(40) + f'{profile[2] * 100:.6f}\n')
-        f.write('V misfit (%):'.ljust(40) + f'{profile[3] * 100:.6f}\n')
-        f.write('Angle misfit (°):'.ljust(40) + f'{profile[4]:.6f}\n')
-        f.write('Area misfit (%):'.ljust(40) + f'{np.abs(area_0 - area_1) / area_0 * 100:.6f}\n')
-        f.write('\n')
+        # Shift the interface lower
+        z_bottom_interface = min([atom.position[2] for atom in interface])
+        z_disp_interface = z_bottom_interface - SLAB_VACUUM
+        interface.translate([0, 0, -z_disp_interface])
 
-        f.write('Transformed matrix for lower slab:\n')
-        f.write(f'{T_0[0][0]:.6f}  {T_0[0][1]:.6f}\n')
-        f.write(f'{T_0[1][0]:.6f}  {T_0[1][1]:.6f}\n')
-        f.write('\n')
+        # Shift the slab_1 upper
+        z_top_slab_1 = max([atom.position[2] for atom in slab_1])
+        z_disp_slab_1 = interface_thickness - SLAB_VACUUM - z_top_slab_1
+        slab_1.translate([0, 0, z_disp_slab_1])
 
-        f.write('Transformed matrix for upper slab:\n')
-        f.write(f'{T_1[0][0]:.6f}  {T_1[0][1]:.6f}\n')
-        f.write(f'{T_1[1][0]:.6f}  {T_1[1][1]:.6f}\n')
-        f.write('\n\n')
-    
-    # Store the lattice matching data in a csv file
-    with open('output/interfaces/intf_profile.csv', 'a') as f:
-        f.write(f'{i+1},{len(interface)},{str(hkl_0)},{str(hkl_1)},{area_0:.6f},{area_1:.6f},{profile[2]*100:.6f},{profile[3]*100:.6f},{profile[4]:.6f},{np.abs(area_0-area_1)/area_0*100:.6f},{T_0[0][0]:.6f},{T_0[0][1]:.6f},{T_0[1][0]:.6f},{T_0[1][1]:.6f},{T_1[0][0]:.6f},{T_1[0][1]:.6f},{T_1[1][0]:.6f},{T_1[1][1]:.6f}\n')
+        # Create the interface
+        interface.extend(slab_1)
+
+        # Reverse the z-axis if needed
+        if reversed:
+            interface.positions[:, 2] = interface_thickness-interface.positions[:, 2]
+        
+        # Write the interface
+        write(f'output/interfaces/intf_{i+1}_{j+1}_{hkl_0}_{hkl_1}.vasp', interface, format='vasp', direct=False, sort=True)
+
+        # Store the lattice matching data
+        with open('output/interfaces/intf_profile.txt', 'a') as f:
+            f.write(f' Interface {i+1}-{j+1} '.center(60, '-') + '\n')
+
+            f.write('Total atoms:'.ljust(40) + f'{len(interface)}\n')
+            f.write('Lower / Upper hkl:'.ljust(40) + f'({hkl_0}) / ({hkl_1})\n')
+            f.write('Lower / Upper area (A^2):'.ljust(40) + f'{area_0:.2f} / {area_1:.2f}\n')
+            f.write('\n')
+
+            f.write('U misfit (%):'.ljust(40) + f'{profile[2] * 100:.6f}\n')
+            f.write('V misfit (%):'.ljust(40) + f'{profile[3] * 100:.6f}\n')
+            f.write('Angle misfit (°):'.ljust(40) + f'{profile[4]:.6f}\n')
+            f.write('Area misfit (%):'.ljust(40) + f'{np.abs(area_0 - area_1) / area_0 * 100:.6f}\n')
+            f.write('\n')
+
+            f.write('Transformed matrix for lower slab:\n')
+            f.write(f'{T_0[0][0]:.6f}  {T_0[0][1]:.6f}\n')
+            f.write(f'{T_0[1][0]:.6f}  {T_0[1][1]:.6f}\n')
+            f.write('\n')
+
+            f.write('Transformed matrix for upper slab:\n')
+            f.write(f'{T_1[0][0]:.6f}  {T_1[0][1]:.6f}\n')
+            f.write(f'{T_1[1][0]:.6f}  {T_1[1][1]:.6f}\n')
+            f.write('\n\n')
+        
+        # Store the lattice matching data in a csv file
+        with open('output/interfaces/intf_profile.csv', 'a') as f:
+            f.write(f'{i+1},{j+1},{len(interface)},{str(hkl_0)},{str(hkl_1)},{area_0:.6f},{area_1:.6f},{profile[2]*100:.6f},{profile[3]*100:.6f},{profile[4]:.6f},{np.abs(area_0-area_1)/area_0*100:.6f},{T_0[0][0]:.6f},{T_0[0][1]:.6f},{T_0[1][0]:.6f},{T_0[1][1]:.6f},{T_1[0][0]:.6f},{T_1[0][1]:.6f},{T_1[1][0]:.6f},{T_1[1][1]:.6f}\n')
 
 def trim(data):
     data = np.array(data)
@@ -263,7 +272,7 @@ def slab_maker(cell_conv, miller_indices, vacuum):
     for i, slab in enumerate(slabs):
         h, k, l = miller_indices[i]
         if i not in same_idx:
-            write(f'output/slabs/slab_{h}{k}{l}_{cell_name}.vasp', slab, format='vasp', direct=False)
+            write(f'output/slabs/slab_{h}{k}{l}_{cell_name}.vasp', slab, format='vasp', direct=False, sort=False)
 
     ''' Data format:
     0 - Miller index: hkl
@@ -391,6 +400,12 @@ def lattice_match(data_pairs, data_ab_lower, data_ab_upper):
                 ijm_upper = data_uv_upper[j][3:6]
                 t_lower = data_uv_lower[i][6:10]
                 t_upper = data_uv_upper[j][6:10]
+                u_lower = data_uv_lower[i][10]
+                v_lower = data_uv_lower[i][11]
+                angle_lower = data_uv_lower[i][12]
+                u_upper = data_uv_upper[j][10]
+                v_upper = data_uv_upper[j][11]
+                angle_upper = data_uv_upper[j][12]
 
                 ijm_lower = np.array([[ijm_lower[0], ijm_lower[1]], [0, ijm_lower[2]]])
                 ijm_upper = np.array([[ijm_upper[0], ijm_upper[1]], [0, ijm_upper[2]]])
@@ -415,9 +430,51 @@ def lattice_match(data_pairs, data_ab_lower, data_ab_upper):
                 12 - Transformed matrix T2 of upper slab
                 13 - Transformed matrix T3 of upper slab
                 14 - Transformed matrix T4 of upper slab
+                15 - Length of reduced super cell vector u of lower slab
+                16 - Length of reduced super cell vector v of lower slab
+                17 - Angle between reduced super cell vectors u and v of lower slab
+                18 - Length of reduced super cell vector u of upper slab
+                19 - Length of reduced super cell vector v of upper slab
+                20 - Angle between reduced super cell vectors u and v of upper slab
                 '''
-                data_matched.append([hkl_0, hkl_1, *mis[2:], S_lower, S_upper, *T_lower.flatten(), *T_upper.flatten()])
+                data_matched.append([hkl_0, hkl_1, *mis[2:], S_lower, S_upper, *T_lower.flatten(), *T_upper.flatten(), u_lower, v_lower, angle_lower, u_upper, v_upper, angle_upper])
     return data_matched
+
+def filter_data(data_matched, MIN_AREA):
+    if len(data_matched) > 1:
+        # Compare the areas and get the closest area to the MIN_AREA
+        data_matched = np.array(data_matched)
+        area_diff = data_matched[:, 5].astype(float) - MIN_AREA
+        area_diff_sorted = np.sort(area_diff)
+        # Get the idx of the first positive value in area_diff_sorted
+        idx_0 = np.where(area_diff_sorted > 0)[0][0]
+        idxes = np.where(area_diff == area_diff_sorted[idx_0])[0]
+        data_matched = data_matched[idxes]
+
+        if SHAPE_FILTER:
+            # Compare the u, v lengths and calculate the uv_ratio = u / v
+            u, v = data_matched[:, 15], data_matched[:, 16]
+            # Change the u, v to float type and calculate the uv_ratio
+            u, v = u.astype(float), v.astype(float)
+            uv_ratio = np.abs(u / v - 1)
+            # Filter the data using the min uv_ratio
+            min_idx = np.argmin(uv_ratio)
+            data_matched = [data_matched[min_idx].tolist()]
+            # Change items in data_matched to float type
+            for i in range(2, len(data_matched[0])):
+                data_matched[0][i] = float(data_matched[0][i])
+        else:
+            data_matched = data_matched.tolist()
+            # Change items in data_matched to float type
+            for data in data_matched:
+                for i in range(2, len(data)):
+                    data[i] = float(data[i])
+        
+        min_area = data_matched[0][5]
+        return data_matched, min_area
+    else:
+        min_area = data_matched[0][5]
+        return data_matched, min_area
 
 def find_hkl(h_max, k_max, l_max):
     hkl_list = []
@@ -456,7 +513,6 @@ def main():
     data_ab_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=UPPER_HKL, vacuum=SLAB_VACUUM)
     lower_khl, upper_khl = [i[0] for i in data_ab_lower], [i[0] for i in data_ab_upper]
     area_lower, area_upper = [i[1] for i in data_ab_lower], [i[1] for i in data_ab_upper]
-    min_area = int(min(area_lower + area_upper)) + 1
 
     # Create interfaces folder
     if not os.path.exists(f'output/interfaces'):
@@ -486,10 +542,10 @@ def main():
         f.write('\n')
         f.write('-'.center(60, '-') + '\n\n')
         f.write(f'Search results for matched interfaces with area within {MAX_AREA} A^2: \n\n')
-        f.write(f'{"Lower hkl":<20}{"Upper hkl":<20}{"Area (A^2)":<20}{"Found Number":<20}\n')
+        f.write(f'{"Lower hkl":<20}{"Upper hkl":<20}{"Area (A^2)":<20}\n')
     
     with open('output/interfaces/intf_profile.csv', 'a') as f:
-        f.write('Interface ID,Total atoms,Lower hkl,Upper hkl,Lower area,Upper area,U misfit (%),V misfit (%),Angle misfit (°),Area misfit (%),T_0_1,T_0_2,T_0_3,T_0_4,T_1_1,T_1_2,T_1_3,T_1_4\n')
+        f.write('Interface ID,Surface ID,Total atoms,Lower hkl,Upper hkl,Lower area,Upper area,U misfit (%),V misfit (%),Angle misfit (°),Area misfit (%),T_0_1,T_0_2,T_0_3,T_0_4,T_1_1,T_1_2,T_1_3,T_1_4\n')
 
     # Get the product of the Miller indices
     print('\nFinding matched interfaces...')
@@ -506,22 +562,20 @@ def main():
 
         if len(data_ab_lower_hkl) == 1 and len(data_ab_upper_hkl) == 1:
             # Match the lattices of the lower and upper slabs
-            lower_limit, upper_limit = min_area, MAX_AREA
             while True:
-                data_pairs = pair_slabs(data_ab_lower_hkl, data_ab_upper_hkl, lower_limit)
+                data_pairs = pair_slabs(data_ab_lower_hkl, data_ab_upper_hkl, MAX_AREA)
                 data_matched = lattice_match(data_pairs, data_ab_lower_hkl, data_ab_upper_hkl)
                 if len(data_matched) == 0:
-                    lower_limit += 10
-                    if lower_limit > upper_limit:
-                        with open('output/interfaces/intf_profile.txt', 'a') as f:
-                            f.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{"-":<20}{"0":<20}\n')
-                            print('\n'.ljust(4) + f'---> No matched interfaces found for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {upper_limit} A^2')
-                        break
+                    with open('output/interfaces/intf_profile.txt', 'a') as f:
+                        f.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{"-":<20}{"0":<20}\n')
+                        print('\n'.ljust(4) + f'---> No matched interfaces found for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {MAX_AREA} A^2')
+                    break
                 else:
+                    data_matched, min_area = filter_data(data_matched, MIN_AREA)
                     data_matched_all.extend(data_matched)
                     with open('output/interfaces/intf_profile.txt', 'a') as f:
-                        f.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{lower_limit:<20}{len(data_matched):<20}\n')
-                        print('\n'.ljust(4) + f'---> Found {len(data_matched)} matched interfaces for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {lower_limit} A^2')
+                        f.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{min_area:<20.4f}\n')
+                        print('\n'.ljust(4) + f'---> Found matched interfaces for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {min_area:.4f} A^2')
                     break
 
     with open('output/interfaces/intf_profile.txt', 'a') as f:
@@ -544,19 +598,22 @@ if __name__ == '__main__':
     MAX_H, MAX_K, MAX_L = 1, 1, 1
 
     # # Option 2: Assign the specific Miller indices for lower and upper slabs
-    # LOWER_HKL, UPPER_HKL = (1, 0, 0), (1, 0, 0)
+    # LOWER_HKL, UPPER_HKL = (0, 0, 1), (0, 0, 1)
 
     # Minimum thickness of the slab, without vacuum, in Angstrom
-    MIN_SLAB_THICKNESS = 10
+    MIN_SLAB_THICKNESS = 20
 
     # Slab vacuum and interface gap, in Angstrom
     SLAB_VACUUM, INTERFACE_GAP = 10, 2
 
     # Maximum area of the interface, in A^2
-    MAX_AREA = 2000
+    MIN_AREA, MAX_AREA = 250, 2500
 
     # Tolerance for the misfit of lattice vectors and angles
-    UV_TOL, ANGLE_TOL = 0.02, 1
+    UV_TOL, ANGLE_TOL = 0.05, 5
+
+    # Run the shape filter or not, which will only keep the near-diamond shape interfaces
+    SHAPE_FILTER = True
 
     main()
 
