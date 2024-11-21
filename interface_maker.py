@@ -606,7 +606,7 @@ if __name__ == '__main__':
     # Slab vacuum and interface gap, in Angstrom
     SLAB_VACUUM, INTERFACE_GAP = 10, 2
 
-    # Maximum area of the interface, in A^2
+    # Area range for the matched interfaces, in A^2
     MIN_AREA, MAX_AREA = 250, 2500
 
     # Tolerance for the misfit of lattice vectors and angles
