@@ -3,6 +3,7 @@
 import streamlit as st
 import os
 import io
+import datetime
 import shutil
 import numpy as np
 from itertools import product
@@ -237,14 +238,16 @@ def trim(data):
     return data, same_idx
 
 
-def slab_maker(cell_conv, miller_indices, vacuum):
-    cell_name = f'{cell_conv.split("/")[-1].split(".")[0]}'
+def slab_maker(cell_conv, miller_indices, vacuum, MIN_THICKNESS):
+    # cell_name = f'{cell_conv.split("/")[-1].split(".")[0]}'
 
     data = []
     slabs = []
+    slabs_store = []
 
     for h, k, l in miller_indices:
-        atom = read(cell_conv)
+        # atom = read(cell_conv)
+        atom = cell_conv
         slab = surface(lattice=atom, indices=(h, k, l), layers=1, vacuum=vacuum, tol=1e-10, periodic=True)
 
         # Increase the number of layers if the slab is too short
@@ -253,7 +256,7 @@ def slab_maker(cell_conv, miller_indices, vacuum):
             z_top = max([atom.position[2] for atom in slab])
             z_bottom = min([atom.position[2] for atom in slab])
             slab_length = z_top - z_bottom
-            if slab_length < MIN_SLAB_THICKNESS:
+            if slab_length < MIN_THICKNESS:
                 layers += 1
                 slab = surface(lattice=atom, indices=(h, k, l), layers=layers, vacuum=vacuum, tol=1e-10, periodic=True)
             else:
@@ -281,22 +284,12 @@ def slab_maker(cell_conv, miller_indices, vacuum):
     for i, slab in enumerate(slabs):
         h, k, l = miller_indices[i]
         if i not in same_idx:
-            write(f'output/slabs/slab_{h}{k}{l}_{cell_name}.vasp', slab, format='vasp', direct=False, sort=False)
+            # write(f'output/slabs/slab_{h}{k}{l}_{cell_name}.vasp', slab, format='vasp', direct=False, sort=False)
+            slabs_store.append(slab)
 
-    ''' Data format:
-    0 - Miller index: hkl
-    1 - Area of the slab
-    2 - Cell vector ax
-    3 - Cell vector ay
-    4 - Cell vector bx
-    5 - Cell vector by
-    6 - Length of reduced cell vector a
-    7 - Length of reduced cell vector b
-    8 - Angle between reduced cell vectors a and b
-    '''
     data = [[f'{int(i[0])}{int(i[1])}{int(i[2])}', *i[3:]] for i in data]
 
-    return data
+    return data, slabs_store
 
 
 def pair_slabs(data_lower, data_upper, area):
@@ -314,16 +307,6 @@ def pair_slabs(data_lower, data_upper, area):
     for i, j in product(hkl_0, hkl_1):
         int_list, ratio = find_int(target_0[i], target_1[j], area)
 
-        ''' Data format:
-        0 - Miller index hkl of lower slab
-        1 - Miller index hkl of upper slab
-        2 - Area of lower slab
-        3 - Area of upper slab
-        4 - Ratio of the areas = area_lower / area_upper
-        5 - Integer n_0
-        6 - Integer n_1
-        7 - Integer ratio n_0 / n_1
-        '''
         pairs.append([i, j, target_0[i], target_1[j], ratio, int_list])
 
     return pairs
@@ -361,27 +344,12 @@ def cal_uv(data_slab, hkl, n):
     # Compare lattice parameters and delete the same ones
     data, same_idx = trim(data)
 
-    ''' Data format:
-    0 - Miller index: hkl
-    1 - Area of the supercell
-    2 - Scaling factor n
-    3 - Integer i
-    4 - Integer j
-    5 - Integer m
-    6 - Reduced super cell matrix T_r_1
-    7 - Reduced super cell matrix T_r_2
-    8 - Reduced super cell matrix T_r_3
-    9 - Reduced super cell matrix T_r_4
-    10 - Length of reduced super cell vector u
-    11 - Length of reduced super cell vector v
-    12 - Angle between reduced super cell vectors u and v
-    '''
     data = [[hkl, *i] for i in data]
 
     return data
 
 
-def lattice_match(data_pairs, data_ab_lower, data_ab_upper):
+def lattice_match(data_pairs, data_ab_lower, data_ab_upper, UV_TOL, ANGLE_TOL):
     data_matched = []
     for i, row in enumerate(data_pairs):
         hkl_0 = row[0]
@@ -426,34 +394,12 @@ def lattice_match(data_pairs, data_ab_lower, data_ab_upper):
                 T_lower = np.dot(t_lower, ijm_lower)
                 T_upper = np.dot(t_upper, ijm_upper)
                 
-                ''' Data format:
-                0 - Miller index hkl of lower slab
-                1 - Miller index hkl of upper slab
-                2 - u_mis
-                3 - v_mis
-                4 - angle_mis
-                5 - Area of lower slab
-                6 - Area of upper slab
-                7 - Transformed matrix T1 of lower slab
-                8 - Transformed matrix T2 of lower slab
-                9 - Transformed matrix T3 of lower slab
-                10 - Transformed matrix T4 of lower slab
-                11 - Transformed matrix T1 of upper slab
-                12 - Transformed matrix T2 of upper slab
-                13 - Transformed matrix T3 of upper slab
-                14 - Transformed matrix T4 of upper slab
-                15 - Length of reduced super cell vector u of lower slab
-                16 - Length of reduced super cell vector v of lower slab
-                17 - Angle between reduced super cell vectors u and v of lower slab
-                18 - Length of reduced super cell vector u of upper slab
-                19 - Length of reduced super cell vector v of upper slab
-                20 - Angle between reduced super cell vectors u and v of upper slab
-                '''
                 data_matched.append([hkl_0, hkl_1, *mis[2:], S_lower, S_upper, *T_lower.flatten(), *T_upper.flatten(), u_lower, v_lower, angle_lower, u_upper, v_upper, angle_upper])
+    
     return data_matched
 
 
-def filter_data(data_matched, MIN_AREA):
+def filter_data(data_matched, MIN_AREA, SHAPE_FILTER):
     if len(data_matched) > 1:
         # Compare the areas and get the closest area to the MIN_AREA
         data_matched = np.array(data_matched)
@@ -504,74 +450,91 @@ def find_hkl(h_max, k_max, l_max):
     return hkl_list
 
 
-def interface_maker():
-    global LOWER_HKL, UPPER_HKL
-    assigned = False
-    if 'MAX_H' in globals() and 'MAX_K' in globals() and 'MAX_L' in globals():
-        # Find all the Miller indices
+def interface_maker(session_state):
+    log_container = st.empty()
+    log_buffer = ''
+    if session_state.assign_specific:
+        LOWER_HKL, UPPER_HKL = session_state.LOWER_HKL, session_state.UPPER_HKL
+        log_buffer += f'Assigned Miller indices:\nLower slab: {LOWER_HKL}; \nupper slab: {UPPER_HKL}'
+    else:
+        MAX_H, MAX_K, MAX_L = session_state.MAX_H, session_state.MAX_K, session_state.MAX_L
         LOWER_HKL, UPPER_HKL = find_hkl(MAX_H, MAX_K, MAX_L), find_hkl(MAX_H, MAX_K, MAX_L)
-        print(f'No assigned Miller indices, all possible Miller indices are considered. Total number of Miller indices: {len(LOWER_HKL)}')
-    else:
-        assigned = True
-        print(f'\nAssigned Miller indices for lower slab: {LOWER_HKL}; upper slab: {UPPER_HKL}')
-        LOWER_HKL, UPPER_HKL = [LOWER_HKL], [UPPER_HKL]
+        log_buffer += f'Assigned Miller indices:\nLower slab: {LOWER_HKL}; \nupper slab: {UPPER_HKL}'
+    # Display the log
+    with log_container:
+        st.text_area(
+            label='', 
+            value=log_buffer,
+            height=600,
+            )
 
-    # Create slabs folder
-    if not os.path.exists('output/slabs'):
-        os.makedirs('output/slabs')
-    else:
-        shutil.rmtree('output/slabs')
-        os.makedirs('output/slabs')
-    
+    # Unpack the session state variables
+    timestamp = session_state.timestamp
+    LOWER_CONV = session_state.LOWER_CONV
+    UPPER_CONV = session_state.UPPER_CONV
+    UV_TOL = session_state.UV_TOL
+    ANGLE_TOL = session_state.ANGLE_TOL
+    MIN_THICKNESS = session_state.MIN_THICKNESS
+    INTERFACE_VACUUM = session_state.INTERFACE_VACUUM
+    INTERFACE_GAP = session_state.INTERFACE_GAP
+    MIN_AREA = session_state.MIN_AREA
+    MAX_AREA = session_state.MAX_AREA
+    SHAPE_FILTER = session_state.SHAPE_FILTER
+
     # Create slabs for lower and upper materials
-    data_ab_lower = slab_maker(cell_conv=LOWER_CONV, miller_indices=LOWER_HKL, vacuum=SLAB_VACUUM)
-    data_ab_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=UPPER_HKL, vacuum=SLAB_VACUUM)
+    data_ab_lower, slabs_lower = slab_maker(cell_conv=LOWER_CONV, miller_indices=LOWER_HKL, vacuum=INTERFACE_VACUUM, MIN_THICKNESS=MIN_THICKNESS)
+    data_ab_upper, slabs_upper = slab_maker(cell_conv=UPPER_CONV, miller_indices=UPPER_HKL, vacuum=INTERFACE_VACUUM, MIN_THICKNESS=MIN_THICKNESS)
     lower_khl, upper_khl = [i[0] for i in data_ab_lower], [i[0] for i in data_ab_upper]
     area_lower, area_upper = [i[1] for i in data_ab_lower], [i[1] for i in data_ab_upper]
 
-    # Create interfaces folder
-    if not os.path.exists(f'output/interfaces'):
-        os.makedirs(f'output/interfaces')
+    profile_txt = io.StringIO()
+    profile_txt.write('+'.center(60, '+') + '\n\n')
+    profile_txt.write('Interface Maker v1.0'.center(60) + '\n')
+    profile_txt.write('By Guangchen Liu, gliu4@wpi.edu'.center(60) + '\n\n')
+    profile_txt.write('+'.center(60, '+') + '\n\n')
+    if not session_state.assign_specific:
+        profile_txt.write('Miller indices considered for lower and upper slabs:'.center(60) + '\n\n')
+        profile_txt.write(f'{len(lower_khl)} non-equivalent planes for lower slab:'.center(60) + '\n\n')
+        for i in range(0, len(lower_khl), 5):
+            profile_txt.write(' '.join([f'{str(j)}' for j in lower_khl[i:i+5]]).center(60) + '\n')
+        profile_txt.write('\n')
+        profile_txt.write(f'{len(upper_khl)} non-equivalent planes for upper slab:'.center(60) + '\n\n')
+        for i in range(0, len(upper_khl), 5):
+            profile_txt.write(' '.join([f'{str(j)}' for j in upper_khl[i:i+5]]).center(60) + '\n')
     else:
-        shutil.rmtree(f'output/interfaces')
-        os.makedirs(f'output/interfaces')
+        profile_txt.write(f'Aassigned Miller indices:'.center(60) + '\n')
+        profile_txt.write(f'Lower slab: {LOWER_HKL[0]}'.center(60) + '\n')
+        profile_txt.write(f'Upper slab: {UPPER_HKL[0]}'.center(60) + '\n')
+    profile_txt.write('\n')
+    profile_txt.write('-'.center(60, '-') + '\n\n')
+    if SHAPE_FILTER:
+        profile_txt.write('Warning: Shape filter is ON! '.center(60) + '\n')
+        profile_txt.write('Only the most diamond-like interface will be kept!'.center(60) + '\n')
+    else:
+        profile_txt.write('Warning: Shape filter is OFF! '.center(60) + '\n')
+        profile_txt.write('All matched interfaces will be kept!'.center(60) + '\n')
+    profile_txt.write('\n')
+    profile_txt.write('-'.center(60, '-') + '\n\n')
+    profile_txt.write(f'Search results for matched interfaces with area within {MAX_AREA} A^2: \n\n')
+    profile_txt.write(f'{"Lower hkl":<20}{"Upper hkl":<20}{"Area (A^2)":<20}\n')
+    # # Now turn the stream into bytes for downloading
+    # contents = profile_txt.getvalue()
+    # profile_txt.close()
+    # st.download_button(
+    #     label='Download Interface Profile', data=contents, file_name=f'intf_profile_{timestamp}.txt', mime='text/plain')
 
-    with open('output/interfaces/intf_profile.txt', 'a') as f:
-        f.write('+'.center(60, '+') + '\n\n')
-        f.write('Interface Maker v1.0'.center(60) + '\n')
-        f.write('By Guangchen Liu, gliu4@wpi.edu'.center(60) + '\n\n')
-        f.write('+'.center(60, '+') + '\n\n')
-        if not assigned:
-            f.write('Miller indices considered for lower and upper slabs:'.center(60) + '\n\n')
-            f.write(f'{len(lower_khl)} non-equivalent planes for lower slab:'.center(60) + '\n\n')
-            for i in range(0, len(lower_khl), 5):
-                f.write(' '.join([f'{str(j)}' for j in lower_khl[i:i+5]]).center(60) + '\n')
-            f.write('\n')
-            f.write(f'{len(upper_khl)} non-equivalent planes for upper slab:'.center(60) + '\n\n')
-            for i in range(0, len(upper_khl), 5):
-                f.write(' '.join([f'{str(j)}' for j in upper_khl[i:i+5]]).center(60) + '\n')
-        else:
-            f.write(f'Aassigned Miller indices:'.center(60) + '\n')
-            f.write(f'Lower slab: {LOWER_HKL[0]}'.center(60) + '\n')
-            f.write(f'Upper slab: {UPPER_HKL[0]}'.center(60) + '\n')
-        f.write('\n')
-        f.write('-'.center(60, '-') + '\n\n')
-        if SHAPE_FILTER:
-            f.write('Warning: Shape filter is ON! '.center(60) + '\n')
-            f.write('Only the most diamond-like interface will be kept!'.center(60) + '\n')
-        else:
-            f.write('Warning: Shape filter is OFF! '.center(60) + '\n')
-            f.write('All matched interfaces will be kept!'.center(60) + '\n')
-        f.write('\n')
-        f.write('-'.center(60, '-') + '\n\n')
-        f.write(f'Search results for matched interfaces with area within {MAX_AREA} A^2: \n\n')
-        f.write(f'{"Lower hkl":<20}{"Upper hkl":<20}{"Area (A^2)":<20}\n')
-    
-    with open('output/interfaces/intf_profile.csv', 'a') as f:
-        f.write('Interface ID,Surface ID,Total atoms,Lower hkl,Upper hkl,Lower area,Upper area,U misfit (%),V misfit (%),Angle misfit (°),Area misfit (%),T_0_1,T_0_2,T_0_3,T_0_4,T_1_1,T_1_2,T_1_3,T_1_4\n')
+    profile_csv = io.StringIO()
+    profile_csv.write('Interface ID,Surface ID,Total atoms,Lower hkl,Upper hkl,Lower area,Upper area,U misfit (%),V misfit (%),Angle misfit (°),Area misfit (%),T_0_1,T_0_2,T_0_3,T_0_4,T_1_1,T_1_2,T_1_3,T_1_4\n')
 
     # Get the product of the Miller indices
-    print('\nFinding matched interfaces...')
+    log_buffer += '\n\nFinding matched interfaces...'
+    # Display the log
+    with log_container:
+        st.text_area(
+            label='', 
+            value=log_buffer,
+            height=600,
+            )
     data_matched_all = []
     for i, j in product(LOWER_HKL, UPPER_HKL):
         LOWER_HKL = [i]
@@ -587,30 +550,63 @@ def interface_maker():
             # Match the lattices of the lower and upper slabs
             while True:
                 data_pairs = pair_slabs(data_ab_lower_hkl, data_ab_upper_hkl, MAX_AREA)
-                data_matched = lattice_match(data_pairs, data_ab_lower_hkl, data_ab_upper_hkl)
+                data_matched = lattice_match(data_pairs, data_ab_lower_hkl, data_ab_upper_hkl , UV_TOL, ANGLE_TOL)
                 if len(data_matched) == 0:
-                    with open('output/interfaces/intf_profile.txt', 'a') as f:
-                        f.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{"-":<20}{"0":<20}\n')
-                        print('\n'.ljust(4) + f'---> No matched interfaces found for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {MAX_AREA} A^2')
+                    profile_txt.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{"-":<20}{"0":<20}\n')
+                    log_buffer += '\n'.ljust(4) + f'---> No matched interfaces found for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {MAX_AREA} Å^2'
+                    # Display the log
+                    with log_container:
+                        st.text_area(
+                            label='',
+                            value=log_buffer,
+                            height=600,
+                            )
                     break
                 else:
-                    data_matched, min_area = filter_data(data_matched, MIN_AREA)
+                    data_matched, min_area = filter_data(data_matched, MIN_AREA, SHAPE_FILTER)
                     data_matched_all.extend(data_matched)
-                    with open('output/interfaces/intf_profile.txt', 'a') as f:
-                        f.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{min_area:<20.4f}\n')
-                        print('\n'.ljust(4) + f'---> Found matched interfaces for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {min_area:.4f} A^2')
+                    profile_txt.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{min_area:<20.4f}\n')
+                    log_buffer += '\n'.ljust(4) + f'---> Found matched interfaces for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {min_area:.4f} Å^2'
+                    # Display the log
+                    with log_container:
+                        st.text_area(
+                            label='', 
+                            value=log_buffer,
+                            height=600,
+                            )
                     break
 
-    with open('output/interfaces/intf_profile.txt', 'a') as f:
-        f.write(f'\nTotal number of interfaces found: {len(data_matched_all)}'.center(60) + '\n\n')
-        print(f'\nTotal number of interfaces found: {len(data_matched_all)}')
+    profile_txt.write(f'\nTotal number of interfaces found: {len(data_matched_all)}'.center(60) + '\n\n')
+    profile_txt.close()
+    log_buffer += '\n'.ljust(4) + f'---> Total number of interfaces found: {len(data_matched_all)}'
+    # Display the log
+    with log_container:
+        st.text_area(
+            label='', 
+            value=log_buffer,
+            height=600,
+            )
 
     # Write the matched interfaces
     if not len(data_matched_all) == 0:
-        print('\n'.ljust(4) + '---> Creating interfaces...')
+        log_buffer += '\n\nGenerating interfaces...'
+        # Display the log
+        with log_container:
+            st.text_area(
+                label='', 
+                value=log_buffer,
+                height=600,
+                )
         for i, profile in enumerate(data_matched_all):
-            gen_intf(i, profile)
-        print('\n'.ljust(4) + '---> All interfaces are created successfully!\n')
+            # gen_intf(i, profile)
+            log_buffer += '\n'.ljust(4) + f'---> Generated interface {i+1} for ({profile[0][0]}, {profile[0][1]}, {profile[0][2]}) and ({profile[1][0]},  {profile[1][1]}, {profile[1][2]})...'
+            # Display the log
+            with log_container:
+                st.text_area(
+                    label='', 
+                    value=log_buffer,
+                    height=600,
+                    )
 
 
 def main():
@@ -647,12 +643,12 @@ def main():
     # Add a section for uploading files of lower and upper systems
     st.divider()
     st.subheader('Upload Your Structures')
-    st.caption('Upload the conventional cell of the lower and upper systems in VASP format (.vasp).')
+    st.caption('Upload the conventional cell of the lower and upper systems in VASP format (.vasp/.poscar).')
     col1, col2 = st.columns(2, gap='medium', border=True)
     with col1:
-        lower_input = st.file_uploader('Lower system', type=['vasp'])
+        lower_input = st.file_uploader('Lower system', type=['vasp', 'POSCAR'])
     with col2:
-        upper_input = st.file_uploader('Upper system', type=['vasp'])
+        upper_input = st.file_uploader('Upper system', type=['vasp', 'POSCAR'])
 
     # Check if the files are uploaded
     st.session_state.files_uploaded = False
@@ -670,21 +666,23 @@ def main():
             st.success('Files uploaded successfully!')
             st.write('Lower System:', LOWER_CONV)
             st.write('Upper System:', UPPER_CONV)
+            # Set session_state variables
+            st.session_state.LOWER_CONV = LOWER_CONV
+            st.session_state.UPPER_CONV = UPPER_CONV
         except Exception as e:
-            print(e)
             st.error(f'Sorry, we cannot read the uploaded files. Please check the file format and try again.')
             st.stop()
     
     if st.session_state.files_uploaded:
         # Add a section for Miller Indices
         st.divider()
-        st.subheader('Miller Indices')
-        st.caption('Set the maximum Miller indices of h, k, l for lower and upper slabs. If you are interested in specific Miller indices, please assign them by checking the box below.')
-        st.session_state.assign_specific = False
+        st.subheader('Define Miller Indices')
+        st.caption('Define the maximum Miller indices of h, k, l for lower and upper slabs. If you are interested in specific Miller indices, please assign them by checking the box below.')
         assign_specific = st.checkbox(
             'Assign Specific Miller Indices for Lower and Upper Slabs',
-            value=st.session_state.assign_specific
+            value=False,
         )
+        st.session_state.assign_specific = assign_specific
         if not assign_specific:
             with st.container(border=True):
                 col3, col4, col5 = st.columns(3, gap='medium', border=False)
@@ -694,73 +692,92 @@ def main():
                     MAX_K = st.number_input('Maximum K', 0, 10, 1, step=1)
                 with col5:
                     MAX_L = st.number_input('Maximum L', 0, 10, 1, step=1)
+                # Ensure that at least one of the Miller indices is greater than 0
+                if MAX_H == 0 and MAX_K == 0 and MAX_L == 0:
+                    st.error('Please set at least one of the Miller indices greater than 0.')
+                    st.stop()
+                # Set session_state variables
+                st.session_state.MAX_H = MAX_H
+                st.session_state.MAX_K = MAX_K
+                st.session_state.MAX_L = MAX_L
         else:
             st.markdown('**Upper Slab:**')
             with st.container(border=True):
                 col6, col7, col8 = st.columns(3, gap='medium', border=False)
                 with col6:
-                    max_h_upper = st.number_input('H', 0, 10, 1, step=1, key='max_h_upper')
+                    h_upper = st.number_input('H', 0, 10, 0, step=1, key='h_upper')
                 with col7:
-                    max_k_upper = st.number_input('K', 0, 10, 1, step=1, key='max_k_upper')
+                    k_upper = st.number_input('K', 0, 10, 0, step=1, key='k_upper')
                 with col8:
-                    max_l_upper = st.number_input('L', 0, 10, 1, step=1, key='max_l_upper')
+                    l_upper = st.number_input('L', 0, 10, 1, step=1, key='l_upper')
+                # Ensure that at least one of the Miller indices is greater than 0
+                if h_upper == 0 and k_upper == 0 and l_upper == 0:
+                    st.error('Please set at least one of the Miller indices greater than 0.')
+                    st.stop()
             st.markdown('**Lower Slab:**')
             with st.container(border=True):
                 col3, col4, col5 = st.columns(3, gap='medium', border=False)
                 with col3:
-                    max_h_lower = st.number_input('H', 0, 10, 1, step=1, key='max_h_lower')
+                    h_lower = st.number_input('H', 0, 10, 0, step=1, key='h_lower')
                 with col4:
-                    max_k_lower = st.number_input('K', 0, 10, 1, step=1, key='max_k_lower')
+                    k_lower = st.number_input('K', 0, 10, 0, step=1, key='k_lower')
                 with col5:
-                    max_l_lower = st.number_input('L', 0, 10, 1, step=1, key='max_l_lower')
-            LOWER_HKL = (max_h_lower, max_k_lower, max_l_lower)
-            UPPER_HKL = (max_h_upper, max_k_upper, max_l_upper)
+                    l_lower = st.number_input('L', 0, 10, 1, step=1, key='l_lower')
+                # Ensure that at least one of the Miller indices is greater than 0
+                if h_lower == 0 and k_lower == 0 and l_lower == 0:
+                    st.error('Please set at least one of the Miller indices greater than 0.')
+                    st.stop()
+            LOWER_HKL = (h_lower, k_lower, l_lower)
+            UPPER_HKL = (h_upper, k_upper, l_upper)
+            # Set session_state variables
+            st.session_state.LOWER_HKL = LOWER_HKL
+            st.session_state.UPPER_HKL = UPPER_HKL
 
         # Add a section for Lattice Matching
         st.divider()
-        st.subheader('Lattice Matching')
+        st.subheader('Set Lattice Matching Parameters')
         st.caption('Set the tolerance for the misfit of lattice vectors (in %) and angle (in degree).')
         col9, col10 = st.columns(2, gap='medium', border=True)
         with col9:
-            # UV_TOL = st.number_input('Lattice Vector Tolerance (%)', 0, 50, 5, step=1)
             UV_TOL = st.slider(
                 label='Lattice Vector Tolerance (%)',
                 min_value=0,
-                max_value=50,
+                max_value=20,
                 value=5,
                 step=1,
             )
         with col10:
-            # ANGLE_TOL = st.number_input('Angle Tolerance (°)', 0, 90, 5, step=1)
             ANGLE_TOL = st.slider(
                 label='Angle Tolerance (°)',
                 min_value=0,
-                max_value=90,
+                max_value=20,
                 value=5,
                 step=1,
             )
-
+        # Set session_state variable
+        st.session_state.UV_TOL = UV_TOL
+        st.session_state.ANGLE_TOL = ANGLE_TOL
 
         # Add a section for Interface Geometry
         st.divider()
-        st.subheader('Interface Geometry')
+        st.subheader('Customize Interface Geometry')
         st.caption('Customize the interface geometry including the minimum thickness of the slab, slab vacuum, interface gap, area range for the matched interfaces, and the shape filter option.')
-        MIN_SLAB_THICKNESS = st.slider(
-            label='Minimum Thickness of the Slab ($Å$)',
+        MIN_THICKNESS = st.slider(
+            label='Minimum Thickness of the Interface ($Å$)',
             min_value=1,
             max_value=1000,
             value=20,
             step=1,
         )
-        SLAB_VACUUM = st.slider(
-            label='Slab Vacuum ($Å$)',
+        INTERFACE_VACUUM = st.slider(
+            label='Vacuum Layer Thickness ($Å$)',
             min_value=0,
             max_value=100,
             value=10,
             step=1,
         )
         INTERFACE_GAP = st.slider(
-            label='Interface Gap ($Å$)',
+            label='Interface Gap Thickness ($Å$)',
             min_value=0,
             max_value=100,
             value=2,
@@ -779,22 +796,30 @@ def main():
             value=True,
             help='Only keep the square-like interface',
         )
+        # Set session_state variable
+        st.session_state.MIN_THICKNESS = MIN_THICKNESS
+        st.session_state.INTERFACE_VACUUM = INTERFACE_VACUUM
+        st.session_state.INTERFACE_GAP = INTERFACE_GAP
+        st.session_state.MIN_AREA = MIN_AREA
+        st.session_state.MAX_AREA = MAX_AREA
+        st.session_state.SHAPE_FILTER = SHAPE_FILTER
 
     # Add a button to run the interface maker
     st.divider()
     if st.button('Generate Interfaces', type='primary', use_container_width=True):
+        timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+        st.session_state.timestamp = timestamp
         if not st.session_state.files_uploaded:
-            st.error('Please upload the conventional cell of the lower and upper systems in VASP format (.vasp).')
+            st.error('Please upload the conventional cell of the lower and upper systems in VASP format (.vasp/.poscar).')
             st.stop()
-        if assign_specific:
-            with st.spinner('Generating interfaces...'):
-                try:
-                    interface_maker()
-                    st.success('Interfaces generated successfully!')
-                    st.balloons()
-                except Exception as e:
-                    st.error(f'Sorry, we cannot generate the interfaces. Please check the input parameters and try again.')
-                    st.stop()
+        with st.spinner('Generating interfaces...'):
+            try:
+                interface_maker(st.session_state)
+                st.success('Interfaces Generated Successfully!')
+                st.balloons()
+            except Exception as e:
+                st.error(f'Sorry, we cannot generate the interfaces. Please check the input parameters and try again.')
+                st.stop()
 
     # Add a footer
     st.divider()
@@ -809,29 +834,4 @@ def main():
 
 
 if __name__ == '__main__':
-    # Input bulk structures, need the conventional cell
-    LOWER_CONV = 'input/POSCAR_LCO_MP_R_3c_Conv.vasp'
-    UPPER_CONV = 'input/POSCAR_LNO_MP_I4mmm_Conv.vasp'
-
-    # Option 1: Set maximum Miller indices of h, k, l for lower and upper slabs
-    MAX_H, MAX_K, MAX_L = 1, 1, 1
-
-    # # Option 2: Assign the specific Miller indices for lower and upper slabs
-    # LOWER_HKL, UPPER_HKL = (0, 0, 1), (0, 0, 1)
-
-    # Minimum thickness of the slab, without vacuum, in Angstrom
-    MIN_SLAB_THICKNESS = 20
-
-    # Slab vacuum and interface gap, in Angstrom
-    SLAB_VACUUM, INTERFACE_GAP = 10, 2
-
-    # Area range for the matched interfaces, in A^2
-    MIN_AREA, MAX_AREA = 250, 2500
-
-    # Tolerance for the misfit of lattice vectors (in %) and angle (in degree)
-    UV_TOL, ANGLE_TOL = 5, 5
-
-    # Run the shape filter or not, which will only keep the near-diamond shape interface
-    SHAPE_FILTER = True
-
     main()
