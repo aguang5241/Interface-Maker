@@ -463,7 +463,7 @@ def interface_maker(session_state):
     # Display the log
     with log_container:
         st.text_area(
-            label='', 
+            label='Interface Generation Details', 
             value=log_buffer,
             height=600,
             )
@@ -531,7 +531,7 @@ def interface_maker(session_state):
     # Display the log
     with log_container:
         st.text_area(
-            label='', 
+            label='Interface Generation Details', 
             value=log_buffer,
             height=600,
             )
@@ -557,7 +557,7 @@ def interface_maker(session_state):
                     # Display the log
                     with log_container:
                         st.text_area(
-                            label='',
+                            label='Interface Generation Details',
                             value=log_buffer,
                             height=600,
                             )
@@ -570,7 +570,7 @@ def interface_maker(session_state):
                     # Display the log
                     with log_container:
                         st.text_area(
-                            label='', 
+                            label='Interface Generation Details', 
                             value=log_buffer,
                             height=600,
                             )
@@ -582,7 +582,7 @@ def interface_maker(session_state):
     # Display the log
     with log_container:
         st.text_area(
-            label='', 
+            label='Interface Generation Details', 
             value=log_buffer,
             height=600,
             )
@@ -593,7 +593,7 @@ def interface_maker(session_state):
         # Display the log
         with log_container:
             st.text_area(
-                label='', 
+                label='Interface Generation Details', 
                 value=log_buffer,
                 height=600,
                 )
@@ -603,7 +603,7 @@ def interface_maker(session_state):
             # Display the log
             with log_container:
                 st.text_area(
-                    label='', 
+                    label='Interface Generation Details', 
                     value=log_buffer,
                     height=600,
                     )
