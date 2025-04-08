@@ -2,6 +2,7 @@
 
 import streamlit as st
 import os
+import io
 import shutil
 import numpy as np
 from itertools import product
@@ -649,113 +650,151 @@ def main():
     st.caption('Upload the conventional cell of the lower and upper systems in VASP format (.vasp).')
     col1, col2 = st.columns(2, gap='medium', border=True)
     with col1:
-        LOWER_CONV = st.file_uploader('Lower system', type=['vasp'])
+        lower_input = st.file_uploader('Lower system', type=['vasp'])
     with col2:
-        UPPER_CONV = st.file_uploader('Upper system', type=['vasp'])
+        upper_input = st.file_uploader('Upper system', type=['vasp'])
 
-    # Add a section for Miller Indices
-    st.divider()
-    st.subheader('Miller Indices')
-    st.caption('Set the maximum Miller indices of h, k, l for lower and upper slabs. If you are interested in specific Miller indices, please assign them by checking the box below.')
-    st.session_state.assign_specific = False
-    assign_specific = st.checkbox(
-        'Assign Specific Miller Indices for Lower and Upper Slabs',
-        value=st.session_state.assign_specific
-    )
-    if not assign_specific:
-        with st.container(border=True):
-            col3, col4, col5 = st.columns(3, gap='medium', border=False)
-            with col3:
-                MAX_H = st.number_input('Maximum H', 0, 10, 1, step=1)
-            with col4:
-                MAX_K = st.number_input('Maximum K', 0, 10, 1, step=1)
-            with col5:
-                MAX_L = st.number_input('Maximum L', 0, 10, 1, step=1)
-    else:
-        st.markdown('**Upper Slab:**')
-        with st.container(border=True):
-            col6, col7, col8 = st.columns(3, gap='medium', border=False)
-            with col6:
-                max_h_upper = st.number_input('H', 0, 10, 1, step=1, key='max_h_upper')
-            with col7:
-                max_k_upper = st.number_input('K', 0, 10, 1, step=1, key='max_k_upper')
-            with col8:
-                max_l_upper = st.number_input('L', 0, 10, 1, step=1, key='max_l_upper')
-        st.markdown('**Lower Slab:**')
-        with st.container(border=True):
-            col3, col4, col5 = st.columns(3, gap='medium', border=False)
-            with col3:
-                max_h_lower = st.number_input('H', 0, 10, 1, step=1, key='max_h_lower')
-            with col4:
-                max_k_lower = st.number_input('K', 0, 10, 1, step=1, key='max_k_lower')
-            with col5:
-                max_l_lower = st.number_input('L', 0, 10, 1, step=1, key='max_l_lower')
-        LOWER_HKL = (max_h_lower, max_k_lower, max_l_lower)
-        UPPER_HKL = (max_h_upper, max_k_upper, max_l_upper)
+    # Check if the files are uploaded
+    st.session_state.files_uploaded = False
+    if lower_input is not None and upper_input is not None:
+        try:
+            # Read the uploaded files
+            lower_content = lower_input.getvalue().decode("utf-8")
+            lower_content = io.StringIO(lower_content)
+            LOWER_CONV = read(lower_content, format='vasp')
+            upper_content = upper_input.getvalue().decode("utf-8")
+            upper_content = io.StringIO(upper_content)
+            UPPER_CONV = read(upper_content, format='vasp')
+            # Set the files_uploaded flag to True
+            st.session_state.files_uploaded = True
+            st.success('Files uploaded successfully!')
+            st.write('Lower System:', LOWER_CONV)
+            st.write('Upper System:', UPPER_CONV)
+        except Exception as e:
+            print(e)
+            st.error(f'Sorry, we cannot read the uploaded files. Please check the file format and try again.')
+            st.stop()
+    
+    if st.session_state.files_uploaded:
+        # Add a section for Miller Indices
+        st.divider()
+        st.subheader('Miller Indices')
+        st.caption('Set the maximum Miller indices of h, k, l for lower and upper slabs. If you are interested in specific Miller indices, please assign them by checking the box below.')
+        st.session_state.assign_specific = False
+        assign_specific = st.checkbox(
+            'Assign Specific Miller Indices for Lower and Upper Slabs',
+            value=st.session_state.assign_specific
+        )
+        if not assign_specific:
+            with st.container(border=True):
+                col3, col4, col5 = st.columns(3, gap='medium', border=False)
+                with col3:
+                    MAX_H = st.number_input('Maximum H', 0, 10, 1, step=1)
+                with col4:
+                    MAX_K = st.number_input('Maximum K', 0, 10, 1, step=1)
+                with col5:
+                    MAX_L = st.number_input('Maximum L', 0, 10, 1, step=1)
+        else:
+            st.markdown('**Upper Slab:**')
+            with st.container(border=True):
+                col6, col7, col8 = st.columns(3, gap='medium', border=False)
+                with col6:
+                    max_h_upper = st.number_input('H', 0, 10, 1, step=1, key='max_h_upper')
+                with col7:
+                    max_k_upper = st.number_input('K', 0, 10, 1, step=1, key='max_k_upper')
+                with col8:
+                    max_l_upper = st.number_input('L', 0, 10, 1, step=1, key='max_l_upper')
+            st.markdown('**Lower Slab:**')
+            with st.container(border=True):
+                col3, col4, col5 = st.columns(3, gap='medium', border=False)
+                with col3:
+                    max_h_lower = st.number_input('H', 0, 10, 1, step=1, key='max_h_lower')
+                with col4:
+                    max_k_lower = st.number_input('K', 0, 10, 1, step=1, key='max_k_lower')
+                with col5:
+                    max_l_lower = st.number_input('L', 0, 10, 1, step=1, key='max_l_lower')
+            LOWER_HKL = (max_h_lower, max_k_lower, max_l_lower)
+            UPPER_HKL = (max_h_upper, max_k_upper, max_l_upper)
 
-    # Add a section for Lattice Matching
-    st.divider()
-    st.subheader('Lattice Matching')
-    st.caption('Set the tolerance for the misfit of lattice vectors (in %) and angle (in degree).')
-    col9, col10 = st.columns(2, gap='medium', border=True)
-    with col9:
-        # UV_TOL = st.number_input('Lattice Vector Tolerance (%)', 0, 50, 5, step=1)
-        UV_TOL = st.slider(
-            label='Lattice Vector Tolerance (%)',
-            min_value=0,
-            max_value=50,
-            value=5,
+        # Add a section for Lattice Matching
+        st.divider()
+        st.subheader('Lattice Matching')
+        st.caption('Set the tolerance for the misfit of lattice vectors (in %) and angle (in degree).')
+        col9, col10 = st.columns(2, gap='medium', border=True)
+        with col9:
+            # UV_TOL = st.number_input('Lattice Vector Tolerance (%)', 0, 50, 5, step=1)
+            UV_TOL = st.slider(
+                label='Lattice Vector Tolerance (%)',
+                min_value=0,
+                max_value=50,
+                value=5,
+                step=1,
+            )
+        with col10:
+            # ANGLE_TOL = st.number_input('Angle Tolerance (°)', 0, 90, 5, step=1)
+            ANGLE_TOL = st.slider(
+                label='Angle Tolerance (°)',
+                min_value=0,
+                max_value=90,
+                value=5,
+                step=1,
+            )
+
+
+        # Add a section for Interface Geometry
+        st.divider()
+        st.subheader('Interface Geometry')
+        st.caption('Customize the interface geometry including the minimum thickness of the slab, slab vacuum, interface gap, area range for the matched interfaces, and the shape filter option.')
+        MIN_SLAB_THICKNESS = st.slider(
+            label='Minimum Thickness of the Slab ($Å$)',
+            min_value=1,
+            max_value=1000,
+            value=20,
             step=1,
         )
-    with col10:
-        # ANGLE_TOL = st.number_input('Angle Tolerance (°)', 0, 90, 5, step=1)
-        ANGLE_TOL = st.slider(
-            label='Angle Tolerance (°)',
+        SLAB_VACUUM = st.slider(
+            label='Slab Vacuum ($Å$)',
             min_value=0,
-            max_value=90,
-            value=5,
+            max_value=100,
+            value=10,
             step=1,
         )
+        INTERFACE_GAP = st.slider(
+            label='Interface Gap ($Å$)',
+            min_value=0,
+            max_value=100,
+            value=2,
+            step=1,
+        )
+        area = st.slider(
+            label='Area Range for the Matched Interfaces ($Å^2$)',
+            min_value=1,
+            max_value=5000,
+            value=(250, 2500),
+            step=1,
+        )
+        MIN_AREA, MAX_AREA = area[0], area[1]
+        SHAPE_FILTER = st.checkbox(
+            'Shape Filter',
+            value=True,
+            help='Only keep the square-like interface',
+        )
 
-
-    # Add a section for Interface Geometry
+    # Add a button to run the interface maker
     st.divider()
-    st.subheader('Interface Geometry')
-    st.caption('Customize the interface geometry including the minimum thickness of the slab, slab vacuum, interface gap, area range for the matched interfaces, and the shape filter option.')
-    MIN_SLAB_THICKNESS = st.slider(
-        label='Minimum Thickness of the Slab ($Å$)',
-        min_value=1,
-        max_value=1000,
-        value=20,
-        step=1,
-    )
-    SLAB_VACUUM = st.slider(
-        label='Slab Vacuum ($Å$)',
-        min_value=0,
-        max_value=100,
-        value=10,
-        step=1,
-    )
-    INTERFACE_GAP = st.slider(
-        label='Interface Gap ($Å$)',
-        min_value=0,
-        max_value=100,
-        value=2,
-        step=1,
-    )
-    area = st.slider(
-        label='Area Range for the Matched Interfaces ($Å^2$)',
-        min_value=1,
-        max_value=5000,
-        value=(250, 2500),
-        step=10,
-    )
-    MIN_AREA, MAX_AREA = area[0], area[1]
-    SHAPE_FILTER = st.checkbox(
-        'Shape Filter',
-        value=True,
-        help='Only keep the square-like interface',
-    )
+    if st.button('Generate Interfaces', type='primary', use_container_width=True):
+        if not st.session_state.files_uploaded:
+            st.error('Please upload the conventional cell of the lower and upper systems in VASP format (.vasp).')
+            st.stop()
+        if assign_specific:
+            with st.spinner('Generating interfaces...'):
+                try:
+                    interface_maker()
+                    st.success('Interfaces generated successfully!')
+                    st.balloons()
+                except Exception as e:
+                    st.error(f'Sorry, we cannot generate the interfaces. Please check the input parameters and try again.')
+                    st.stop()
 
     # Add a footer
     st.divider()
