@@ -694,7 +694,7 @@ def main():
         st.subheader('Define Miller Indices')
         st.caption('Define the maximum Miller indices of h, k, l for lower and upper slabs. If you are interested in specific Miller indices, please assign them by checking the box below.')
         assign_specific = st.checkbox(
-            'Assign Specific Miller Indices for Lower and Upper Slabs',
+            'Assign Specific Miller Indices for Lower and Upper Systems',
             value=False,
         )
         st.session_state.assign_specific = assign_specific
@@ -809,7 +809,7 @@ def main():
         SHAPE_FILTER = st.checkbox(
             'Shape Filter',
             value=True,
-            help='Only keep the square-like interface',
+            help='Only keep the square-like interfaces',
         )
         # Set session_state variable
         st.session_state.MIN_THICKNESS = MIN_THICKNESS
