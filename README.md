@@ -12,9 +12,9 @@ This code is based on the A. Zur et al. paper: "Lattice match: An application to
 
 * 🌐 [Try it Online](https://interface-maker.streamlit.app/)
 
-* For any questions or suggestions, please contact us (gliu4@wpi.edu; yzhong@wpi.edu). 
+* ⭐️ Please STAR this repository if you find it helpful :)
 
-* Please STAR  ⭐️ this repository if you find it helpful :)
+* For any questions or suggestions, please contact us (gliu4@wpi.edu; yzhong@wpi.edu). 
 
 ## Workflow
 
