@@ -14,7 +14,7 @@ This code is based on the A. Zur et al. paper: "Lattice match: An application to
 
 * ⭐️ Please STAR this repository if you find it helpful :)
 
-* For any questions or suggestions, please contact us (gliu4@wpi.edu; yzhong@wpi.edu). 
+* ✉️ Please contact us (gliu4@wpi.edu; yzhong@wpi.edu) for any questions or suggestions.
 
 ## Workflow
 
