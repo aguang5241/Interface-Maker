@@ -1,10 +1,9 @@
 
 
 import streamlit as st
-import os
 import io
+import zipfile
 import datetime
-import shutil
 import numpy as np
 from itertools import product
 from ase.io import read, write
@@ -96,7 +95,7 @@ def cal_mis(u_length_0, v_length_0, uv_angle_0, u_length_1, v_length_1, uv_angle
     return u_mis, v_mis, angle_mis
 
 
-def gen_intf(i, profile):
+def gen_intf(i, profile, slabs_lower, slabs_upper, SLAB_VACUUM, INTERFACE_GAP, profile_txt, profile_csv, zip_buffer):
     hkl_0, hkl_1 = profile[0], profile[1]
     T_0 = np.array(profile[7:11]).reshape(2, 2)
     T_1 = np.array(profile[11:15]).reshape(2, 2)
@@ -108,10 +107,8 @@ def gen_intf(i, profile):
     T_1 = np.hstack([T_1, [[0], [0], [1]]])
 
     # Read the slab data
-    cell_name_0 = f'{LOWER_CONV.split("/")[-1].split(".")[0]}'
-    cell_name_1 = f'{UPPER_CONV.split("/")[-1].split(".")[0]}'
-    slab_0 = read(f'output/slabs/slab_{hkl_0}_{cell_name_0}.vasp')
-    slab_1 = read(f'output/slabs/slab_{hkl_1}_{cell_name_1}.vasp')
+    slab_0 = slabs_lower[hkl_0]
+    slab_1 = slabs_upper[hkl_1]
 
     # Transform the slab data
     slab_0 = make_supercell(slab_0, T_0, order='atom-major')
@@ -123,11 +120,16 @@ def gen_intf(i, profile):
     slab_0_reverse.positions[:, 2] = slab_0.cell[2, 2] - slab_0.positions[:, 2]
     slab_1_reverse.positions[:, 2] = slab_1.cell[2, 2] - slab_1.positions[:, 2]
 
-    # Write the transformed slab data
-    save_path = f'output/interfaces/intf_{i+1}_{hkl_0}_{hkl_1}'
-    os.makedirs(save_path)
-    write(f'{save_path}/intf_{i+1}_slab_0_{hkl_0}.vasp', slab_0, format='vasp', direct=False)
-    write(f'{save_path}/intf_{i+1}_slab_1_{hkl_1}.vasp', slab_1, format='vasp', direct=False)
+    # Helper to write ASE atoms object to the zip buffer
+    def add_to_zip(structure, filename):
+        vasp_buffer = io.StringIO()
+        write(vasp_buffer, structure, format='vasp', direct=False, sort=True)
+        zip_file.writestr(filename, vasp_buffer.getvalue())
+    
+    with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED) as zip_file:
+        base_name = f'intf_{i+1}_{hkl_0}_{hkl_1}'
+        add_to_zip(slab_0, f'{base_name}/slab_0_{hkl_0}.vasp')
+        add_to_zip(slab_1, f'{base_name}/slab_1_{hkl_1}.vasp')
 
     comb = [(slab_0, slab_1), (slab_0_reverse, slab_1), (slab_0, slab_1_reverse), (slab_0_reverse, slab_1_reverse)]
     for j, (slab_0, slab_1) in enumerate(comb):
@@ -158,7 +160,6 @@ def gen_intf(i, profile):
         # Get the global coordinates of the atoms in interface and slab_1
         cell = interface.cell
         slab_1_cell = slab_1.cell
-        
         cell_ = cell.copy()
         cell_[2] = slab_1_cell[2]
         slab_1_positions = slab_1.positions
@@ -186,37 +187,38 @@ def gen_intf(i, profile):
         if reversed:
             interface.positions[:, 2] = interface_thickness-interface.positions[:, 2]
         
-        # Write the interface
-        write(f'output/interfaces/intf_{i+1}_{j+1}_{hkl_0}_{hkl_1}.vasp', interface, format='vasp', direct=False, sort=True)
+        # Write the interface to the zip buffer
+        with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED) as zip_file:
+            add_to_zip(interface, f'intf_{i+1}_{j+1}_{hkl_0}_{hkl_1}.vasp')
 
         # Store the lattice matching data
-        with open('output/interfaces/intf_profile.txt', 'a') as f:
-            f.write(f' Interface {i+1}-{j+1} '.center(60, '-') + '\n')
+        profile_txt.write(f' Interface {i+1}-{j+1} '.center(60, '-') + '\n')
 
-            f.write('Total atoms:'.ljust(40) + f'{len(interface)}\n')
-            f.write('Lower / Upper hkl:'.ljust(40) + f'({hkl_0}) / ({hkl_1})\n')
-            f.write('Lower / Upper area (A^2):'.ljust(40) + f'{area_0:.2f} / {area_1:.2f}\n')
-            f.write('\n')
+        profile_txt.write('Total atoms:'.ljust(40) + f'{len(interface)}\n')
+        profile_txt.write('Lower / Upper hkl:'.ljust(40) + f'({hkl_0}) / ({hkl_1})\n')
+        profile_txt.write('Lower / Upper area (A^2):'.ljust(40) + f'{area_0:.2f} / {area_1:.2f}\n')
+        profile_txt.write('\n')
 
-            f.write('U misfit (%):'.ljust(40) + f'{profile[2] * 100:.6f}\n')
-            f.write('V misfit (%):'.ljust(40) + f'{profile[3] * 100:.6f}\n')
-            f.write('Angle misfit (°):'.ljust(40) + f'{profile[4]:.6f}\n')
-            f.write('Area misfit (%):'.ljust(40) + f'{np.abs(area_0 - area_1) / area_0 * 100:.6f}\n')
-            f.write('\n')
+        profile_txt.write('U misfit (%):'.ljust(40) + f'{profile[2] * 100:.6f}\n')
+        profile_txt.write('V misfit (%):'.ljust(40) + f'{profile[3] * 100:.6f}\n')
+        profile_txt.write('Angle misfit (°):'.ljust(40) + f'{profile[4]:.6f}\n')
+        profile_txt.write('Area misfit (%):'.ljust(40) + f'{np.abs(area_0 - area_1) / area_0 * 100:.6f}\n')
+        profile_txt.write('\n')
 
-            f.write('Transformed matrix for lower slab:\n')
-            f.write(f'{T_0[0][0]:.6f}  {T_0[0][1]:.6f}\n')
-            f.write(f'{T_0[1][0]:.6f}  {T_0[1][1]:.6f}\n')
-            f.write('\n')
+        profile_txt.write('Transformed matrix for lower slab:\n')
+        profile_txt.write(f'{T_0[0][0]:.6f}  {T_0[0][1]:.6f}\n')
+        profile_txt.write(f'{T_0[1][0]:.6f}  {T_0[1][1]:.6f}\n')
+        profile_txt.write('\n')
 
-            f.write('Transformed matrix for upper slab:\n')
-            f.write(f'{T_1[0][0]:.6f}  {T_1[0][1]:.6f}\n')
-            f.write(f'{T_1[1][0]:.6f}  {T_1[1][1]:.6f}\n')
-            f.write('\n\n')
+        profile_txt.write('Transformed matrix for upper slab:\n')
+        profile_txt.write(f'{T_1[0][0]:.6f}  {T_1[0][1]:.6f}\n')
+        profile_txt.write(f'{T_1[1][0]:.6f}  {T_1[1][1]:.6f}\n')
+        profile_txt.write('\n\n')
         
         # Store the lattice matching data in a csv file
-        with open('output/interfaces/intf_profile.csv', 'a') as f:
-            f.write(f'{i+1},{j+1},{len(interface)},{str(hkl_0)},{str(hkl_1)},{area_0:.6f},{area_1:.6f},{profile[2]*100:.6f},{profile[3]*100:.6f},{profile[4]:.6f},{np.abs(area_0-area_1)/area_0*100:.6f},{T_0[0][0]:.6f},{T_0[0][1]:.6f},{T_0[1][0]:.6f},{T_0[1][1]:.6f},{T_1[0][0]:.6f},{T_1[0][1]:.6f},{T_1[1][0]:.6f},{T_1[1][1]:.6f}\n')
+        profile_csv.write(f'{i+1},{j+1},{len(interface)},{str(hkl_0)},{str(hkl_1)},{area_0:.6f},{area_1:.6f},{profile[2]*100:.6f},{profile[3]*100:.6f},{profile[4]:.6f},{np.abs(area_0-area_1)/area_0*100:.6f},{T_0[0][0]:.6f},{T_0[0][1]:.6f},{T_0[1][0]:.6f},{T_0[1][1]:.6f},{T_1[0][0]:.6f},{T_1[0][1]:.6f},{T_1[1][0]:.6f},{T_1[1][1]:.6f}\n')
+
+    return zip_buffer, profile_txt, profile_csv
 
 
 def trim(data):
@@ -243,7 +245,7 @@ def slab_maker(cell_conv, miller_indices, vacuum, MIN_THICKNESS):
 
     data = []
     slabs = []
-    slabs_store = []
+    slabs_store = {}
 
     for h, k, l in miller_indices:
         # atom = read(cell_conv)
@@ -284,8 +286,7 @@ def slab_maker(cell_conv, miller_indices, vacuum, MIN_THICKNESS):
     for i, slab in enumerate(slabs):
         h, k, l = miller_indices[i]
         if i not in same_idx:
-            # write(f'output/slabs/slab_{h}{k}{l}_{cell_name}.vasp', slab, format='vasp', direct=False, sort=False)
-            slabs_store.append(slab)
+            slabs_store[f'{int(h)}{int(k)}{int(l)}'] = slab
 
     data = [[f'{int(i[0])}{int(i[1])}{int(i[2])}', *i[3:]] for i in data]
 
@@ -455,11 +456,11 @@ def interface_maker(session_state):
     log_buffer = ''
     if session_state.assign_specific:
         LOWER_HKL, UPPER_HKL = session_state.LOWER_HKL, session_state.UPPER_HKL
-        log_buffer += f'Assigned Miller indices:\nLower slab: {LOWER_HKL}; \nupper slab: {UPPER_HKL}'
+        log_buffer += f'Assigned Miller indices:\nLower slab: {LOWER_HKL} \nupper slab: {UPPER_HKL}'
     else:
         MAX_H, MAX_K, MAX_L = session_state.MAX_H, session_state.MAX_K, session_state.MAX_L
         LOWER_HKL, UPPER_HKL = find_hkl(MAX_H, MAX_K, MAX_L), find_hkl(MAX_H, MAX_K, MAX_L)
-        log_buffer += f'Assigned Miller indices:\nLower slab: {LOWER_HKL}; \nupper slab: {UPPER_HKL}'
+        log_buffer += f'Assigned Miller indices:\nLower slab: {LOWER_HKL} \nupper slab: {UPPER_HKL}'
     # Display the log
     with log_container:
         st.text_area(
@@ -517,11 +518,6 @@ def interface_maker(session_state):
     profile_txt.write('-'.center(60, '-') + '\n\n')
     profile_txt.write(f'Search results for matched interfaces with area within {MAX_AREA} A^2: \n\n')
     profile_txt.write(f'{"Lower hkl":<20}{"Upper hkl":<20}{"Area (A^2)":<20}\n')
-    # # Now turn the stream into bytes for downloading
-    # contents = profile_txt.getvalue()
-    # profile_txt.close()
-    # st.download_button(
-    #     label='Download Interface Profile', data=contents, file_name=f'intf_profile_{timestamp}.txt', mime='text/plain')
 
     profile_csv = io.StringIO()
     profile_csv.write('Interface ID,Surface ID,Total atoms,Lower hkl,Upper hkl,Lower area,Upper area,U misfit (%),V misfit (%),Angle misfit (°),Area misfit (%),T_0_1,T_0_2,T_0_3,T_0_4,T_1_1,T_1_2,T_1_3,T_1_4\n')
@@ -566,7 +562,7 @@ def interface_maker(session_state):
                     data_matched, min_area = filter_data(data_matched, MIN_AREA, SHAPE_FILTER)
                     data_matched_all.extend(data_matched)
                     profile_txt.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{min_area:<20.4f}\n')
-                    log_buffer += '\n'.ljust(4) + f'---> Found matched interfaces for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {min_area:.4f} Å^2'
+                    log_buffer += '\n'.ljust(4) + f'---> Found {len(data_matched)} matched interfaces for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {min_area:.4f} Å^2'
                     # Display the log
                     with log_container:
                         st.text_area(
@@ -577,7 +573,6 @@ def interface_maker(session_state):
                     break
 
     profile_txt.write(f'\nTotal number of interfaces found: {len(data_matched_all)}'.center(60) + '\n\n')
-    profile_txt.close()
     log_buffer += '\n'.ljust(4) + f'---> Total number of interfaces found: {len(data_matched_all)}'
     # Display the log
     with log_container:
@@ -597,8 +592,11 @@ def interface_maker(session_state):
                 value=log_buffer,
                 height=600,
                 )
+        # Create in-memory zip buffer
+        zip_buffer = io.BytesIO()
         for i, profile in enumerate(data_matched_all):
-            # gen_intf(i, profile)
+            zip_buffer, profile_txt, profile_csv = gen_intf(i, profile, slabs_lower, slabs_upper, INTERFACE_VACUUM, INTERFACE_GAP, profile_txt, profile_csv, zip_buffer)
+            
             log_buffer += '\n'.ljust(4) + f'---> Generated interface {i+1} for ({profile[0][0]}, {profile[0][1]}, {profile[0][2]}) and ({profile[1][0]},  {profile[1][1]}, {profile[1][2]})...'
             # Display the log
             with log_container:
@@ -607,6 +605,17 @@ def interface_maker(session_state):
                     value=log_buffer,
                     height=600,
                     )
+
+        # Write the profile txt and csv to the zip buffer
+        with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED) as zip_file:
+            zip_file.writestr(f'intf_profile.txt', profile_txt.getvalue())
+            zip_file.writestr(f'intf_profile.csv', profile_csv.getvalue())
+        
+        # Close the profile txt and csv
+        profile_txt.close()
+        profile_csv.close()
+
+    return zip_buffer
 
 
 def main():
@@ -620,7 +629,7 @@ def main():
         'Report a bug': 'mailto:gliu4@wpi.edu',
         'About': '# Interface-Maker  '
         '\n**Design Customize & Simulate**  '
-        '\n\n*Developed by Guangchen Liu (gliu4@wpi.edu)*  '
+        '\n\n*Developed by Guangchen Liu*  '
         '\n*IMPD Group, Worcester Polytechnic Institute, MA USA*',
     })
     
@@ -630,10 +639,16 @@ def main():
     st.sidebar.title('Interface-Maker  [![GitHub stars](https://img.shields.io/github/stars/aguang5241/Interface-Maker?style=social)](https://github.com/aguang5241/Interface-Maker)')
     # Add a description to the sidebar
     st.sidebar.markdown('An application for generating customizable slabs and interfaces for first-principles simulations.', unsafe_allow_html=True)
+    # Add a citation link to the sidebar
+    st.sidebar.divider()
+    st.sidebar.markdown('If you find this application useful, please consider citing our publication:')
+    st.sidebar.markdown('[![DOI](https://img.shields.io/badge/DOI-xx.xxx/xxx--xxx--xxx--xxx-white?logo=doi&logoColor=white)](https://doi.org/)')
     # Add contact information: gliu4@wpi.edu
     st.sidebar.divider()
     st.sidebar.markdown('For any questions or suggestions, please contact:')
-    st.sidebar.markdown('[![Email](https://img.shields.io/badge/Email-yzhong@wpi.edu-white?logo=mail.ru&logoColor=white)](mailto:yzhong@wpi.edu) [![Email](https://img.shields.io/badge/Email-gliu4@wpi.edu-white?logo=mail.ru&logoColor=white)](mailto:gliu4@wpi.edu)')
+    st.sidebar.markdown('[![Email](https://img.shields.io/badge/Email-yzhong@wpi.edu-white?logo=mail.ru&logoColor=white)](mailto:yzhong@wpi.edu)')
+    st.sidebar.markdown('[![Email](https://img.shields.io/badge/Email-gliu4@wpi.edu-white?logo=mail.ru&logoColor=white)](mailto:gliu4@wpi.edu)')
+    st.sidebar.markdown('[![LinkedIn](https://img.shields.io/badge/LinkedIn-Guangchen%20Liu-white?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/aguang5241)')
     
     # Add a title to the main page
     st.title('Interface-Maker  [![GitHub stars](https://img.shields.io/github/stars/aguang5241/Interface-Maker?style=social)](https://github.com/aguang5241/Interface-Maker)')
@@ -814,9 +829,20 @@ def main():
             st.stop()
         with st.spinner('Generating interfaces...'):
             try:
-                interface_maker(st.session_state)
+                zip_buffer = interface_maker(st.session_state)
                 st.success('Interfaces Generated Successfully!')
                 st.balloons()
+                # Finalize zip in memory
+                zip_buffer.seek(0)
+                # Streamlit download button
+                st.download_button(
+                    label='Download Generated Interfaces',
+                    data=zip_buffer,
+                    file_name=f'Interface-Maker_{timestamp}.zip',
+                    mime='application/zip',
+                    icon=':material/download:',
+                    use_container_width=True,
+                )
             except Exception as e:
                 st.error(f'Sorry, we cannot generate the interfaces. Please check the input parameters and try again.')
                 st.stop()
