@@ -1,6 +1,6 @@
 # Interface-Maker
 
-[![DOI](https://zenodo.org/badge/DOI/xxx.xxx/zenodo.1234567.svg)](https://doi.org/xxx.xxx/zenodo.1234567)
+[![DOI](https://zenodo.org/badge/DOI/xxx.xxx/xxx.xxx.svg)](https://doi.org/xxx.xxx/xxx.xxx)
 
 ## Overview
 
