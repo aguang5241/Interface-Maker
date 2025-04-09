@@ -644,7 +644,7 @@ def main():
     st.sidebar.markdown('If you find this application useful, please consider citing our publication:')
     st.sidebar.markdown('[![DOI](https://img.shields.io/badge/DOI-xx.xxx/xxx--xxx--xxx--xxx-white?logo=doi&logoColor=white)](https://doi.org/)')
     # Add contact information: gliu4@wpi.edu
-    st.sidebar.divider()
+    # st.sidebar.divider()
     st.sidebar.markdown('For any questions or suggestions, please contact:')
     st.sidebar.markdown('[![Email](https://img.shields.io/badge/Email-yzhong@wpi.edu-white?logo=mail.ru&logoColor=white)](mailto:yzhong@wpi.edu)')
     st.sidebar.markdown('[![Email](https://img.shields.io/badge/Email-gliu4@wpi.edu-white?logo=mail.ru&logoColor=white)](mailto:gliu4@wpi.edu)')
