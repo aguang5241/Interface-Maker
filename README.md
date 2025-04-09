@@ -4,7 +4,7 @@
 
 ## Overview
 
-A python3 code to create slabs and interfaces for first-principles calculations. 
+An application for generating customizable slabs and interfaces for first-principles simulations.
 
 This code is based on the A. Zur et al. paper: "Lattice match: An application to heteroepitaxy, Journal of applied physics 55(2) (1984) 378-386".
 
