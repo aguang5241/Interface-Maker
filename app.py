@@ -634,7 +634,7 @@ def main():
     })
     
     # Add app logo to the sidebar
-    st.sidebar.image('res/logo.png', use_container_width=True)
+    st.sidebar.image('res/logo.png', width='stretch')
     # Set the sidebar title
     st.sidebar.title('Interface-Maker  [![GitHub stars](https://img.shields.io/github/stars/aguang5241/Interface-Maker?style=social)](https://github.com/aguang5241/Interface-Maker)')
     # Add a description to the sidebar
@@ -742,8 +742,10 @@ def main():
                 if h_lower == 0 and k_lower == 0 and l_lower == 0:
                     st.error('Please set at least one of the Miller indices greater than 0.')
                     st.stop()
-            LOWER_HKL = (h_lower, k_lower, l_lower)
-            UPPER_HKL = (h_upper, k_upper, l_upper)
+            # LOWER_HKL = (h_lower, k_lower, l_lower)
+            # UPPER_HKL = (h_upper, k_upper, l_upper)
+            LOWER_HKL = [(h_lower, k_lower, l_lower)]
+            UPPER_HKL = [(h_upper, k_upper, l_upper)]
             # Set session_state variables
             st.session_state.LOWER_HKL = LOWER_HKL
             st.session_state.UPPER_HKL = UPPER_HKL
@@ -821,7 +823,7 @@ def main():
 
     # Add a button to run the interface maker
     st.divider()
-    if st.button('Generate Interfaces', type='primary', use_container_width=True):
+    if st.button('Generate Interfaces', type='primary', width='stretch'):
         timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
         st.session_state.timestamp = timestamp
         if not st.session_state.files_uploaded:
@@ -841,7 +843,7 @@ def main():
                     file_name=f'Interface-Maker_{timestamp}.zip',
                     mime='application/zip',
                     icon=':material/download:',
-                    use_container_width=True,
+                    width='stretch',
                 )
             except Exception as e:
                 st.error(f'Sorry, we cannot generate the interfaces. Please check the input parameters and try again.')
