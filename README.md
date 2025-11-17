@@ -39,7 +39,7 @@ If you use this code in your research, please cite our paper:
 
 ```
 @article{
-  title={A Computational Framework for Interface Design: From First Principles to Machine Learning, with a Case Study on LaCoO3/La2NiO4},
+  title={A computational framework for interface design using lattice matching, machine learning potentials, and active learning: A case study on LaCoO3/La2NiO4},
   author={G. Liu and S. Yang and Y. Zhong},
   journal={Materials Today Physics},
   volume={59},
