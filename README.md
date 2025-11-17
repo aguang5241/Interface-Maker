@@ -1,6 +1,6 @@
 # Interface-Maker
 
-[![DOI](https://zenodo.org/badge/DOI/xxx.xxx/xxx.xxx.svg)](https://doi.org/xxx.xxx/xxx.xxx)
+[![DOI](https://zenodo.org/badge/DOI/10.1016/j.mtphys.2025.101940.svg)](https://doi.org/10.1016/j.mtphys.2025.101940)
 
 ## Overview
 
@@ -41,10 +41,11 @@ If you use this code in your research, please cite our paper:
 @article{
   title={A Computational Framework for Interface Design: From First Principles to Machine Learning, with a Case Study on LaCoO3/La2NiO4},
   author={G. Liu and S. Yang and Y. Zhong},
-  journal={},
-  volume={},
-  number={},
-  pages={},
-  year={2025}
+  journal={Materials Today Physics},
+  volume={59},
+  pages={101940},
+  year={2025},
+  issn={2542-5293},
+  doi={10.1016/j.mtphys.2025.101940},
 }
 ```
