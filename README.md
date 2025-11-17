@@ -1,6 +1,7 @@
 # Interface-Maker
 
-[![DOI](https://zenodo.org/badge/DOI/10.1016/j.mtphys.2025.101940.svg)](https://doi.org/10.1016/j.mtphys.2025.101940)
+<!-- [![DOI](https://zenodo.org/badge/DOI/10.1016/j.mtphys.2025.101940.svg)](https://doi.org/10.1016/j.mtphys.2025.101940) -->
+[![DOI](https://img.shields.io/badge/DOI-10.1016/j.mtphys.2025.101940-blue)](https://doi.org/10.1016/j.mtphys.2025.101940)
 
 ## Overview
 
