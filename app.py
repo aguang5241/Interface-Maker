@@ -642,7 +642,7 @@ def main():
     # Add a citation link to the sidebar
     st.sidebar.divider()
     st.sidebar.markdown('If you find this application useful, please consider citing our publication:')
-    st.sidebar.markdown('[![DOI](https://img.shields.io/badge/DOI-xx.xxx/xxx--xxx--xxx--xxx-white?logo=doi&logoColor=white)](https://doi.org/)')
+    st.sidebar.markdown('[![DOI](https://img.shields.io/badge/DOI-10.1016/j.mtphys.2025.101940-blue)](https://doi.org/10.1016/j.mtphys.2025.101940)')
     # Add contact information: gliu4@wpi.edu
     # st.sidebar.divider()
     st.sidebar.markdown('For any questions or suggestions, please contact:')
