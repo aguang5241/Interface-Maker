@@ -408,7 +408,7 @@ def lattice_match(data_pairs, data_ab_lower, data_ab_upper, UV_TOL, ANGLE_TOL):
 def filter_data(data_matched, MIN_AREA, SHAPE_FILTER):
     if len(data_matched) > 1:
         data_matched = np.array(data_matched)
-        
+
         # # Compare the areas and get the closest area to the MIN_AREA
         # area_diff = data_matched[:, 5].astype(float) - MIN_AREA
         # area_diff_sorted = np.sort(area_diff)
@@ -810,7 +810,7 @@ def main():
             label='Area Range for the Matched Interfaces ($Å^2$)',
             min_value=1,
             max_value=5000,
-            value=(250, 2500),
+            value=(50, 500),
             step=1,
         )
         MIN_AREA, MAX_AREA = area[0], area[1]
