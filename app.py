@@ -568,7 +568,7 @@ def interface_maker(session_state):
                     data_matched, min_area = filter_data(data_matched, MIN_AREA, SHAPE_FILTER)
                     data_matched_all.extend(data_matched)
                     profile_txt.write(f'{str(LOWER_HKL[0]):<20}{str(UPPER_HKL[0]):<20}{min_area:<20.4f}\n')
-                    log_buffer += '\n'.ljust(4) + f'---> Found {len(data_matched)} matched interfaces for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {min_area:.4f} Å^2'
+                    log_buffer += '\n'.ljust(4) + f'---> Found {len(data_matched)} matched interfaces for {LOWER_HKL[0]} and {UPPER_HKL[0]} within {MAX_AREA} Å^2'
                     # Display the log
                     with log_container:
                         st.text_area(
