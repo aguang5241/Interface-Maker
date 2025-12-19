@@ -267,7 +267,9 @@ def slab_maker(cell_conv, miller_indices, vacuum, MIN_THICKNESS):
         # Get cell parameters
         cell = slab.cell
         a, b = cell[0][:2], cell[1][:2]
-        S = np.linalg.norm(np.cross(a, b))
+        a_ = np.array([cell[0][0], cell[0][1], 0.0])
+        b_ = np.array([cell[1][0], cell[1][1], 0.0])
+        S = np.linalg.norm(np.cross(a_, b_))
 
         # Reduce the cell vectors
         a_list, b_list, T_list = reduce(a, b)
@@ -331,7 +333,10 @@ def cal_uv(data_slab, hkl, n):
         supercell = np.dot(ijm_matrix, ab)
         u, v = supercell[0], supercell[1]
 
-        S = np.linalg.norm(np.cross(u, v))
+        u_ = np.array([supercell[0][0], supercell[0][1], 0.0])
+        v_ = np.array([supercell[1][0], supercell[1][1], 0.0])
+
+        S = np.linalg.norm(np.cross(u_, v_))
         u_r_list, v_r_list, T_list = reduce(u, v)
 
         # Only save the final reduced cell vectors
@@ -402,14 +407,15 @@ def lattice_match(data_pairs, data_ab_lower, data_ab_upper, UV_TOL, ANGLE_TOL):
 
 def filter_data(data_matched, MIN_AREA, SHAPE_FILTER):
     if len(data_matched) > 1:
-        # Compare the areas and get the closest area to the MIN_AREA
         data_matched = np.array(data_matched)
-        area_diff = data_matched[:, 5].astype(float) - MIN_AREA
-        area_diff_sorted = np.sort(area_diff)
-        # Get the idx of the first positive value in area_diff_sorted
-        idx_0 = np.where(area_diff_sorted > 0)[0][0]
-        idxes = np.where(area_diff == area_diff_sorted[idx_0])[0]
-        data_matched = data_matched[idxes]
+        
+        # # Compare the areas and get the closest area to the MIN_AREA
+        # area_diff = data_matched[:, 5].astype(float) - MIN_AREA
+        # area_diff_sorted = np.sort(area_diff)
+        # # Get the idx of the first positive value in area_diff_sorted
+        # idx_0 = np.where(area_diff_sorted > 0)[0][0]
+        # idxes = np.where(area_diff == area_diff_sorted[idx_0])[0]
+        # data_matched = data_matched[idxes]
 
         if SHAPE_FILTER:
             # Compare the u, v lengths and calculate the uv_ratio = u / v
