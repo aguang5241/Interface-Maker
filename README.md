@@ -1,7 +1,9 @@
 # Interface-Maker
 
 <!-- [![DOI](https://zenodo.org/badge/DOI/10.1016/j.mtphys.2025.101940.svg)](https://doi.org/10.1016/j.mtphys.2025.101940) -->
+<!-- [![DOI](https://zenodo.org/badge/866058148.svg)](https://doi.org/10.5281/zenodo.20075772) -->
 [![DOI](https://img.shields.io/badge/DOI-10.1016/j.mtphys.2025.101940-blue)](https://doi.org/10.1016/j.mtphys.2025.101940)
+[![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.20075772-blue)](https://doi.org/10.5281/zenodo.20075772)
 
 ## Overview
 
