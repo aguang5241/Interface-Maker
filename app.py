@@ -726,11 +726,11 @@ def main():
             with st.container(border=True):
                 col6, col7, col8 = st.columns(3, gap='medium', border=False)
                 with col6:
-                    h_upper = st.number_input('H', 0, 10, 0, step=1, key='h_upper')
+                    h_upper = st.number_input('H', -10, 10, 0, step=1, key='h_upper')
                 with col7:
-                    k_upper = st.number_input('K', 0, 10, 0, step=1, key='k_upper')
+                    k_upper = st.number_input('K', -10, 10, 0, step=1, key='k_upper')
                 with col8:
-                    l_upper = st.number_input('L', 0, 10, 1, step=1, key='l_upper')
+                    l_upper = st.number_input('L', -10, 10, 1, step=1, key='l_upper')
                 # Ensure that at least one of the Miller indices is greater than 0
                 if h_upper == 0 and k_upper == 0 and l_upper == 0:
                     st.error('Please set at least one of the Miller indices greater than 0.')
@@ -739,11 +739,11 @@ def main():
             with st.container(border=True):
                 col3, col4, col5 = st.columns(3, gap='medium', border=False)
                 with col3:
-                    h_lower = st.number_input('H', 0, 10, 0, step=1, key='h_lower')
+                    h_lower = st.number_input('H', -10, 10, 0, step=1, key='h_lower')
                 with col4:
-                    k_lower = st.number_input('K', 0, 10, 0, step=1, key='k_lower')
+                    k_lower = st.number_input('K', -10, 10, 0, step=1, key='k_lower')
                 with col5:
-                    l_lower = st.number_input('L', 0, 10, 1, step=1, key='l_lower')
+                    l_lower = st.number_input('L', -10, 10, 1, step=1, key='l_lower')
                 # Ensure that at least one of the Miller indices is greater than 0
                 if h_lower == 0 and k_lower == 0 and l_lower == 0:
                     st.error('Please set at least one of the Miller indices greater than 0.')
